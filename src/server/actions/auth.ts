@@ -78,6 +78,14 @@ export async function loginAction(_: FormState, fd: FormData): Promise<FormState
   const okPw = user?.passwordHash ? await verifyPassword(password, user.passwordHash) : false;
   if (!user || !okPw || user.active === false) return { error: "Incorrect email or password." };
 
+  // First-run bootstrap for an ADMIN_EMAIL account that was registered as a customer
+  // before any Super Admin existed: promote it once the owner signs in successfully.
+  if (user.role === "customer" && email === (process.env.ADMIN_EMAIL ?? "").trim().toLowerCase() && !(await User.exists({ role: "super_admin" }))) {
+    user.role = "super_admin";
+    user.emailVerifiedAt ??= new Date();
+    await audit(email, "bootstrap_super_admin", "user", String(user._id), "promoted existing account");
+  }
+
   user.lastLoginAt = new Date();
   await user.save();
   const role = user.role as Role;
