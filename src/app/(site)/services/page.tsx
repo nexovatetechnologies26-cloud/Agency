@@ -5,7 +5,7 @@ import { safe } from "@/server/lib/safe";
 
 // "Starting from" prices come from Admin → Packages; refreshed every 5 minutes and on every edit.
 export const revalidate = 300;
-import { SectionHeading } from "@/components/ui/section-heading";
+import { PageHero } from "@/components/ui/page-hero";
 import { Cta } from "@/components/sections/cta";
 
 export const metadata: Metadata = {
@@ -28,17 +28,14 @@ export default async function ServicesPage() {
 
   return (
     <>
-      <section className="section pb-0">
+      <PageHero
+        eyebrow="Services"
+        title={<>Everything you need to build and <em>grow online.</em></>}
+        description="Choose a service to see what's included, or request a custom quote for a project that combines several."
+      />
+      <section className="bg-paper py-16 lg:py-24">
         <div className="container">
-          <SectionHeading
-            as="h1"
-            eyebrow="Services"
-            title="Everything you need to build and grow online"
-            description="Choose a service to see what's included, or request a custom quote for a project that combines several."
-          />
-          <div className="mt-14">
-            <ServicesGrid fromPrices={fromPrices} />
-          </div>
+          <ServicesGrid fromPrices={fromPrices} />
         </div>
       </section>
       <Cta />

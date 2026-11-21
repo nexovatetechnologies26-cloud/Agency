@@ -1,9 +1,8 @@
-import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 
 /**
- * Closing call to action used on inner pages. Same editorial treatment as the
- * homepage CTA: light background, serif heading, split layout, no gradients.
+ * Closing call to action used on inner pages — same dark panel as the homepage CTA.
  * Pass a title ending in a word to italicise via `accent` (optional).
  */
 export function Cta({
@@ -16,20 +15,26 @@ export function Cta({
   text?: string;
 }) {
   return (
-    <section className="border-t border-line bg-paper py-24 lg:py-35" aria-labelledby="cta-title">
-      <div className="container grid gap-12 lg:grid-cols-12">
-        <h2 id="cta-title" className="serif-heading text-section lg:col-span-7">
-          {title} {accent && <em>{accent}</em>}
-        </h2>
-        <div className="lg:col-span-4 lg:col-start-9 lg:self-end">
-          <p className="max-w-measure text-body text-muted">{text}</p>
-          <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5">
-            <ButtonLink href="/get-a-quote" size="lg">
-              Start a project
-            </ButtonLink>
-            <Link href="/book-consultation" className="link-underline">
-              Book a call <span aria-hidden>→</span>
-            </Link>
+    <section className="bg-paper py-16 lg:py-24" aria-labelledby="cta-title">
+      <div className="container">
+        <div className="relative overflow-hidden rounded-[32px] bg-ink px-6 py-14 text-white sm:px-12 lg:px-16 lg:py-20">
+          <div aria-hidden className="grid-lines absolute inset-0 [mask-image:radial-gradient(ellipse_at_right,black,transparent_70%)]" />
+          <div aria-hidden className="absolute -right-20 -top-20 h-80 w-80 rounded-full bg-brand/50 blur-3xl" />
+          <div className="relative grid items-end gap-10 lg:grid-cols-12">
+            <h2 id="cta-title" className="font-display text-[2.25rem] font-semibold leading-[1.04] tracking-[-0.04em] text-white md:text-[3.25rem] lg:col-span-7">
+              {title} {accent && <em className="text-gradient pr-1">{accent}</em>}
+            </h2>
+            <div className="lg:col-span-5">
+              <p className="text-body text-white/65">{text}</p>
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                <ButtonLink href="/get-a-quote" size="lg" variant="light">
+                  Start a project <ArrowRight size={17} aria-hidden className="transition-transform group-hover/btn:translate-x-0.5" />
+                </ButtonLink>
+                <ButtonLink href="/book-consultation" size="lg" variant="outline-light">
+                  Book a call
+                </ButtonLink>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -15,9 +15,16 @@ export function SectionHeading({
 }) {
   return (
     <div className={clsx("max-w-2xl", align === "center" && "mx-auto text-center")}>
-      {eyebrow && <p className="eyebrow">{eyebrow}</p>}
-      <Tag className={clsx("mt-3 text-3xl leading-tight md:text-[2.5rem]", Tag === "h1" && "md:text-5xl")}>{title}</Tag>
-      {description && <p className="mt-4 text-base leading-relaxed text-muted md:text-lg">{description}</p>}
+      {eyebrow && <p className="label">{eyebrow}</p>}
+      <Tag
+        className={clsx(
+          "serif-heading mt-4",
+          Tag === "h1" ? "text-[2.4rem] leading-[1.04] md:text-[3.5rem]" : "text-[2rem] leading-[1.08] md:text-[2.75rem]",
+        )}
+      >
+        {title}
+      </Tag>
+      {description && <p className="mt-5 text-body-lg text-muted">{description}</p>}
     </div>
   );
 }

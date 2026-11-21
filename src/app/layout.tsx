@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Instrument_Serif } from "next/font/google";
+import { Inter, Inter_Tight, Instrument_Serif } from "next/font/google";
 import { site } from "@/content/site";
 import "./globals.css";
 
 const sans = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
+const display = Inter_Tight({ subsets: ["latin"], weight: ["500", "600", "700"], variable: "--font-display", display: "swap" });
 const serif = Instrument_Serif({ subsets: ["latin"], weight: "400", style: ["normal", "italic"], variable: "--font-serif", display: "swap" });
 
 export const metadata: Metadata = {
@@ -36,7 +37,7 @@ const orgJsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${sans.variable} ${serif.variable}`}>
+    <html lang="en" className={`${sans.variable} ${display.variable} ${serif.variable}`}>
       <body className="font-sans">
         {children}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }} />

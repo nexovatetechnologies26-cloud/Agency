@@ -17,18 +17,18 @@ export function ServicesGrid({ limit, fromPrices = {} }: { limit?: number; fromP
             <Link
               data-card
               href={`/services/${s.slug}`}
-              className="group flex h-full flex-col rounded-tile border border-line border-t-[3px] border-t-brand bg-white transition duration-300 ease-out-cubic hover:-translate-y-1 hover:border-brand/40 hover:border-t-brand"
+              className="group flex h-full flex-col rounded-tile border border-line bg-white transition duration-300 ease-out-cubic hover:-translate-y-1 hover:border-brand/40 hover:shadow-lift"
             >
               <div className="flex flex-1 flex-col p-7 md:p-8">
                 <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-soft text-brand transition-colors duration-300 group-hover:bg-brand group-hover:text-white">
                   <ServiceIcon name={s.icon} className="h-6 w-6" />
                 </span>
-                <h3 className="mt-7 font-serif text-[1.85rem] font-normal leading-tight text-ink transition-colors group-hover:text-brand">{s.title}</h3>
+                <h3 className="mt-7 font-serif text-[1.85rem] font-semibold leading-tight text-ink transition-colors group-hover:text-brand">{s.title}</h3>
                 <p className="mt-3 flex-1 text-[15px] leading-relaxed text-muted">{s.summary}</p>
 
                 <div className="mt-8 flex items-end justify-between gap-4 border-t border-line pt-6">
                   <div className="leading-none">
-                    <p className="label">{from ? "Starting from" : "Pricing"}</p>
+                    <p className="label-plain">{from ? "Starting from" : "Pricing"}</p>
                     {from ? (
                       <p className="mt-2">
                         <PriceInline minor={from.price} currency={from.currency} monthly={from.billing === "monthly"} />

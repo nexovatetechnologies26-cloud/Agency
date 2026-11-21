@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { listActivePackages } from "@/server/queries/commerce";
 import { safe } from "@/server/lib/safe";
-import { SectionHeading } from "@/components/ui/section-heading";
+import { PageHero } from "@/components/ui/page-hero";
 import { PackagesList } from "@/components/sections/packages-list";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Cta } from "@/components/sections/cta";
@@ -19,15 +19,14 @@ export default async function PricingPage() {
   const packages = await safe(listActivePackages, [], "packages");
   return (
     <>
-      <section className="section">
+      <PageHero
+        eyebrow="Pricing"
+        title={<>Clear packages. Custom quotes <em>when you need them.</em></>}
+        description="Choose a fixed-price package to get started quickly, or request a custom quote for anything bigger or more specific."
+      />
+      <section className="bg-paper py-16 lg:py-24">
         <div className="container">
-          <SectionHeading
-            as="h1"
-            eyebrow="Pricing"
-            title="Clear packages. Custom quotes when you need them."
-            description="Choose a fixed-price package to get started quickly, or request a custom quote for anything bigger or more specific."
-          />
-          <div className="mt-14">
+          <div>
             {packages.length ? (
               <PackagesList packages={packages} />
             ) : (

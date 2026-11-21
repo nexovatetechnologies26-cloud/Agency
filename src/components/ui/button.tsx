@@ -1,20 +1,21 @@
 import Link from "next/link";
 import clsx from "clsx";
 
-type Variant = "primary" | "secondary" | "ghost" | "outline-light" | "light";
+type Variant = "primary" | "dark" | "secondary" | "ghost" | "outline-light" | "light";
 type Size = "md" | "lg";
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-btn font-medium transition-colors duration-200 ease-out-cubic disabled:cursor-not-allowed disabled:opacity-60";
+  "group/btn inline-flex items-center justify-center gap-2 rounded-btn font-semibold tracking-[-0.005em] transition-[background-color,color,border-color,box-shadow,transform] duration-200 ease-out-cubic disabled:cursor-not-allowed disabled:opacity-60";
 
 const variants: Record<Variant, string> = {
-  // light brand: soft lilac fill with violet text, slightly deeper lilac on hover
-  primary: "bg-brand-soft text-brand hover:bg-brand-tint hover:text-brand-deep",
-  secondary: "border border-line bg-transparent text-ink hover:border-ink",
+  // solid violet — the one primary action per view
+  primary: "bg-brand text-white shadow-glow hover:bg-brand-deep hover:shadow-none",
+  dark: "bg-ink text-white hover:bg-brand",
+  secondary: "border border-ink/15 bg-white text-ink hover:border-ink",
   ghost: "text-ink hover:text-brand",
-  "outline-light": "border border-white/25 text-white hover:border-white", // for dark backgrounds
-  light: "bg-brand-soft text-brand hover:bg-white hover:text-brand-deep", // primary action on dark backgrounds
-  // one button shape across the site: 6px radius rectangle, 52px tall at "lg"
+  "outline-light": "border border-white/20 bg-white/5 text-white backdrop-blur hover:border-white/60 hover:bg-white/10", // for dark backgrounds
+  light: "bg-white text-ink hover:bg-brand-soft hover:text-brand-deep", // primary action on dark backgrounds
+  // one button shape across the site: pill, 52px tall at "lg"
 };
 
 const sizes: Record<Size, string> = {

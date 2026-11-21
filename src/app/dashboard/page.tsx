@@ -42,7 +42,7 @@ export default async function DashboardHome() {
       )}
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <Stat label="Active orders" value={stats.activeOrders} href="/dashboard/orders" />
+        <Stat label="Active orders" value={stats.activeOrders} href="/dashboard/orders" tone="dark" />
         <Stat label="Proposals to review" value={stats.openProposals} href="/dashboard/proposals" />
         <Stat label="Unpaid invoices" value={stats.unpaidInvoices} href="/dashboard/invoices" />
         <Stat label="Open tickets" value={stats.openTickets} href="/dashboard/support" />

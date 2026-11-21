@@ -16,7 +16,7 @@ export default async function QuotePage({ searchParams }: { searchParams: Promis
   const preselected = service && getService(service) ? service : undefined;
 
   return (
-    <section className="section">
+    <section className="section hero-wash">
       <div className="container grid gap-14 lg:grid-cols-[1fr_1.6fr]">
         <div>
           <SectionHeading

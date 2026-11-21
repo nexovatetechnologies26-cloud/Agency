@@ -56,7 +56,7 @@ function Card({
         <span aria-hidden className="h-2 w-2 rotate-45 bg-brand" />
         {label}
       </p>
-      {title && <h2 className={`mt-4 font-serif text-[2rem] font-normal leading-tight ${dark ? "text-bone" : "text-ink"}`}>{title}</h2>}
+      {title && <h2 className={`mt-4 font-serif text-[2rem] font-semibold leading-tight ${dark ? "text-bone" : "text-ink"}`}>{title}</h2>}
       <div className={title ? "mt-7" : "mt-5"}>{children}</div>
     </div>
   );
@@ -182,8 +182,7 @@ export default async function TeamMemberPage({ params }: Props) {
             <div className="flex flex-col lg:col-span-7 lg:pl-6">
               <Reveal>
                 {level && (
-                  <p className="label flex items-center gap-2">
-                    <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-brand" />
+                  <p className="label">
                     {level}
                   </p>
                 )}
@@ -204,7 +203,7 @@ export default async function TeamMemberPage({ params }: Props) {
                     {facts.map((f) => (
                       <div key={f.k} className="relative overflow-hidden rounded-tile border border-line bg-white px-5 pb-5 pt-6">
                         <span aria-hidden className="absolute inset-x-0 top-0 h-[3px] bg-brand" />
-                        <dt className="label">{f.k}</dt>
+                        <dt className="label-plain">{f.k}</dt>
                         <dd className="mt-3 font-serif text-[1.9rem] leading-none text-brand">
                           {f.v}
                           {f.unit && <span className="ml-1.5 font-sans text-sm text-muted">{f.unit}</span>}

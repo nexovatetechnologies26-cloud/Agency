@@ -4,11 +4,13 @@ import {
   HomeFaq,
   HomeHero,
   HomeInsights,
+  HomeMarquee,
+  HomeModels,
   HomeNumbers,
   HomeProcess,
   HomeServices,
-  HomeStatement,
   HomeTestimonials,
+  HomeWhy,
   HomeWork,
 } from "@/components/home/editorial";
 import { TeamSection } from "@/components/sections/team";
@@ -40,16 +42,18 @@ export default async function HomePage() {
   return (
     <div className="bg-paper">
       <HomeHero />
+      <HomeMarquee />
       <HomeClients logos={logos} />
       <HomeNumbers stats={stats} />
       <HomeServices />
+      <HomeWhy />
       <HomeWork projects={projects} />
       <HomeProcess />
+      <HomeModels />
       <HomeTestimonials items={testimonials} />
       <TeamSection members={team} limit={3} />
       <HomeInsights posts={posts} />
       <HomeFaq />
-      <HomeStatement />
       <HomeCta />
     </div>
   );

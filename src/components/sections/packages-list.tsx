@@ -35,7 +35,7 @@ export function PricingCard({ p }: { p: PackageCard }) {
       data-card
       className={clsx(
         "group relative flex h-full flex-col overflow-hidden rounded-tile bg-white transition duration-300 ease-out-cubic hover:-translate-y-1",
-        featured ? "border-2 border-brand lg:-my-3" : "border border-line border-t-[3px] border-t-brand hover:border-brand/40 hover:border-t-brand",
+        featured ? "border-2 border-brand lg:-my-3" : "border border-line hover:border-brand/40 hover:shadow-lift",
       )}
     >
       {featured && (
@@ -47,12 +47,12 @@ export function PricingCard({ p }: { p: PackageCard }) {
 
       <div className={clsx("flex flex-1 flex-col px-7 pb-7 md:px-8", featured ? "pt-7" : "pt-8")}>
         {/* name + who it's for */}
-        <h3 className="font-serif text-[2rem] font-normal leading-tight text-ink">{p.name}</h3>
+        <h3 className="font-serif text-[2rem] font-semibold leading-tight text-ink">{p.name}</h3>
         {p.description && <p className="mt-2 text-[15px] leading-relaxed text-muted">{p.description}</p>}
 
         {/* price */}
         <div className="mt-7 border-y border-line py-6">
-          <p className="label">{monthly ? "Per month" : "One-time"}</p>
+          <p className="label-plain">{monthly ? "Per month" : "One-time"}</p>
           <PriceFigure minor={p.price} currency={p.currency} monthly={monthly} featured={featured} />
         </div>
 
@@ -81,7 +81,7 @@ export function PricingCard({ p }: { p: PackageCard }) {
         {/* what's included */}
         {p.deliverables.length > 0 && (
           <div className="mt-7 flex-1">
-            <p className="label">What&apos;s included</p>
+            <p className="label-plain">What&apos;s included</p>
             <ul className="mt-4 space-y-3">
               {p.deliverables.map((d) => (
                 <li key={d} className="flex items-start gap-3 text-[15px] text-ink/85">

@@ -50,7 +50,7 @@ export default async function TeamPage() {
               Designers, engineers and marketers who stay with your project from the first call to launch — and long after it.
             </p>
             {team.length > 0 && (
-              <p className="label mt-8">
+              <p className="label-plain mt-8">
                 {team.length} {team.length === 1 ? "person" : "people"}
                 {counts.map(([label, n]) => ` · ${n} ${label.toLowerCase()}`).join("")}
               </p>

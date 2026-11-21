@@ -18,7 +18,7 @@ export const dynamic = "force-dynamic";
 export default async function BookPage() {
   const [slots, session] = await Promise.all([safe(getAvailableSlots, [], "slots"), getSession()]);
   return (
-    <section className="section">
+    <section className="section hero-wash">
       <div className="container grid gap-14 lg:grid-cols-[1fr_1.5fr]">
         <div>
           <SectionHeading

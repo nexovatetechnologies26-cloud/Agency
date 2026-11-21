@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Compass, Eye, HeartHandshake } from "lucide-react";
-import { SectionHeading } from "@/components/ui/section-heading";
+import { PageHero } from "@/components/ui/page-hero";
 import { WhyUs } from "@/components/sections/why-us";
 import { Cta } from "@/components/sections/cta";
 import { TeamSection } from "@/components/sections/team";
@@ -26,19 +26,20 @@ export default async function AboutPage() {
   const team = await safe(listTeamMembers, [], "about-team");
   return (
     <>
-      <section className="section">
+      <PageHero
+        eyebrow="About Nexovate"
+        title={<>Your global digital &amp; technology <em>partner.</em></>}
+        description="Nexovate is a full-service digital and technology agency. We help businesses design, build, automate and market their digital presence — from a first website to custom software and AI-powered workflows."
+      />
+      <section className="bg-paper py-16 lg:py-24">
         <div className="container">
-          <SectionHeading
-            as="h1"
-            eyebrow="About Nexovate"
-            title="Your global digital & technology partner"
-            description="Nexovate is a full-service digital and technology agency. We help businesses design, build, automate and market their digital presence — from a first website to custom software and AI-powered workflows."
-          />
-          <ul className="mt-14 grid gap-5 md:grid-cols-3">
+          <ul className="grid gap-5 md:grid-cols-3">
             {values.map(({ icon: Icon, title, text }) => (
               <li key={title} className="card p-8">
-                <Icon className="text-brand" size={24} strokeWidth={1.75} aria-hidden />
-                <h2 className="mt-5 text-lg">{title}</h2>
+                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-soft text-brand">
+                  <Icon size={22} strokeWidth={1.75} aria-hidden />
+                </span>
+                <h2 className="mt-6 text-xl">{title}</h2>
                 <p className="mt-2 text-sm leading-relaxed text-muted">{text}</p>
               </li>
             ))}

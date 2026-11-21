@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <section className="section">
+    <section className="section hero-wash">
       <div className="container grid gap-14 lg:grid-cols-[1fr_1.5fr]">
         <div>
           <SectionHeading

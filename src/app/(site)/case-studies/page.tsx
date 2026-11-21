@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { listProjects } from "@/server/queries/other";
 import { safe } from "@/server/lib/safe";
-import { SectionHeading } from "@/components/ui/section-heading";
+import { PageHero } from "@/components/ui/page-hero";
 import { ProjectCard } from "@/components/sections/project-card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Cta } from "@/components/sections/cta";
@@ -19,10 +19,10 @@ export default async function CaseStudiesPage() {
   const projects = await safe(() => listProjects({ caseStudiesOnly: true }), [], "case-studies");
   return (
     <>
-      <section className="section">
+      <PageHero eyebrow="Case studies" title={<>The problem, our approach, <em>the solution.</em></>} description="Deep dives into real client work, published only with our clients' permission." />
+      <section className="bg-paper py-16 lg:py-24">
         <div className="container">
-          <SectionHeading as="h1" eyebrow="Case studies" title="The problem, our approach, the solution" />
-          <div className="mt-14">
+          <div>
             {projects.length ? (
               <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {projects.map((p) => (

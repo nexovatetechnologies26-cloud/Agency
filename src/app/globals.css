@@ -14,7 +14,26 @@
   h2,
   h3,
   h4 {
-    @apply font-semibold tracking-tight text-ink;
+    @apply font-display font-semibold tracking-tight text-ink;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  /* display face: tight, confident headings */
+  .font-serif,
+  .font-display {
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+  /* italic in the display face switches to the editorial serif accent */
+  .font-serif.italic,
+  h1 em,
+  h2 em,
+  h3 em {
+    font-family: var(--font-serif), Georgia, serif;
+    font-weight: 400;
+    letter-spacing: -0.01em;
   }
   :focus-visible {
     @apply outline-none ring-2 ring-brand ring-offset-2;
@@ -31,13 +50,45 @@
   .section {
     @apply py-20 md:py-28;
   }
-  .eyebrow {
-    @apply text-xs font-semibold uppercase tracking-[0.18em] text-brand;
+  .eyebrow,
+  .label {
+    @apply inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.14em] text-brand;
   }
-  /* one card design across the site — same as the team profile cards:
-     white surface, 1px border, 3px brand rule on top, 8px radius, no shadow */
+  .eyebrow::before,
+  .label::before {
+    content: "";
+    @apply h-1.5 w-1.5 shrink-0 rounded-full bg-brand;
+  }
+  /* plain variant (no dot) for small meta labels inside cards */
+  .label-plain {
+    @apply text-[12px] font-medium uppercase tracking-[0.12em] text-muted;
+  }
+  /* one card design across the site: white surface, hairline border, 20px radius */
   .card {
-    @apply rounded-tile border border-line border-t-[3px] border-t-brand bg-white;
+    @apply rounded-tile border border-line bg-white;
+  }
+  /* soft violet wash used behind page heroes */
+  .hero-wash {
+    background:
+      radial-gradient(60% 80% at 85% 0%, rgba(117, 69, 217, 0.14), transparent 60%),
+      radial-gradient(40% 60% at 0% 100%, rgba(117, 69, 217, 0.08), transparent 60%),
+      #f7f6fa;
+  }
+  /* faint grid pattern for dark sections */
+  .grid-lines {
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+  .grid-lines-light {
+    background-image:
+      linear-gradient(to right, rgba(23, 21, 31, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(23, 21, 31, 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+  .text-gradient {
+    @apply bg-gradient-to-r from-[#B79BFF] via-[#9A72F0] to-[#7545D9] bg-clip-text text-transparent;
   }
   .field-label {
     @apply mb-1.5 block text-sm font-medium text-ink;
@@ -57,13 +108,10 @@
   }
   /* ---------- editorial homepage system ---------- */
   .serif-heading {
-    @apply font-serif font-normal text-ink;
+    @apply font-display font-semibold tracking-[-0.035em] text-ink;
   }
   .serif-heading em {
     @apply italic text-brand;
-  }
-  .label {
-    @apply text-label font-medium uppercase text-muted;
   }
   .section-xl {
     @apply py-20 lg:py-35 xl:py-45;
@@ -116,10 +164,13 @@
   a.card {
     transition:
       transform 300ms cubic-bezier(0.33, 1, 0.68, 1),
-      border-color 300ms;
+      border-color 300ms,
+      box-shadow 300ms;
   }
   a.card:hover {
-    transform: translateY(-3px);
+    transform: translateY(-4px);
+    border-color: rgba(117, 69, 217, 0.35);
+    box-shadow: 0 1px 2px rgba(23, 21, 31, 0.04), 0 24px 48px -20px rgba(79, 43, 155, 0.28);
   }
   a[class*="rounded-btn"]:active,
   button[class*="rounded-btn"]:active {

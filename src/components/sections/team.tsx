@@ -73,7 +73,7 @@ export function TeamCard({ m, index = 0 }: { m: TeamMemberCard; index?: number }
       >
         <span aria-hidden className="absolute inset-x-0 top-0 h-[3px] bg-brand" />
         <Portrait m={m} />
-        <h3 className="mt-6 font-serif text-[1.65rem] font-normal leading-tight text-ink transition-colors group-hover:text-brand">{m.name}</h3>
+        <h3 className="mt-6 font-serif text-[1.65rem] font-semibold leading-tight text-ink transition-colors group-hover:text-brand">{m.name}</h3>
         <p className="mt-1.5 text-sm font-medium text-brand">{m.title}</p>
         {level && (
           <p className="mt-2 inline-flex items-center gap-2 text-xs text-muted">

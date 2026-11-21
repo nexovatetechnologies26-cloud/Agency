@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { listPublishedPosts } from "@/server/queries/other";
 import { safe } from "@/server/lib/safe";
 import { fmtDate } from "@/lib/format";
-import { SectionHeading } from "@/components/ui/section-heading";
+import { PageHero } from "@/components/ui/page-hero";
 import { EmptyState } from "@/components/ui/empty-state";
 
 export const metadata: Metadata = {
@@ -23,11 +23,12 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
     clsx("rounded-full border px-3.5 py-1.5 text-xs font-medium transition", on ? "border-brand bg-brand text-white" : "border-line bg-white hover:border-brand hover:text-brand");
 
   return (
-    <section className="section">
+    <>
+    <PageHero eyebrow="Insights" title={<>Ideas for building and <em>growing online.</em></>} description="Practical notes on web development, AI automation, SEO and digital growth." />
+    <section className="bg-paper py-16 lg:py-20">
       <div className="container">
-        <SectionHeading as="h1" eyebrow="Insights" title="Ideas for building and growing online" description="Practical notes on web development, AI automation, SEO and digital growth." />
         {categories.length > 1 && (
-          <div className="mt-8 flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2">
             <Link href="/blog" aria-current={!active ? "page" : undefined} className={pill(!active)}>All</Link>
             {categories.map((c) => (
               <Link key={c} href={`/blog?category=${encodeURIComponent(c)}`} aria-current={active === c ? "page" : undefined} className={pill(active === c)}>
@@ -36,7 +37,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
             ))}
           </div>
         )}
-        <div className="mt-12">
+        <div className={categories.length > 1 ? "mt-10" : ""}>
           {posts.length ? (
             <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {posts.map((p) => (
@@ -61,5 +62,6 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
         </div>
       </div>
     </section>
+    </>
   );
 }

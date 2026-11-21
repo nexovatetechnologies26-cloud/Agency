@@ -56,7 +56,7 @@ export default async function ServicePage({ params }: Props) {
 
   return (
     <>
-      <section className="section pb-12">
+      <section className="hero-wash border-b border-line pb-16 pt-10 lg:pb-24 lg:pt-14">
         <div className="container">
           <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-sm text-muted">
             <Link href="/" className="hover:text-brand">Home</Link>
@@ -71,7 +71,7 @@ export default async function ServicePage({ params }: Props) {
               <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-soft text-brand">
                 <ServiceIcon name={service.icon} className="h-6 w-6" />
               </span>
-              <h1 className="mt-6 text-4xl leading-tight md:text-5xl">{service.title}</h1>
+              <h1 className="serif-heading mt-6 text-[2.5rem] leading-[1.04] md:text-[3.75rem]">{service.title}</h1>
               <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted">{service.description}</p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <ButtonLink href={`/get-a-quote?service=${service.slug}`} size="lg">
@@ -83,7 +83,7 @@ export default async function ServicePage({ params }: Props) {
               </div>
             </div>
 
-            <div className="card p-8">
+            <div className="card p-8 shadow-lift">
               <h2 className="text-lg">What we offer</h2>
               <ul className="mt-5 space-y-3.5">
                 {service.offerings.map((o) => (
@@ -102,7 +102,7 @@ export default async function ServicePage({ params }: Props) {
 
       <Process />
 
-      <section className="section bg-paper">
+      <section className="section border-t border-line bg-paper">
         <div className="container">
           <h2 className="text-2xl">Related services</h2>
           <ul className="mt-8 grid gap-5 md:grid-cols-3">

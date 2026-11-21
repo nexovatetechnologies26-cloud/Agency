@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { faqs } from "@/content/faqs";
 import { Faq } from "@/components/sections/faq";
-import { SectionHeading } from "@/components/ui/section-heading";
+import { PageHero } from "@/components/ui/page-hero";
 import { Cta } from "@/components/sections/cta";
 
 export const metadata: Metadata = {
@@ -18,11 +18,7 @@ export default function FaqPage() {
   };
   return (
     <>
-      <section className="section pb-0">
-        <div className="container">
-          <SectionHeading as="h1" eyebrow="FAQ" title="Frequently asked questions" />
-        </div>
-      </section>
+      <PageHero eyebrow="FAQ" title={<>Frequently asked <em>questions.</em></>} description="How we work, pricing, timelines and support. Can't find your answer? Ask us directly." />
       <Faq heading={false} />
       <Cta />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
