@@ -138,7 +138,7 @@ export default async function TeamMemberPage({ params }: Props) {
     (l, i, all) => all.findIndex((x) => x.url === l.url) === i,
   );
   const hasContact = Boolean(m.email || m.whatsapp || links.length);
-  const hasSidebar = hasContact || expertise.length > 0 || languages.length > 0;
+  const hasSidebar = hasContact || expertise.length > 0;
   const hasMain = paragraphs.length > 0 || responsibilities.length > 0 || notable.length > 0;
 
   // stat cards — only what the admin actually entered
@@ -146,7 +146,7 @@ export default async function TeamMemberPage({ params }: Props) {
     m.yearsExperience != null ? { k: "Experience", v: `${m.yearsExperience}`, unit: m.yearsExperience === 1 ? "year" : "years" } : null,
     level ? { k: "Seniority", v: level } : null,
     m.location ? { k: "Based in", v: m.location } : null,
-    languages.length ? { k: "Languages", v: String(languages.length), unit: languages.length === 1 ? "language" : "languages" } : null,
+    languages.length ? { k: languages.length === 1 ? "Language" : "Languages", v: languages.join(", ") } : null,
   ].filter((f): f is { k: string; v: string; unit?: string } => Boolean(f));
 
   const jsonLd = {
@@ -204,7 +204,7 @@ export default async function TeamMemberPage({ params }: Props) {
                       <div key={f.k} className="relative overflow-hidden rounded-tile border border-line bg-surface px-5 pb-5 pt-6">
                         <span aria-hidden className="absolute inset-x-0 top-0 h-[3px] bg-brand" />
                         <dt className="label-plain">{f.k}</dt>
-                        <dd className="mt-3 font-serif text-[1.9rem] leading-none text-brand">
+                        <dd className={`mt-3 break-words font-serif leading-tight text-brand ${f.v.length > 14 ? "text-[1.15rem]" : f.v.length > 9 ? "text-[1.45rem]" : "text-[1.9rem] leading-none"}`}>
                           {f.v}
                           {f.unit && <span className="ml-1.5 font-sans text-sm text-muted">{f.unit}</span>}
                         </dd>
@@ -344,19 +344,6 @@ export default async function TeamMemberPage({ params }: Props) {
                     </Reveal>
                   )}
 
-                  {languages.length > 0 && (
-                    <Reveal>
-                      <Card label="Languages" title="Speaks">
-                        <ul>
-                          {languages.map((l) => (
-                            <li key={l} className="flex items-center justify-between border-t border-line py-3 text-[15px] first:border-t-0 first:pt-0 last:pb-0">
-                              <span className="font-serif text-xl text-ink">{l}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </Card>
-                    </Reveal>
-                  )}
                 </div>
               </aside>
             )}
