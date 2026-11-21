@@ -53,6 +53,44 @@
   .field:disabled {
     @apply cursor-not-allowed bg-paper text-muted;
   }
+  /* ---------- editorial homepage system ---------- */
+  .serif-heading {
+    @apply font-serif font-normal text-ink;
+  }
+  .serif-heading em {
+    @apply italic text-brand;
+  }
+  .label {
+    @apply text-label font-medium uppercase text-muted;
+  }
+  .section-xl {
+    @apply py-20 lg:py-35 xl:py-45;
+  }
+  /* text link whose underline slides in on hover */
+  .link-underline {
+    @apply relative inline-flex items-center gap-2 text-[15px] font-medium text-ink transition-colors hover:text-brand;
+  }
+  .link-underline::after {
+    content: "";
+    @apply absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-current transition-transform duration-300 ease-out-cubic;
+  }
+  .link-underline:hover::after,
+  .link-underline:focus-visible::after {
+    @apply scale-x-100;
+  }
+  /* fade-up once on scroll (components/ui/reveal.tsx) */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 600ms cubic-bezier(0.33, 1, 0.68, 1),
+      transform 600ms cubic-bezier(0.33, 1, 0.68, 1);
+  }
+  .reveal[data-shown="true"] {
+    opacity: 1;
+    transform: none;
+  }
+
   /* faint dotted grid used behind hero sections */
   .bg-dots {
     background-image: radial-gradient(rgba(117, 69, 217, 0.16) 1px, transparent 1px);
@@ -74,5 +112,9 @@
     animation: none !important;
     transition: none !important;
     scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

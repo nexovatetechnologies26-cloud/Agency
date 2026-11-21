@@ -3,13 +3,13 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
 import clsx from "clsx";
 import { mainNav } from "@/content/site";
 import { ACCOUNT_HINT_COOKIE } from "@/lib/constants";
 import { Logo } from "@/components/layout/logo";
 import { ButtonLink } from "@/components/ui/button";
 
+/** Reads the non-secret "signed in" hint so public pages can stay static. */
 function readAccountHint(): { href: string } | null {
   const m = document.cookie.match(new RegExp(`(?:^|; )${ACCOUNT_HINT_COOKIE}=([^;]*)`));
   if (!m) return null;
@@ -22,16 +22,18 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [account, setAccount] = useState<{ href: string } | null>(null);
 
-  // re-check on every navigation so sign-in / sign-out is reflected immediately
-  useEffect(() => setAccount(readAccountHint()), [pathname]);
+  useEffect(() => {
+    setOpen(false);
+    setAccount(readAccountHint());
+  }, [pathname]);
 
-  useEffect(() => setOpen(false), [pathname]);
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
@@ -39,73 +41,74 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
+  const isActive = (href: string) => pathname.startsWith(href);
+  const solid = scrolled || open;
 
   return (
     <header
       className={clsx(
-        "sticky top-0 z-50 border-b bg-white/85 backdrop-blur-md transition-[border-color,box-shadow]",
-        scrolled || open ? "border-line shadow-[0_6px_24px_-18px_rgba(23,21,31,0.35)]" : "border-transparent",
+        "sticky top-0 z-50 border-b transition-colors duration-300 ease-out-cubic",
+        solid ? "border-line bg-paper" : "border-transparent bg-transparent",
       )}
     >
-      <div className="container flex h-16 items-center justify-between md:h-[72px]">
+      <div className="container flex h-[72px] items-center justify-between md:h-20">
         <Logo />
 
-        <nav aria-label="Main" className="hidden items-center gap-7 lg:flex">
+        <nav aria-label="Main" className="hidden items-center gap-10 lg:flex">
           {mainNav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               aria-current={isActive(item.href) ? "page" : undefined}
-              className={clsx(
-                "text-sm font-medium transition-colors hover:text-brand",
-                isActive(item.href) ? "text-brand" : "text-ink/80",
-              )}
+              className={clsx("link-underline !text-[15px]", isActive(item.href) && "text-brand")}
             >
               {item.label}
             </Link>
           ))}
         </nav>
 
-        <div className="hidden items-center gap-5 lg:flex">
-          <Link href={account ? account.href : "/login"} className="text-sm font-medium text-ink/80 hover:text-brand">
-            {account ? "My Account" : "Log in"}
-          </Link>
-          <ButtonLink href="/get-a-quote">Get a Quote</ButtonLink>
+        <div className="hidden lg:block">
+          <ButtonLink href="/get-a-quote" size="lg">
+            Start a Project
+          </ButtonLink>
         </div>
 
         <button
           type="button"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line lg:hidden"
-          aria-label={open ? "Close menu" : "Open menu"}
+          className="text-[15px] font-medium text-ink lg:hidden"
           aria-expanded={open}
           aria-controls="mobile-nav"
           onClick={() => setOpen((v) => !v)}
         >
-          {open ? <X size={18} /> : <Menu size={18} />}
+          {open ? "Close" : "Menu"}
         </button>
       </div>
 
       {open && (
-        <nav id="mobile-nav" aria-label="Mobile" className="border-t border-line bg-white lg:hidden">
-          <div className="container flex flex-col py-4">
+        <nav id="mobile-nav" aria-label="Mobile" className="border-t border-line bg-paper lg:hidden">
+          <ul className="container py-6">
             {mainNav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                aria-current={isActive(item.href) ? "page" : undefined}
-                className={clsx("border-b border-line/60 py-3 text-base font-medium", isActive(item.href) ? "text-brand" : "text-ink")}
-              >
-                {item.label}
-              </Link>
+              <li key={item.href} className="border-b border-line">
+                <Link
+                  href={item.href}
+                  aria-current={isActive(item.href) ? "page" : undefined}
+                  className={clsx("block py-4 font-serif text-3xl", isActive(item.href) ? "text-brand" : "text-ink")}
+                >
+                  {item.label}
+                </Link>
+              </li>
             ))}
-            <Link href={account ? account.href : "/login"} className="py-3 text-base font-medium text-ink">
-              {account ? "My Account" : "Log in"}
-            </Link>
-            <ButtonLink href="/get-a-quote" className="mt-3">
-              Get a Quote
-            </ButtonLink>
-          </div>
+            <li className="border-b border-line">
+              <Link href={account ? account.href : "/login"} className="block py-4 font-serif text-3xl text-ink">
+                {account ? "My account" : "Client login"}
+              </Link>
+            </li>
+            <li className="pt-8">
+              <ButtonLink href="/get-a-quote" size="lg" className="w-full">
+                Start a Project
+              </ButtonLink>
+            </li>
+          </ul>
         </nav>
       )}
     </header>
