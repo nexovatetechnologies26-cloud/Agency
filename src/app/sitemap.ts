@@ -8,7 +8,7 @@ export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const pages = [
-    "", "/about", "/services", "/pricing", "/portfolio", "/case-studies", "/blog", "/faq",
+    "", "/about", "/team", "/services", "/pricing", "/portfolio", "/case-studies", "/blog", "/faq",
     "/contact", "/get-a-quote", "/book-consultation", "/privacy-policy", "/terms", "/refund-policy", "/cookie-policy",
   ];
   const [posts, projects] = await Promise.all([safe(() => listPublishedPosts(), [], "sitemap-posts"), safe(() => listProjects(), [], "sitemap-projects")]);

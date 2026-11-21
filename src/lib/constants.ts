@@ -114,3 +114,28 @@ export const SENIORITY_LABELS: Record<Seniority, string> = {
   mid: "Mid-level",
   associate: "Associate",
 };
+
+/** Suggestions shown in the admin seniority field — any other title can be typed. */
+export const SENIORITY_SUGGESTIONS = [
+  "Founder", "Co-founder", "CEO", "CTO", "COO", "Managing Director", "Director",
+  "Head of Design", "Head of Engineering", "Head of Marketing", "Lead", "Senior", "Mid-level", "Associate", "Junior",
+] as const;
+
+/** Display text for a stored seniority (older profiles stored keys like "lead"). */
+export function seniorityDisplay(value?: string | null): string | null {
+  if (!value) return null;
+  return SENIORITY_LABELS[value as Seniority] ?? value;
+}
+
+/** Sort weight: founders and C-level first, then directors / heads, leads, seniors, mid, juniors. */
+export function seniorityRank(value?: string | null): number {
+  const v = (seniorityDisplay(value) ?? "").toLowerCase();
+  if (!v) return 9;
+  if (/founder|\bceo\b|\bcto\b|\bcoo\b|\bcmo\b|\bcfo\b|chief|owner|president/.test(v)) return 0;
+  if (/director|head|partner|\bvp\b|vice/.test(v)) return 1;
+  if (/lead|principal|manager/.test(v)) return 2;
+  if (/senior/.test(v)) return 3;
+  if (/mid/.test(v)) return 4;
+  if (/associate|junior|intern|trainee/.test(v)) return 5;
+  return 6;
+}

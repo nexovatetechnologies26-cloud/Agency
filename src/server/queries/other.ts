@@ -3,9 +3,10 @@ import { isValidObjectId } from "mongoose";
 import { connectDB } from "@/server/db/mongodb";
 import { User } from "@/server/models/user.model";
 import { Ticket } from "@/server/models/support.model";
-import { PortfolioProject, Post, TeamMember, Testimonial } from "@/server/models/content.model";
+import { PortfolioProject, Post, Stat, TeamMember, Testimonial } from "@/server/models/content.model";
 import { hashToken } from "@/server/auth/tokens";
 import { plain } from "@/server/lib/plain";
+import { seniorityRank } from "@/lib/constants";
 
 // ---------- Account ----------
 export async function getCurrentUser(userId: string) {
@@ -127,9 +128,19 @@ export async function listTestimonials() {
 }
 
 // ---------- Team profiles ----------
+
+/** Published profiles, ordered by seniority (founder first), then the admin's sort order. */
 export async function listTeamMembers() {
   await connectDB();
-  return plain(await TeamMember.find({ published: true }).sort({ sort: 1, createdAt: 1 }).lean());
+  const rows = plain(await TeamMember.find({ published: true }).sort({ sort: 1, createdAt: 1 }).lean());
+  return rows.sort((a, b) => seniorityRank(a.seniority) - seniorityRank(b.seniority));
+}
+
+/** One published profile by its slug (or id, for profiles saved before slugs existed). */
+export async function getPublishedTeamMember(key: string) {
+  await connectDB();
+  const byId = isValidObjectId(key) ? { _id: key } : null;
+  return plain(await TeamMember.findOne({ published: true, $or: [{ slug: key }, ...(byId ? [byId] : [])] }).lean());
 }
 
 export async function listTeamMembersAdmin() {
@@ -141,4 +152,15 @@ export async function getTeamMemberAdmin(id: string) {
   if (!isValidObjectId(id)) return null;
   await connectDB();
   return plain(await TeamMember.findById(id).lean());
+}
+
+// ---------- Homepage figures ----------
+export async function listPublishedStats() {
+  await connectDB();
+  return plain(await Stat.find({ published: true }).sort({ sort: 1, createdAt: 1 }).limit(8).lean());
+}
+
+export async function listStatsAdmin() {
+  await connectDB();
+  return plain(await Stat.find().sort({ sort: 1, createdAt: 1 }).lean());
 }

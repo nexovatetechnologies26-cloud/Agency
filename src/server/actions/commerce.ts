@@ -72,6 +72,7 @@ export async function savePackageAction(_: FormState, fd: FormData): Promise<For
     await audit(s.email, "package_created", "package", String(created._id));
   }
   revalidatePath("/pricing");
+  revalidatePath("/services");
   revalidatePath("/");
   redirect("/admin/packages");
 }

@@ -5,8 +5,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { isValidObjectId } from "mongoose";
 import { connectDB } from "@/server/db/mongodb";
-import { PortfolioProject, Post, Subscriber, TeamMember, Testimonial } from "@/server/models/content.model";
-import { SENIORITY_LEVELS } from "@/lib/constants";
+import { PortfolioProject, Post, Stat, Subscriber, TeamMember, Testimonial } from "@/server/models/content.model";
 import { assertPermission } from "@/server/auth/session";
 import { fieldErrors, formObject, limitAction } from "@/server/lib/forms";
 import { audit } from "@/server/lib/audit";
@@ -210,23 +209,42 @@ const teamMemberSchema = z.object({
   id: optionalId,
   name: z.string().trim().min(2, "Enter a name").max(100),
   title: z.string().trim().min(2, "Enter a job title").max(120),
-  seniority: z.enum(SENIORITY_LEVELS),
+  seniority: z.string().trim().max(40, "Keep it under 40 characters").optional(),
   yearsExperience: z
     .string()
     .optional()
     .refine((v) => !v || (/^\d{1,2}$/.test(v) && Number(v) <= 60), "Enter years as a whole number"),
-  bio: z.string().trim().max(600).optional(),
+  bio: z.string().trim().max(2000).optional(),
+  quote: z.string().trim().max(300).optional(),
   expertise: z.string().max(500).optional(),
+  responsibilities: z.string().max(3000).optional(),
+  notableWork: z.string().max(3000).optional(),
+  languages: z.string().max(200).optional(),
   photo: url.optional().or(z.literal("")),
   linkedin: url.optional().or(z.literal("")),
+  links: z.string().max(4000).optional(),
+  email: z.string().trim().toLowerCase().email("Enter a valid email").max(200).optional().or(z.literal("")),
+  whatsapp: z
+    .string()
+    .trim()
+    .optional()
+    .refine((v) => !v || /^\+?[0-9][0-9\s\-()]{6,22}$/.test(v), "Enter the number in international format, e.g. +923001234567"),
   location: z.string().trim().max(80).optional(),
   published: z.string().optional(),
   sort: z.string().optional(),
 });
 
+/** "+92 300 123-4567" → "+923001234567" (wa.me needs digits; we keep the leading +). */
+function normalizePhone(v?: string) {
+  if (!v) return undefined;
+  const digits = v.replace(/[^0-9]/g, "");
+  return digits ? `+${digits}` : undefined;
+}
+
 function revalidateTeam() {
   revalidatePath("/");
   revalidatePath("/about");
+  revalidatePath("/team");
   revalidatePath("/admin/people");
 }
 
@@ -236,29 +254,62 @@ export async function saveTeamMemberAction(_: FormState, fd: FormData): Promise<
   if (!parsed.success) return fieldErrors(parsed.error);
   const d = parsed.data;
 
+  // profile links: one per line, "https://…" or "Label | https://…"
+  const links: { label?: string; url: string }[] = [];
+  for (const [i, line] of lines(d.links).slice(0, 15).entries()) {
+    const parts = line.split("|").map((x) => x.trim());
+    const linkUrl = parts.length > 1 ? parts.slice(1).join("|").trim() : parts[0];
+    const label = parts.length > 1 ? parts[0].slice(0, 40) : undefined;
+    if (!/^https?:\/\/\S+\.\S+/.test(linkUrl)) return { fields: { links: `Line ${i + 1}: enter a full link starting with https://` } };
+    links.push({ label: label || undefined, url: linkUrl.slice(0, 500) });
+  }
+
   const doc = {
     name: d.name,
     title: d.title,
-    seniority: d.seniority,
+    seniority: d.seniority || undefined,
     yearsExperience: d.yearsExperience ? Number(d.yearsExperience) : undefined,
     bio: d.bio || undefined,
-    expertise: (d.expertise ?? "").split(",").map((t) => t.trim()).filter(Boolean).slice(0, 8),
+    quote: d.quote || undefined,
+    expertise: (d.expertise ?? "").split(",").map((t) => t.trim()).filter(Boolean).slice(0, 12),
+    // one per line: "Title | description"
+    responsibilities: lines(d.responsibilities)
+      .slice(0, 6)
+      .map((l) => {
+        const [title, ...rest] = l.split("|");
+        return { title: title.trim().slice(0, 80), description: rest.join("|").trim().slice(0, 300) || undefined };
+      })
+      .filter((r) => r.title),
+    notableWork: lines(d.notableWork).slice(0, 8).map((l) => l.slice(0, 200)),
+    languages: (d.languages ?? "").split(",").map((t) => t.trim()).filter(Boolean).slice(0, 6),
     photo: d.photo || undefined,
     linkedin: d.linkedin || undefined,
+    links,
+    email: d.email || undefined,
+    whatsapp: normalizePhone(d.whatsapp),
     location: d.location || undefined,
     published: d.published === "on",
     sort: Number(d.sort) || 0,
   };
 
   await connectDB();
+  // unique, readable URL from the name: /team/ali-khan, /team/ali-khan-2 …
+  const base = slugify(d.name) || "member";
+  let slug = base;
+  for (let n = 2; await TeamMember.exists({ slug, ...(d.id ? { _id: { $ne: d.id } } : {}) }); n++) slug = `${base}-${n}`;
+
   if (d.id) {
-    const res = await TeamMember.updateOne({ _id: d.id }, { $set: doc, ...(doc.yearsExperience === undefined ? { $unset: { yearsExperience: 1 } } : {}) });
+    const res = await TeamMember.updateOne(
+      { _id: d.id },
+      { $set: { ...doc, slug }, ...(doc.yearsExperience === undefined ? { $unset: { yearsExperience: 1 } } : {}) },
+    );
     if (!res.matchedCount) return { error: "This profile no longer exists." };
   } else {
-    await TeamMember.create(doc);
+    await TeamMember.create({ ...doc, slug });
   }
   await audit(s.email, "team_profile_saved", "team_member", d.id, d.name);
   revalidateTeam();
+  revalidatePath(`/team/${slug}`);
   redirect("/admin/people");
 }
 
@@ -267,8 +318,68 @@ export async function deleteTeamMemberAction(fd: FormData) {
   const id = String(fd.get("id") ?? "");
   if (!isValidObjectId(id)) redirect("/admin/people");
   await connectDB();
-  await TeamMember.deleteOne({ _id: id });
+  const removed = await TeamMember.findByIdAndDelete(id).lean();
+  if (removed?.slug) revalidatePath(`/team/${removed.slug}`);
   await audit(s.email, "team_profile_deleted", "team_member", id);
   revalidateTeam();
   redirect("/admin/people");
+}
+
+// ======================= Homepage figures (Admin → Numbers) =======================
+
+const statSchema = z.object({
+  id: optionalId,
+  value: z.string().trim().min(1, "Enter a figure, e.g. 60+").max(12, "Keep it short, e.g. 60+"),
+  label: z.string().trim().min(2, "Enter a label").max(60),
+  note: z.string().trim().max(80).optional(),
+  sort: z.string().optional(),
+  published: z.string().optional(),
+});
+
+function revalidateStats() {
+  revalidatePath("/");
+  revalidatePath("/admin/stats");
+}
+
+export async function saveStatAction(_: FormState, fd: FormData): Promise<FormState> {
+  const s = await assertPermission("content");
+  const parsed = statSchema.safeParse(formObject(fd));
+  if (!parsed.success) return fieldErrors(parsed.error);
+  const d = parsed.data;
+  const doc = { value: d.value, label: d.label, note: d.note || undefined, sort: Number(d.sort) || 0, published: d.published === "on" };
+  await connectDB();
+  if (d.id) {
+    const res = await Stat.updateOne({ _id: d.id }, { $set: doc, ...(doc.note ? {} : { $unset: { note: 1 } }) });
+    if (!res.matchedCount) return { error: "This figure no longer exists." };
+  } else {
+    await Stat.create(doc);
+  }
+  await audit(s.email, "stat_saved", "stat", d.id, `${d.value} ${d.label}`);
+  revalidateStats();
+  return { ok: true, message: d.id ? "Saved." : "Added." };
+}
+
+export async function deleteStatAction(fd: FormData) {
+  const s = await assertPermission("content");
+  const id = String(fd.get("id") ?? "");
+  if (!isValidObjectId(id)) return;
+  await connectDB();
+  await Stat.deleteOne({ _id: id });
+  await audit(s.email, "stat_deleted", "stat", id);
+  revalidateStats();
+}
+
+/** Creates four HIDDEN example figures to edit — they never go live until published. */
+export async function addExampleStatsAction() {
+  const s = await assertPermission("content");
+  await connectDB();
+  if (await Stat.exists({})) return;
+  await Stat.insertMany([
+    { value: "50+", label: "Projects delivered", sort: 1, published: false },
+    { value: "20+", label: "Happy clients", sort: 2, published: false },
+    { value: "6", label: "Countries served", sort: 3, published: false },
+    { value: "24h", label: "Average response time", sort: 4, published: false },
+  ]);
+  await audit(s.email, "stat_examples_added", "stat");
+  revalidateStats();
 }

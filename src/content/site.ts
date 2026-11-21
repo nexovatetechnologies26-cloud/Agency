@@ -27,6 +27,7 @@ export const mainNav = [
   { label: "Pricing", href: "/pricing" },
   { label: "Portfolio", href: "/portfolio" },
   { label: "Blog", href: "/blog" },
+  { label: "Team", href: "/team" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ] as const;

@@ -1,6 +1,6 @@
 import "server-only";
-import { Schema, model, models, type InferSchemaType, type Model } from "mongoose";
-import { SENIORITY_LEVELS } from "@/lib/constants";
+import { Schema, type InferSchemaType, type Model } from "mongoose";
+import { defineModel } from "@/server/db/model";
 
 // ---------- Blog post ----------
 const postSchema = new Schema(
@@ -22,7 +22,7 @@ const postSchema = new Schema(
 );
 postSchema.index({ status: 1, publishedAt: -1 });
 export type PostDoc = InferSchemaType<typeof postSchema>;
-export const Post: Model<PostDoc> = (models.Post as Model<PostDoc>) || model("Post", postSchema);
+export const Post: Model<PostDoc> = defineModel<PostDoc>("Post", postSchema);
 
 // ---------- Portfolio project / case study ----------
 // Only publish client names and results you have permission for and can verify.
@@ -48,7 +48,7 @@ const projectSchema = new Schema(
 );
 export type ProjectDoc = InferSchemaType<typeof projectSchema>;
 export const PortfolioProject: Model<ProjectDoc> =
-  (models.PortfolioProject as Model<ProjectDoc>) || model("PortfolioProject", projectSchema);
+  defineModel<ProjectDoc>("PortfolioProject", projectSchema);
 
 // ---------- Testimonial (verified customers only) ----------
 const testimonialSchema = new Schema(
@@ -64,19 +64,33 @@ const testimonialSchema = new Schema(
 );
 export type TestimonialDoc = InferSchemaType<typeof testimonialSchema>;
 export const Testimonial: Model<TestimonialDoc> =
-  (models.Testimonial as Model<TestimonialDoc>) || model("Testimonial", testimonialSchema);
+  defineModel<TestimonialDoc>("Testimonial", testimonialSchema);
 
 // ---------- Public team profile (shown on the website, separate from login accounts) ----------
 const teamMemberSchema = new Schema(
   {
     name: { type: String, required: true, maxlength: 100 },
+    slug: { type: String, unique: true, sparse: true }, // public URL: /team/<slug>
     title: { type: String, required: true, maxlength: 120 }, // e.g. "Lead Full-Stack Engineer"
-    seniority: { type: String, enum: SENIORITY_LEVELS, default: "senior" },
+    seniority: { type: String, maxlength: 40 }, // free text, e.g. "Founder", "CEO", "Lead"
     yearsExperience: { type: Number, min: 0, max: 60 },
-    bio: { type: String, maxlength: 600 },
+    bio: { type: String, maxlength: 2000 },
+    quote: { type: String, maxlength: 300 }, // personal statement shown large on the profile
     expertise: { type: [String], default: [] },
+    responsibilities: {
+      type: [new Schema({ title: { type: String, required: true, maxlength: 80 }, description: { type: String, maxlength: 300 } }, { _id: false })],
+      default: [],
+    },
+    notableWork: { type: [String], default: [] },
+    languages: { type: [String], default: [] },
     photo: String, // full image URL
     linkedin: String,
+    links: {
+      type: [new Schema({ label: { type: String, maxlength: 40 }, url: { type: String, required: true, maxlength: 500 } }, { _id: false })],
+      default: [],
+    },
+    email: { type: String, lowercase: true, trim: true, maxlength: 200 }, // shown as an Email button on the profile
+    whatsapp: { type: String, maxlength: 20 }, // international format, e.g. +923001234567
     location: { type: String, maxlength: 80 },
     published: { type: Boolean, default: false, index: true },
     sort: { type: Number, default: 0 },
@@ -85,7 +99,21 @@ const teamMemberSchema = new Schema(
 );
 export type TeamMemberDoc = InferSchemaType<typeof teamMemberSchema>;
 export const TeamMember: Model<TeamMemberDoc> =
-  (models.TeamMember as Model<TeamMemberDoc>) || model("TeamMember", teamMemberSchema);
+  defineModel<TeamMemberDoc>("TeamMember", teamMemberSchema);
+
+// ---------- Homepage figures ("60+ projects delivered") — managed in Admin → Numbers ----------
+const statSchema = new Schema(
+  {
+    value: { type: String, required: true, maxlength: 12 }, // e.g. "60+", "24h", "6"
+    label: { type: String, required: true, maxlength: 60 }, // e.g. "Projects delivered"
+    note: { type: String, maxlength: 80 }, // optional small line, e.g. "since 2021"
+    published: { type: Boolean, default: false, index: true },
+    sort: { type: Number, default: 0 },
+  },
+  { timestamps: true },
+);
+export type StatDoc = InferSchemaType<typeof statSchema>;
+export const Stat: Model<StatDoc> = defineModel<StatDoc>("Stat", statSchema);
 
 // ---------- Newsletter subscriber ----------
 const subscriberSchema = new Schema(
@@ -98,7 +126,7 @@ const subscriberSchema = new Schema(
   { timestamps: true },
 );
 export const Subscriber: Model<InferSchemaType<typeof subscriberSchema>> =
-  (models.Subscriber as Model<InferSchemaType<typeof subscriberSchema>>) || model("Subscriber", subscriberSchema);
+  defineModel<InferSchemaType<typeof subscriberSchema>>("Subscriber", subscriberSchema);
 
 // ---------- Audit log ----------
 const auditSchema = new Schema(
@@ -113,4 +141,4 @@ const auditSchema = new Schema(
 );
 auditSchema.index({ createdAt: -1 });
 export const AuditLog: Model<InferSchemaType<typeof auditSchema>> =
-  (models.AuditLog as Model<InferSchemaType<typeof auditSchema>>) || model("AuditLog", auditSchema);
+  defineModel<InferSchemaType<typeof auditSchema>>("AuditLog", auditSchema);

@@ -1,30 +1,35 @@
-import { SENIORITY_LABELS, type Seniority } from "@/lib/constants";
+import Link from "next/link";
+import { seniorityDisplay } from "@/lib/constants";
 import { Reveal } from "@/components/ui/reveal";
 
 // Admin-managed public team profiles (Admin → Team Profiles).
-// Leadership (founder / director) is presented larger, with bios.
+// Cards are ordered by seniority and each one opens the member's own page.
 
 export type TeamMemberCard = {
   _id: string;
+  slug?: string | null;
   name: string;
   title: string;
   seniority?: string | null;
   yearsExperience?: number | null;
   bio?: string | null;
+  quote?: string | null;
   expertise?: string[];
+  responsibilities?: { title: string; description?: string | null }[];
+  notableWork?: string[];
+  languages?: string[];
   photo?: string | null;
   linkedin?: string | null;
+  links?: { label?: string | null; url: string }[];
+  email?: string | null;
+  whatsapp?: string | null;
   location?: string | null;
 };
 
-const LEADERSHIP = new Set(["founder", "director"]);
+export const memberHref = (m: { slug?: string | null; _id: string }) => `/team/${m.slug || m._id}`;
+export const seniorityLabel = (s?: string | null) => seniorityDisplay(s);
 
-function meta(m: TeamMemberCard) {
-  const level = m.seniority ? SENIORITY_LABELS[m.seniority as Seniority] : null;
-  return [level, m.yearsExperience != null ? `${m.yearsExperience} yrs experience` : null, m.location].filter(Boolean).join(" · ");
-}
-
-function initials(name: string) {
+export function initials(name: string) {
   return name
     .split(/\s+/)
     .filter(Boolean)
@@ -33,87 +38,88 @@ function initials(name: string) {
     .join("");
 }
 
-function Portrait({ m, large }: { m: TeamMemberCard; large?: boolean }) {
+/** Circular avatar with a thin ring; initials when no photo is set. */
+export function Portrait({ m, size = "md", eager = false }: { m: TeamMemberCard; size?: "md" | "lg"; eager?: boolean }) {
+  const box = size === "lg" ? "h-56 w-56 md:h-64 md:w-64" : "h-28 w-28";
   return (
-    <div className="group/portrait aspect-[4/5] overflow-hidden rounded-tile bg-line">
+    <div
+      className={`relative mx-auto shrink-0 overflow-hidden rounded-full bg-brand-soft ring-2 ring-brand/70 ring-offset-4 ring-offset-white transition-[box-shadow] duration-300 group-hover:ring-brand ${box}`}
+    >
       {m.photo ? (
         // eslint-disable-next-line @next/next/no-img-element -- admin-provided portrait URL
         <img
           src={m.photo}
           alt={`Portrait of ${m.name}`}
-          loading="lazy"
-          className="h-full w-full object-cover grayscale-[35%] transition duration-700 ease-out-cubic group-hover/portrait:scale-[1.02] group-hover/portrait:grayscale-0"
+          loading={eager ? "eager" : "lazy"}
+          className="absolute inset-0 h-full w-full object-cover object-top"
         />
       ) : (
-        <div className="flex h-full items-end p-6">
-          <span aria-hidden className={`font-serif leading-none text-ink/20 ${large ? "text-[7rem]" : "text-[5rem]"}`}>
-            {initials(m.name)}
-          </span>
-        </div>
+        <span aria-hidden className={`flex h-full w-full items-center justify-center font-serif text-brand ${size === "lg" ? "text-7xl" : "text-4xl"}`}>
+          {initials(m.name)}
+        </span>
       )}
     </div>
   );
 }
 
-function Person({ m, large, index }: { m: TeamMemberCard; large?: boolean; index: number }) {
+export function TeamCard({ m, index = 0 }: { m: TeamMemberCard; index?: number }) {
+  const level = seniorityLabel(m.seniority);
   return (
-    <Reveal as="li" index={index}>
-      <article>
-        <Portrait m={m} large={large} />
-        <div className="mt-6">
-          <h3 className={`font-serif font-normal leading-tight text-ink ${large ? "text-[2.25rem]" : "text-[1.75rem]"}`}>{m.name}</h3>
-          <p className="mt-1 text-[15px] text-ink/80">{m.title}</p>
-          {meta(m) && <p className="label mt-3">{meta(m)}</p>}
-          {m.bio && <p className={`mt-4 text-body text-muted ${large ? "max-w-measure" : "line-clamp-3"}`}>{m.bio}</p>}
-          {m.expertise && m.expertise.length > 0 && <p className="mt-4 text-sm text-ink/70">{m.expertise.join(" / ")}</p>}
-          {m.linkedin && (
-            <a href={m.linkedin} target="_blank" rel="noopener noreferrer" className="link-underline mt-5 !text-sm">
-              LinkedIn <span aria-hidden>→</span>
-              <span className="sr-only"> profile of {m.name}</span>
-            </a>
-          )}
-        </div>
-      </article>
+    <Reveal as="li" index={index % 3} className="h-full">
+      <Link
+        href={memberHref(m)}
+        className="group relative flex h-full flex-col items-center overflow-hidden rounded-tile border border-line bg-white px-6 pb-7 pt-10 text-center transition duration-300 ease-out-cubic hover:-translate-y-1.5 hover:border-brand/50"
+        aria-label={`${m.name}, ${m.title} — view profile`}
+      >
+        <span aria-hidden className="absolute inset-x-0 top-0 h-[3px] bg-brand" />
+        <Portrait m={m} />
+        <h3 className="mt-6 font-serif text-[1.65rem] font-normal leading-tight text-ink transition-colors group-hover:text-brand">{m.name}</h3>
+        <p className="mt-1.5 text-sm font-medium text-brand">{m.title}</p>
+        {level && (
+          <p className="mt-2 inline-flex items-center gap-2 text-xs text-muted">
+            <span aria-hidden className="h-1.5 w-1.5 rotate-45 bg-brand" />
+            {level}
+            {m.yearsExperience != null && ` · ${m.yearsExperience} yrs experience`}
+          </p>
+        )}
+        <span className="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-medium text-brand transition-colors group-hover:text-brand-deep">
+          View profile <span aria-hidden className="transition-transform duration-300 ease-out-cubic group-hover:translate-x-1">→</span>
+        </span>
+      </Link>
     </Reveal>
   );
 }
 
-export function TeamSection({ members, headingLevel = "h2" }: { members: TeamMemberCard[]; headingLevel?: "h1" | "h2" }) {
-  if (!members.length) return null;
-  const leaders = members.filter((m) => LEADERSHIP.has(m.seniority ?? ""));
-  const others = members.filter((m) => !LEADERSHIP.has(m.seniority ?? ""));
-  const Heading = headingLevel;
-
+export function TeamGrid({ members }: { members: TeamMemberCard[] }) {
   return (
-    <section className="border-t border-line bg-paper py-20 lg:py-35" aria-labelledby="team-title">
+    <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {members.map((m, i) => (
+        <TeamCard key={m._id} m={m} index={i} />
+      ))}
+    </ul>
+  );
+}
+
+/** Team preview for the homepage and About page. Hidden until a profile is published. */
+export function TeamSection({ members, limit = 6 }: { members: TeamMemberCard[]; limit?: number }) {
+  if (!members.length) return null;
+  return (
+    <section className="border-t border-line bg-paper py-16 lg:py-24" aria-labelledby="team-title">
       <div className="container">
-        <div className="grid gap-8 lg:grid-cols-12">
-          <Reveal className="lg:col-span-5">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
             <p className="label">Team</p>
-            <Heading id="team-title" className="serif-heading mt-6 text-section">
+            <h2 id="team-title" className="serif-heading mt-3 text-[2rem] leading-tight md:text-[2.5rem]">
               The people behind the <em>work</em>
-            </Heading>
-          </Reveal>
-          <Reveal index={1} as="p" className="max-w-measure self-end text-body text-muted lg:col-span-5 lg:col-start-8">
-            A small senior team that stays with your project from the first call to launch and beyond. You&apos;ll always know who is doing the work.
-          </Reveal>
+            </h2>
+          </div>
+          <Link href="/team" className="link-underline !text-sm">
+            Meet the full team <span aria-hidden>→</span>
+          </Link>
         </div>
-
-        {leaders.length > 0 && (
-          <ul className="mt-16 grid gap-x-8 gap-y-16 md:grid-cols-2 lg:mt-24">
-            {leaders.map((m, i) => (
-              <Person key={m._id} m={m} large index={i} />
-            ))}
-          </ul>
-        )}
-
-        {others.length > 0 && (
-          <ul className={`grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3 ${leaders.length ? "mt-20 border-t border-line pt-16 lg:mt-28" : "mt-16 lg:mt-24"}`}>
-            {others.map((m, i) => (
-              <Person key={m._id} m={m} index={i} />
-            ))}
-          </ul>
-        )}
+        <div className="mt-10">
+          <TeamGrid members={members.slice(0, limit)} />
+        </div>
       </div>
     </section>
   );

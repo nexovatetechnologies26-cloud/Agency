@@ -34,8 +34,10 @@
   .eyebrow {
     @apply text-xs font-semibold uppercase tracking-[0.18em] text-brand;
   }
+  /* one card design across the site — same as the team profile cards:
+     white surface, 1px border, 3px brand rule on top, 8px radius, no shadow */
   .card {
-    @apply rounded-2xl border border-line bg-white shadow-card;
+    @apply rounded-tile border border-line border-t-[3px] border-t-brand bg-white;
   }
   .field-label {
     @apply mb-1.5 block text-sm font-medium text-ink;

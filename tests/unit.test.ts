@@ -96,3 +96,22 @@ test("password hashing", async () => {
   assert.ok(!(await verifyPassword("wrong", hash)));
   assert.ok(!(await verifyPassword("x", "garbage")));
 });
+
+// ---- display currency conversion ----
+import { convertToMajor, currencyForCountry, priceParts, roundForDisplay } from "../src/lib/currency";
+
+test("currency conversion via USD rates", () => {
+  const rates = { USD: 1, PKR: 280, INR: 84, GBP: 0.8 };
+  // PKR 14,000.00 → USD 50 → INR 4,200
+  assert.equal(convertToMajor(1_400_000, "PKR", "INR", rates), 4200);
+  assert.equal(convertToMajor(5_000, "USD", "GBP", rates), 40);
+  assert.equal(convertToMajor(5_000, "USD", "USD", null), 50); // same currency needs no rates
+  assert.equal(convertToMajor(5_000, "USD", "XYZ", rates), null); // unknown rate → keep original
+  assert.equal(currencyForCountry("pk"), "PKR");
+  assert.equal(currencyForCountry("DE"), "EUR");
+  assert.equal(currencyForCountry("ZZ"), null);
+  assert.equal(roundForDisplay(4217.6), 4220);
+  assert.equal(roundForDisplay(48.4), 48);
+  assert.deepEqual(priceParts(149_900, "usd"), { code: "USD", amount: "1,499" });
+  assert.deepEqual(priceParts(1_050, "USD"), { code: "USD", amount: "10.50" });
+});

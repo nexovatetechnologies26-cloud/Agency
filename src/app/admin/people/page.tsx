@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { requireStaffPage } from "@/server/auth/session";
 import { listTeamMembersAdmin } from "@/server/queries/other";
-import { SENIORITY_LABELS, type Seniority } from "@/lib/constants";
+import { seniorityDisplay } from "@/lib/constants";
 import { PageHeader } from "@/components/layout/app-shell";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -33,7 +33,7 @@ export default async function AdminPeople() {
                 <div>
                   <Link href={`/admin/people/${m._id}`} className="font-semibold text-brand">{m.name}</Link>
                   <p className="text-xs text-muted">
-                    {m.title} · {SENIORITY_LABELS[m.seniority as Seniority] ?? m.seniority}
+                    {m.title}{m.seniority ? ` · ${seniorityDisplay(m.seniority)}` : ""}
                     {m.yearsExperience != null ? ` · ${m.yearsExperience} yrs` : ""}
                   </p>
                 </div>

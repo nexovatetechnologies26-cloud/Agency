@@ -19,6 +19,7 @@ const NAV: { label: string; href: string; perm: Permission; exact?: boolean }[] 
   { label: "Portfolio", href: "/admin/portfolio", perm: "content" },
   { label: "Testimonials", href: "/admin/testimonials", perm: "content" },
   { label: "Team Profiles", href: "/admin/people", perm: "content" },
+  { label: "Numbers", href: "/admin/stats", perm: "content" },
   { label: "Team & Roles", href: "/admin/team", perm: "team" },
   { label: "Audit Log", href: "/admin/audit", perm: "team" },
 ];

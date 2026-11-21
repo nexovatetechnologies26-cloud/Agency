@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
+import { UserRound } from "lucide-react";
 import { mainNav } from "@/content/site";
 import { ACCOUNT_HINT_COOKIE } from "@/lib/constants";
 import { Logo } from "@/components/layout/logo";
 import { ButtonLink } from "@/components/ui/button";
+import { CurrencySwitcher } from "@/components/currency/price";
 
 /** Reads the non-secret "signed in" hint so public pages can stay static. */
 function readAccountHint(): { href: string } | null {
@@ -51,29 +53,42 @@ export function Header() {
         solid ? "border-line bg-paper" : "border-transparent bg-transparent",
       )}
     >
-      <div className="container flex h-[72px] items-center justify-between md:h-20">
+      <div className="container flex h-16 items-center justify-between gap-8 md:h-[68px]">
         <Logo />
 
-        <nav aria-label="Main" className="hidden items-center gap-8 lg:flex">
+        <div className="ml-auto hidden items-center gap-7 lg:flex xl:gap-9">
+        <nav aria-label="Main" className="flex items-center gap-6 xl:gap-7">
           {mainNav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               aria-current={isActive(item.href) ? "page" : undefined}
-              className={clsx("link-underline !text-[15px]", isActive(item.href) && "text-brand")}
+              className={clsx("link-underline !text-[14px]", isActive(item.href) && "text-brand")}
             >
               {item.label}
             </Link>
           ))}
         </nav>
 
-        <div className="hidden items-center gap-8 lg:flex">
-          <Link href={account ? account.href : "/login"} className="link-underline !text-[15px]">
-            {account ? "My Account" : "Log in"}
+        <div className="flex items-center gap-4">
+          <span aria-hidden className="h-4 w-px bg-line" />
+          <CurrencySwitcher className="!text-[14px]" />
+          <Link
+            href={account ? account.href : "/login"}
+            aria-label={account ? "My account" : "Log in"}
+            title={account ? "My account" : "Log in"}
+            className={clsx(
+              "relative flex h-9 w-9 items-center justify-center rounded-full border transition-colors duration-200",
+              account ? "border-brand/30 bg-brand-soft text-brand hover:border-brand" : "border-line text-ink/70 hover:border-ink hover:text-ink",
+            )}
+          >
+            <UserRound size={17} strokeWidth={1.75} aria-hidden />
+            {account && <span aria-hidden className="absolute right-0.5 top-0.5 h-2.5 w-2.5 rounded-full border-2 border-paper bg-brand" />}
           </Link>
-          <ButtonLink href="/get-a-quote" size="lg">
+          <ButtonLink href="/get-a-quote" size="md" className="h-9 px-4 !text-[13px]">
             Start a Project
           </ButtonLink>
+        </div>
         </div>
 
         <button
@@ -105,6 +120,10 @@ export function Header() {
               <Link href={account ? account.href : "/login"} className="block py-4 font-serif text-3xl text-ink">
                 {account ? "My Account" : "Log in"}
               </Link>
+            </li>
+            <li className="flex items-center justify-between border-b border-line py-4">
+              <span className="text-[15px] text-muted">Currency</span>
+              <CurrencySwitcher />
             </li>
             <li className="pt-8">
               <ButtonLink href="/get-a-quote" size="lg" className="w-full">
