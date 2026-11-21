@@ -32,6 +32,7 @@ export function PricingCard({ p }: { p: PackageCard }) {
 
   return (
     <article
+      data-card
       className={clsx(
         "group relative flex h-full flex-col overflow-hidden rounded-tile bg-white transition duration-300 ease-out-cubic hover:-translate-y-1",
         featured ? "border-2 border-brand lg:-my-3" : "border border-line border-t-[3px] border-t-brand hover:border-brand/40 hover:border-t-brand",

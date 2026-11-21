@@ -3,6 +3,7 @@ import { ExternalLink, LogOut } from "lucide-react";
 import { logoutAction } from "@/server/actions/auth";
 import { Logo } from "@/components/layout/logo";
 import { NavLink } from "@/components/layout/nav-link";
+import { SiteMotion } from "@/components/ui/site-motion";
 
 export type ShellNavItem = { label: string; href: string; exact?: boolean };
 
@@ -71,6 +72,7 @@ export function AppShell({
             ))}
           </nav>
         </aside>
+        <SiteMotion />
         <main id="main" className="min-w-0 flex-1 px-5 py-8 lg:px-10 print:p-0">
           <div className="mx-auto max-w-6xl">{children}</div>
         </main>

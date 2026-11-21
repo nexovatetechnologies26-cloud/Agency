@@ -15,6 +15,7 @@ export function ServicesGrid({ limit, fromPrices = {} }: { limit?: number; fromP
         return (
           <li key={s.slug}>
             <Link
+              data-card
               href={`/services/${s.slug}`}
               className="group flex h-full flex-col rounded-tile border border-line border-t-[3px] border-t-brand bg-white transition duration-300 ease-out-cubic hover:-translate-y-1 hover:border-brand/40 hover:border-t-brand"
             >

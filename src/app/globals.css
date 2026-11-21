@@ -80,6 +80,52 @@
   .link-underline:focus-visible::after {
     @apply scale-x-100;
   }
+  /* page enter (app/(site)/template.tsx) */
+  .animate-page-in {
+    animation: page-in 450ms cubic-bezier(0.33, 1, 0.68, 1) both;
+  }
+  @keyframes page-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* scroll reveal in both directions (components/ui/site-motion.tsx) */
+  main [data-reveal="shown"],
+  main [data-reveal="above"],
+  main [data-reveal="below"] {
+    transition:
+      opacity 700ms cubic-bezier(0.33, 1, 0.68, 1),
+      transform 700ms cubic-bezier(0.33, 1, 0.68, 1);
+  }
+  main [data-reveal="below"] {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  main [data-reveal="above"] {
+    opacity: 0;
+    transform: translateY(-28px);
+  }
+
+  /* clickable cards lift slightly; buttons give a small press */
+  a.card {
+    transition:
+      transform 300ms cubic-bezier(0.33, 1, 0.68, 1),
+      border-color 300ms;
+  }
+  a.card:hover {
+    transform: translateY(-3px);
+  }
+  a[class*="rounded-btn"]:active,
+  button[class*="rounded-btn"]:active {
+    transform: scale(0.98);
+  }
+
   /* fade-up once on scroll (components/ui/reveal.tsx) */
   .reveal {
     opacity: 0;
@@ -92,12 +138,20 @@
     opacity: 1;
     transform: none;
   }
+  .reveal[data-from="above"]:not([data-shown="true"]) {
+    transform: translateY(-24px);
+  }
 
 }
 
 @media print {
   body {
     background: #fff;
+  }
+  .reveal,
+  main [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 
@@ -107,7 +161,8 @@
     transition: none !important;
     scroll-behavior: auto !important;
   }
-  .reveal {
+  .reveal,
+  main [data-reveal] {
     opacity: 1 !important;
     transform: none !important;
   }

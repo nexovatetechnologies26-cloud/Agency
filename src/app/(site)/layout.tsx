@@ -4,6 +4,7 @@ import { ChatWidget } from "@/components/ai/chat-widget";
 import { config } from "@/server/config";
 import { getRates } from "@/server/lib/fx";
 import { CurrencyProvider } from "@/components/currency/currency-provider";
+import { SiteMotion } from "@/components/ui/site-motion";
 
 // No cookies are read here, so public pages are rendered once and served from cache.
 // The header detects a signed-in visitor in the browser (see ACCOUNT_HINT_COOKIE).
@@ -22,6 +23,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       <main id="main">{children}</main>
       <Footer />
       {config.ai.enabled && <ChatWidget />}
+      <SiteMotion />
     </CurrencyProvider>
   );
 }

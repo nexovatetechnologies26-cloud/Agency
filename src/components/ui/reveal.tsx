@@ -27,14 +27,17 @@ export function Reveal({
       el.dataset.shown = "true";
       return;
     }
+    // animates every time it enters — scrolling down or back up
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           el.dataset.shown = "true";
-          io.disconnect();
+        } else {
+          el.dataset.shown = "false";
+          el.dataset.from = entry.boundingClientRect.top < 0 ? "above" : "below";
         }
       },
-      { rootMargin: "0px 0px -10% 0px" },
+      { rootMargin: "0px 0px -6% 0px" },
     );
     io.observe(el);
     return () => io.disconnect();

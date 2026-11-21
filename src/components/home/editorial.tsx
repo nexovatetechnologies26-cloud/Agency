@@ -2,6 +2,7 @@ import Link from "next/link";
 import { publishedServices } from "@/content/services";
 import { ButtonLink } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
+import { CountUp } from "@/components/ui/count-up";
 
 // Homepage sections — compact and calm: short copy, consistent headings,
 // and no invented data.
@@ -64,7 +65,9 @@ export function HomeNumbers({ stats }: { stats: HomeStat[] }) {
         <ul className={`grid grid-cols-2 gap-4 ${cols}`}>
           {stats.map((st, i) => (
             <Reveal as="li" key={st._id} index={i} className="card px-6 py-7">
-              <p className="font-serif text-[2.75rem] leading-none tracking-[-0.02em] text-brand md:text-[3.5rem]">{st.value}</p>
+              <p className="font-serif text-[2.75rem] leading-none tracking-[-0.02em] text-brand md:text-[3.5rem]">
+                <CountUp value={st.value} />
+              </p>
               <p className="mt-3 text-[15px] font-medium text-ink">{st.label}</p>
               {st.note && <p className="mt-1 text-xs text-muted">{st.note}</p>}
             </Reveal>
