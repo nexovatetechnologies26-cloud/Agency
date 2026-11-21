@@ -11,7 +11,7 @@ export async function adminOverview() {
   await connectDB();
   const since30 = new Date(Date.now() - 30 * 86400000);
 
-  const [newLeads, leads30, qualified, activeCustomers, activeOrders, inProgress, completed, pendingProposals, openTickets, upcomingBookings, revenue, outstanding, byCountry, bySource] =
+  const [newLeads, leads30, qualified, activeCustomers, activeOrders, inProgress, completed, pendingProposals, openTickets, upcomingBookings, revenue, outstanding, byCountry, bySource, won, lost, accepted, decided, customers] =
     await Promise.all([
       Lead.countDocuments({ status: "new" }),
       Lead.countDocuments({ createdAt: { $gte: since30 } }),
@@ -44,14 +44,12 @@ export async function adminOverview() {
         { $sort: { count: -1 } },
         { $limit: 8 },
       ]),
+      Lead.countDocuments({ status: "won" }),
+      Lead.countDocuments({ status: "lost" }),
+      Proposal.countDocuments({ status: "accepted" }),
+      Proposal.countDocuments({ status: { $in: ["accepted", "declined"] } }),
+      User.countDocuments({ role: "customer" }),
     ]);
-
-  const won = await Lead.countDocuments({ status: "won" });
-  const lost = await Lead.countDocuments({ status: "lost" });
-  const [accepted, decided] = await Promise.all([
-    Proposal.countDocuments({ status: "accepted" }),
-    Proposal.countDocuments({ status: { $in: ["accepted", "declined"] } }),
-  ]);
 
   return {
     newLeads,
@@ -70,18 +68,18 @@ export async function adminOverview() {
     bySource,
     winRate: won + lost ? Math.round((won / (won + lost)) * 100) : null,
     proposalAcceptance: decided ? Math.round((accepted / decided) * 100) : null,
-    customers: await User.countDocuments({ role: "customer" }),
+    customers,
   };
 }
 
 export async function customerOverview(userId: string, email: string) {
   await connectDB();
-  const [activeOrders, unpaidInvoices, openTickets, openProposals] = await Promise.all([
+  const [activeOrders, unpaidInvoices, openTickets, openProposals, awaitingRequirements] = await Promise.all([
     Order.countDocuments({ customer: userId, status: { $nin: ["completed", "cancelled", "refunded"] } }),
     Invoice.countDocuments({ customer: userId, status: { $in: ["unpaid", "partially_paid"] } }),
     Ticket.countDocuments({ customer: userId, status: { $in: ["open", "awaiting_customer"] } }),
     Proposal.countDocuments({ clientEmail: email, status: { $in: ["sent", "viewed"] } }),
+    Order.countDocuments({ customer: userId, status: "awaiting_requirements" }),
   ]);
-  const awaitingRequirements = await Order.countDocuments({ customer: userId, status: "awaiting_requirements" });
   return { activeOrders, unpaidInvoices, openTickets, openProposals, awaitingRequirements };
 }

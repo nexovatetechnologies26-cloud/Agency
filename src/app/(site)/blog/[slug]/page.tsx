@@ -8,6 +8,9 @@ import { fmtDate } from "@/lib/format";
 import { RichText } from "@/components/ui/rich-text";
 import { Cta } from "@/components/sections/cta";
 
+// Cached and refreshed every 5 minutes (admin edits refresh it immediately).
+export const revalidate = 300;
+
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

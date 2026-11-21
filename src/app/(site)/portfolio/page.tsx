@@ -6,6 +6,9 @@ import { ProjectCard } from "@/components/sections/project-card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Cta } from "@/components/sections/cta";
 
+// Cached and refreshed every 5 minutes (admin edits refresh it immediately).
+export const revalidate = 300;
+
 export const metadata: Metadata = {
   title: "Portfolio",
   description: "Selected work by Nexovate.",

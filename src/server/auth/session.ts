@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { isValidObjectId } from "mongoose";
 import { can, isRole, isStaff, type Permission } from "@/lib/permissions";
+import { ACCOUNT_HINT_COOKIE } from "@/lib/constants";
 import { connectDB } from "@/server/db/mongodb";
 import { User } from "@/server/models/user.model";
 import { SESSION_COOKIE, SESSION_MAX_AGE, signSession, verifySession, type Session } from "@/server/auth/jwt";
@@ -19,10 +20,19 @@ export async function startSession(s: Session) {
     path: "/",
     maxAge: SESSION_MAX_AGE,
   });
+  jar.set(ACCOUNT_HINT_COOKIE, isStaff(s.role) ? "staff" : "customer", {
+    httpOnly: false,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: SESSION_MAX_AGE,
+  });
 }
 
 export async function endSession() {
-  (await cookies()).delete(SESSION_COOKIE);
+  const jar = await cookies();
+  jar.delete(SESSION_COOKIE);
+  jar.delete(ACCOUNT_HINT_COOKIE);
 }
 
 /**

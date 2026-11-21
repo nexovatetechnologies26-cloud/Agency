@@ -1,13 +1,11 @@
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { ChatWidget } from "@/components/ai/chat-widget";
-import { getSession } from "@/server/auth/session";
 import { config } from "@/server/config";
-import { isStaff } from "@/lib/permissions";
 
-export default async function SiteLayout({ children }: { children: React.ReactNode }) {
-  const session = await getSession();
-  const account = session ? { name: session.name, href: isStaff(session.role) ? "/admin" : "/dashboard" } : null;
+// No cookies are read here, so public pages are rendered once and served from cache.
+// The header detects a signed-in visitor in the browser (see ACCOUNT_HINT_COOKIE).
+export default function SiteLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <>
@@ -17,7 +15,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       >
         Skip to content
       </a>
-      <Header account={account} />
+      <Header />
       <main id="main">{children}</main>
       <Footer />
       {config.ai.enabled && <ChatWidget />}

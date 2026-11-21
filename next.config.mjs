@@ -7,6 +7,8 @@ const securityHeaders = [
 ];
 
 const nextConfig = {
+  // optional separate build folder, e.g. to build while `npm run dev` is running
+  distDir: process.env.NEXT_DIST_DIR || ".next",
   reactStrictMode: true,
   poweredByHeader: false,
   // mongoose must stay on the Node.js server runtime, never bundled for the client

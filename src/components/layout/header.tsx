@@ -6,13 +6,24 @@ import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import clsx from "clsx";
 import { mainNav } from "@/content/site";
+import { ACCOUNT_HINT_COOKIE } from "@/lib/constants";
 import { Logo } from "@/components/layout/logo";
 import { ButtonLink } from "@/components/ui/button";
 
-export function Header({ account }: { account?: { name: string; href: string } | null }) {
+function readAccountHint(): { href: string } | null {
+  const m = document.cookie.match(new RegExp(`(?:^|; )${ACCOUNT_HINT_COOKIE}=([^;]*)`));
+  if (!m) return null;
+  return { href: m[1] === "staff" ? "/admin" : "/dashboard" };
+}
+
+export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [account, setAccount] = useState<{ href: string } | null>(null);
+
+  // re-check on every navigation so sign-in / sign-out is reflected immediately
+  useEffect(() => setAccount(readAccountHint()), [pathname]);
 
   useEffect(() => setOpen(false), [pathname]);
   useEffect(() => {

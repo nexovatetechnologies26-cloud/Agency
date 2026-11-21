@@ -23,7 +23,7 @@ export async function connectDB(): Promise<typeof mongoose> {
       dbName: process.env.MONGODB_DB || "nexovate",
       bufferCommands: false,
       maxPoolSize: 10,
-      serverSelectionTimeoutMS: 10_000,
+      serverSelectionTimeoutMS: 5_000, // fail fast if Atlas is unreachable
     });
   }
 

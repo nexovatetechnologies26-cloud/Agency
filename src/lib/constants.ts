@@ -1,5 +1,12 @@
 // Shared constants used by both client and server code. No imports — safe everywhere.
 
+/**
+ * Non-secret UI hint ("customer" | "staff") set next to the real session cookie.
+ * It only decides whether the public header shows "My Account" — it grants no access.
+ * This lets public pages be cached/static instead of reading cookies on the server.
+ */
+export const ACCOUNT_HINT_COOKIE = "nx_account";
+
 export const LEAD_STATUSES = [
   "new",
   "contacted",

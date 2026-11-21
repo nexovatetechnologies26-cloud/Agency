@@ -14,6 +14,9 @@ import { safe } from "@/server/lib/safe";
 import { formatMoney } from "@/lib/money";
 import { services } from "@/content/services";
 
+// Cached and refreshed every 5 minutes (admin edits refresh it immediately).
+export const revalidate = 300;
+
 export default async function HomePage() {
   // Sections backed by data only appear when real content exists.
   const [projects, testimonials, packages] = await Promise.all([

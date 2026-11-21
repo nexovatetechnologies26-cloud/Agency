@@ -6,6 +6,9 @@ import { PackagesList } from "@/components/sections/packages-list";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Cta } from "@/components/sections/cta";
 
+// Cached and refreshed every 5 minutes (admin edits refresh it immediately).
+export const revalidate = 300;
+
 export const metadata: Metadata = {
   title: "Pricing",
   description: "Fixed-price packages and custom quotes from Nexovate.",
