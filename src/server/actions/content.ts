@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { isValidObjectId } from "mongoose";
 import { connectDB } from "@/server/db/mongodb";
-import { PortfolioProject, Post, Stat, Subscriber, TeamMember, Testimonial } from "@/server/models/content.model";
+import { ClientLogo, PortfolioProject, Post, Stat, Subscriber, TeamMember, Testimonial } from "@/server/models/content.model";
 import { assertPermission } from "@/server/auth/session";
 import { fieldErrors, formObject, limitAction } from "@/server/lib/forms";
 import { audit } from "@/server/lib/audit";
@@ -64,6 +64,7 @@ export async function savePostAction(_: FormState, fd: FormData): Promise<FormSt
   else await Post.create(doc);
   await audit(s.email, "post_saved", "post", d.id, slug);
   revalidatePath("/blog");
+  revalidatePath("/");
   revalidatePath(`/blog/${slug}`);
   redirect("/admin/blog");
 }
@@ -76,6 +77,7 @@ export async function deletePostAction(fd: FormData) {
   await Post.deleteOne({ _id: id });
   await audit(s.email, "post_deleted", "post", id);
   revalidatePath("/blog");
+  revalidatePath("/");
   redirect("/admin/blog");
 }
 
@@ -382,4 +384,45 @@ export async function addExampleStatsAction() {
   ]);
   await audit(s.email, "stat_examples_added", "stat");
   revalidateStats();
+}
+
+// ======================= Client logos (Admin → Clients) =======================
+
+const clientLogoSchema = z.object({
+  id: optionalId,
+  name: z.string().trim().min(2, "Enter the client name").max(80),
+  logo: url,
+  url: url.optional().or(z.literal("")),
+  sort: z.string().optional(),
+  published: z.string().optional(),
+});
+
+export async function saveClientLogoAction(_: FormState, fd: FormData): Promise<FormState> {
+  const s = await assertPermission("content");
+  const parsed = clientLogoSchema.safeParse(formObject(fd));
+  if (!parsed.success) return fieldErrors(parsed.error);
+  const d = parsed.data;
+  const doc = { name: d.name, logo: d.logo, url: d.url || undefined, sort: Number(d.sort) || 0, published: d.published === "on" };
+  await connectDB();
+  if (d.id) {
+    const res = await ClientLogo.updateOne({ _id: d.id }, { $set: doc, ...(doc.url ? {} : { $unset: { url: 1 } }) });
+    if (!res.matchedCount) return { error: "This client no longer exists." };
+  } else {
+    await ClientLogo.create(doc);
+  }
+  await audit(s.email, "client_logo_saved", "client_logo", d.id, d.name);
+  revalidatePath("/");
+  revalidatePath("/admin/clients");
+  return { ok: true, message: d.id ? "Saved." : "Added." };
+}
+
+export async function deleteClientLogoAction(fd: FormData) {
+  const s = await assertPermission("content");
+  const id = String(fd.get("id") ?? "");
+  if (!isValidObjectId(id)) return;
+  await connectDB();
+  await ClientLogo.deleteOne({ _id: id });
+  await audit(s.email, "client_logo_deleted", "client_logo", id);
+  revalidatePath("/");
+  revalidatePath("/admin/clients");
 }

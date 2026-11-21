@@ -115,6 +115,21 @@ const statSchema = new Schema(
 export type StatDoc = InferSchemaType<typeof statSchema>;
 export const Stat: Model<StatDoc> = defineModel<StatDoc>("Stat", statSchema);
 
+// ---------- Client logos ("Trusted by" strip) — managed in Admin → Clients ----------
+// Only add clients who have agreed to be listed.
+const clientLogoSchema = new Schema(
+  {
+    name: { type: String, required: true, maxlength: 80 },
+    logo: { type: String, required: true, maxlength: 500 }, // full image URL (SVG/PNG with transparent background works best)
+    url: { type: String, maxlength: 500 },
+    published: { type: Boolean, default: false, index: true },
+    sort: { type: Number, default: 0 },
+  },
+  { timestamps: true },
+);
+export type ClientLogoDoc = InferSchemaType<typeof clientLogoSchema>;
+export const ClientLogo: Model<ClientLogoDoc> = defineModel<ClientLogoDoc>("ClientLogo", clientLogoSchema);
+
 // ---------- Newsletter subscriber ----------
 const subscriberSchema = new Schema(
   {

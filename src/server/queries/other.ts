@@ -3,7 +3,7 @@ import { isValidObjectId } from "mongoose";
 import { connectDB } from "@/server/db/mongodb";
 import { User } from "@/server/models/user.model";
 import { Ticket } from "@/server/models/support.model";
-import { PortfolioProject, Post, Stat, TeamMember, Testimonial } from "@/server/models/content.model";
+import { ClientLogo, PortfolioProject, Post, Stat, TeamMember, Testimonial } from "@/server/models/content.model";
 import { hashToken } from "@/server/auth/tokens";
 import { plain } from "@/server/lib/plain";
 import { seniorityRank } from "@/lib/constants";
@@ -163,4 +163,15 @@ export async function listPublishedStats() {
 export async function listStatsAdmin() {
   await connectDB();
   return plain(await Stat.find().sort({ sort: 1, createdAt: 1 }).lean());
+}
+
+// ---------- Client logos ----------
+export async function listPublishedClientLogos() {
+  await connectDB();
+  return plain(await ClientLogo.find({ published: true }).sort({ sort: 1, createdAt: 1 }).limit(24).lean());
+}
+
+export async function listClientLogosAdmin() {
+  await connectDB();
+  return plain(await ClientLogo.find().sort({ sort: 1, createdAt: 1 }).lean());
 }
