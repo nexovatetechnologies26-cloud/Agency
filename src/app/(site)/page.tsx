@@ -57,7 +57,7 @@ export default async function HomePage() {
       <HomeModels />
       <HomePricing packages={packages} />
       <HomeTestimonials items={testimonials} />
-      <TeamSection members={team} limit={3} />
+      <TeamSection members={team} />
       <HomeInsights posts={posts} />
       <HomeFaq />
       <HomeCta />

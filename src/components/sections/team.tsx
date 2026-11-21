@@ -101,7 +101,7 @@ export function TeamGrid({ members }: { members: TeamMemberCard[] }) {
 }
 
 /** Team preview for the homepage and About page. Hidden until a profile is published. */
-export function TeamSection({ members, limit = 6 }: { members: TeamMemberCard[]; limit?: number }) {
+export function TeamSection({ members, limit }: { members: TeamMemberCard[]; limit?: number }) {
   if (!members.length) return null;
   return (
     <section className="border-t border-line bg-paper py-16 lg:py-24" aria-labelledby="team-title">
@@ -118,7 +118,7 @@ export function TeamSection({ members, limit = 6 }: { members: TeamMemberCard[];
           </Link>
         </div>
         <div className="mt-10">
-          <TeamGrid members={members.slice(0, limit)} />
+          <TeamGrid members={limit ? members.slice(0, limit) : members} />
         </div>
       </div>
     </section>
