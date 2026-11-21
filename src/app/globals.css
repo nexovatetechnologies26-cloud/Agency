@@ -126,10 +126,17 @@
       transition focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/10;
   }
   .field-error {
-    @apply mt-1.5 text-xs text-red-600;
+    @apply mt-2 flex items-center gap-1.5 text-[13px] font-medium text-red-600;
   }
+  /* on the dark website, the lighter red keeps error text readable */
+  .theme-dark .field-error,
+  .theme-dark [data-form-alert],
+  .theme-dark label.text-red-600 {
+    @apply text-red-400;
+  }
+  /* invalid field: unmistakable but calm — red border, soft ring and tint */
   .field[aria-invalid="true"] {
-    @apply border-red-300 focus:border-red-400 focus:ring-red-100;
+    @apply border-red-500 bg-red-500/[0.06] ring-2 ring-red-500/20 focus:border-red-500 focus:ring-4 focus:ring-red-500/25;
   }
   .field:disabled {
     @apply cursor-not-allowed bg-paper text-muted;
