@@ -15,6 +15,7 @@ import {
   HomeWork,
 } from "@/components/home/editorial";
 import { TeamSection } from "@/components/sections/team";
+import { HomeLeader, pickLeader } from "@/components/home/leader";
 import {
   listProjects,
   listPublishedClientLogos,
@@ -48,6 +49,7 @@ export default async function HomePage() {
       <HomeMarquee />
       <HomeClients logos={logos} />
       <HomeNumbers stats={stats} />
+      <HomeLeader leader={pickLeader(team)} />
       <HomeServices />
       <HomeWhy />
       <HomeWork projects={projects} />
