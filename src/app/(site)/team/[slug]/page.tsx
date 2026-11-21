@@ -77,21 +77,19 @@ function ProfilePhoto({ m }: { m: TeamMemberCard }) {
   );
 }
 
-/** One contact line in the sidebar card: icon, label, the actual address or number. */
-function ContactRow({ href, icon, label, value, external }: { href: string; icon: React.ReactNode; label: string; value: string; external?: boolean }) {
+/** One contact line in the sidebar card: icon and channel name only (Email, WhatsApp, LinkedIn…) — the address or number stays in the link. */
+function ContactRow({ href, icon, label, external }: { href: string; icon: React.ReactNode; label: string; external?: boolean }) {
   return (
     <li>
       <a
         href={href}
         target={external ? "_blank" : undefined}
         rel={external ? "noopener noreferrer" : undefined}
-        className="group/row flex items-center gap-4 border-b border-line py-4 last:border-0"
+        aria-label={label}
+        className="group/row flex items-center gap-4 border-b border-line py-3.5 last:border-0"
       >
         {icon}
-        <span className="min-w-0 flex-1">
-          <span className="block text-xs text-muted">{label}</span>
-          <span className="block truncate text-[15px] font-medium text-ink transition-colors group-hover/row:text-brand">{value}</span>
-        </span>
+        <span className="flex-1 text-[15px] font-semibold text-ink transition-colors group-hover/row:text-brand">{label}</span>
         <span aria-hidden className="text-muted/60 transition-transform duration-300 group-hover/row:translate-x-1 group-hover/row:text-brand">→</span>
       </a>
     </li>
@@ -301,7 +299,6 @@ export default async function TeamMemberPage({ params }: Props) {
                             <ContactRow
                               href={mailHref(m.email, site.name)}
                               label="Email"
-                              value={m.email}
                               icon={
                                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand text-white">
                                   <MailIcon className="h-[18px] w-[18px]" />
@@ -314,7 +311,6 @@ export default async function TeamMemberPage({ params }: Props) {
                               href={whatsappHref(m.whatsapp, first, site.name)}
                               external
                               label="WhatsApp"
-                              value={m.whatsapp}
                               icon={
                                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#25D366] text-white">
                                   <WhatsAppIcon className="h-5 w-5" />
@@ -323,7 +319,7 @@ export default async function TeamMemberPage({ params }: Props) {
                             />
                           )}
                           {links.map((l) => (
-                            <ContactRow key={l.url} href={l.url} external label={linkLabel(l)} value={l.url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")} icon={<PlatformBadge url={l.url} />} />
+                            <ContactRow key={l.url} href={l.url} external label={linkLabel(l)} icon={<PlatformBadge url={l.url} />} />
                           ))}
                         </ul>
                       </Card>
