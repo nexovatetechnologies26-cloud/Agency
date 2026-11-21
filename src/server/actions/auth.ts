@@ -21,6 +21,18 @@ import {
   resetSchema,
 } from "@/lib/validations/account";
 
+/** Connects to the database; on failure logs the cause and returns a friendly form error. */
+const DB_DOWN: FormState = { error: "We can't reach our database right now. Please try again in a minute." };
+async function dbReady() {
+  try {
+    await connectDB();
+    return true;
+  } catch (err) {
+    console.error("[auth] database unavailable", err);
+    return false;
+  }
+}
+
 async function sendVerification(email: string, name: string, token: string) {
   const url = `${config.siteUrl}/verify-email?token=${token}`;
   await sendEmail(
@@ -38,7 +50,7 @@ export async function registerAction(_: FormState, fd: FormData): Promise<FormSt
   if (!parsed.success) return fieldErrors(parsed.error);
   const d = parsed.data;
 
-  await connectDB();
+  if (!(await dbReady())) return DB_DOWN;
   if (await User.exists({ email: d.email })) {
     return { fields: { email: "An account with this email already exists. Try signing in." } };
   }
@@ -67,7 +79,7 @@ export async function loginAction(_: FormState, fd: FormData): Promise<FormState
   if (!parsed.success) return fieldErrors(parsed.error);
   const { email, password, next } = parsed.data;
 
-  await connectDB();
+  if (!(await dbReady())) return DB_DOWN;
   let user = await User.findOne({ email }).select("+passwordHash");
 
   // First-run bootstrap: the very first Super Admin is created from ADMIN_EMAIL / ADMIN_PASSWORD.
@@ -121,7 +133,7 @@ export async function forgotPasswordAction(_: FormState, fd: FormData): Promise<
   const parsed = forgotSchema.safeParse(formObject(fd));
   if (!parsed.success) return fieldErrors(parsed.error);
 
-  await connectDB();
+  if (!(await dbReady())) return DB_DOWN;
   const user = await User.findOne({ email: parsed.data.email });
   if (user && user.active !== false) {
     const t = newToken();
@@ -143,7 +155,7 @@ export async function resetPasswordAction(_: FormState, fd: FormData): Promise<F
   const parsed = resetSchema.safeParse(formObject(fd));
   if (!parsed.success) return fieldErrors(parsed.error);
 
-  await connectDB();
+  if (!(await dbReady())) return DB_DOWN;
   const user = await User.findOne({ resetTokenHash: hashToken(parsed.data.token), resetTokenExpires: { $gt: new Date() } });
   if (!user) return { error: "This reset link is invalid or has expired. Please request a new one." };
 
