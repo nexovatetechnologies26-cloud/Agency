@@ -440,7 +440,7 @@ export function HomeModels() {
               <Link
                 href={m.href}
                 className={clsx(
-                  "card group flex h-full flex-col p-8",
+                  "card card-float group flex h-full flex-col p-8",
                   m.featured && "!border-brand ring-1 ring-brand/30",
                 )}
               >

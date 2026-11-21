@@ -4,7 +4,7 @@ import { ButtonLink } from "@/components/ui/button";
 
 export default function NotFound() {
   return (
-    <div className="theme-dark min-h-screen bg-paper text-ink">
+    <div className="theme-light min-h-screen bg-paper text-ink">
       <Header />
       <main id="main" className="relative overflow-hidden">
         <div aria-hidden className="grid-lines absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />

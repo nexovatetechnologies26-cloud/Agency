@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { ArrowRight, Linkedin } from "lucide-react";
+import { ArrowRight, Linkedin, Users } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 import { initials, memberHref, seniorityLabel, type TeamMemberCard } from "@/components/sections/team";
 
@@ -34,22 +33,31 @@ export function HomeLeader({ leader }: { leader: TeamMemberCard | null }) {
       <div aria-hidden className="grid-lines absolute inset-0 [mask-image:radial-gradient(ellipse_at_30%_50%,black,transparent_65%)]" />
       <div className="container relative">
         <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
-          {/* portrait in a fine violet frame */}
+          {/* the whole portrait is one floating card — lifted, brand border, soft violet light below */}
           <div className="relative mx-auto w-full max-w-[440px]">
-            <div aria-hidden className="absolute -inset-3 rounded-[34px] border border-brand/30" />
-            <div aria-hidden className="absolute -inset-6 rounded-[40px] border border-line" />
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[28px] bg-surface">
-              {leader.photo ? (
-                // eslint-disable-next-line @next/next/no-img-element -- admin-provided portrait URL
-                <img src={leader.photo} alt={`Portrait of ${leader.name}, ${role}`} loading="lazy" className="h-full w-full object-cover object-top" />
-              ) : (
-                <span aria-hidden className="flex h-full items-center justify-center font-display text-[8rem] font-semibold text-brand/40">
-                  {initials(leader.name)}
-                </span>
-              )}
-              <div className="absolute bottom-4 left-4 right-4 rounded-2xl border border-white/10 bg-obsidian/85 px-5 py-4 backdrop-blur">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/70">{role}</p>
-                <p className="mt-1 font-display text-xl font-semibold tracking-tight text-white">{leader.name}</p>
+            <div className="card card-float group relative aspect-[4/5] overflow-hidden !rounded-[28px] border-2 bg-surface p-2">
+              <div className="relative h-full w-full overflow-hidden rounded-[22px]">
+                {leader.photo ? (
+                  // eslint-disable-next-line @next/next/no-img-element -- admin-provided portrait URL
+                  <img src={leader.photo} alt={`Portrait of ${leader.name}, ${role}`} loading="lazy" className="h-full w-full object-cover object-top" />
+                ) : (
+                  <span aria-hidden className="flex h-full items-center justify-center font-display text-[8rem] font-semibold text-brand/40">
+                    {initials(leader.name)}
+                  </span>
+                )}
+
+                {/* name plate inside the picture */}
+                <div className="absolute inset-x-3 bottom-3 flex items-center gap-4 rounded-2xl border border-line bg-surface/95 py-3.5 pl-3.5 pr-5 shadow-lift">
+                  <span aria-hidden className="h-11 w-[3px] shrink-0 rounded-full bg-brand" />
+                  <div className="min-w-0">
+                    <p className="inline-flex items-center gap-2 text-[10.5px] font-semibold uppercase tracking-[0.22em] text-brand">
+                      <span className="h-1.5 w-1.5 rotate-45 bg-brand" />
+                      {role}
+                    </p>
+                    <p className="mt-0.5 truncate font-display text-[1.35rem] font-semibold leading-tight tracking-tight">{leader.name}</p>
+                    {meta && <p className="mt-0.5 truncate text-[12px] text-muted">{meta}</p>}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -91,9 +99,9 @@ export function HomeLeader({ leader }: { leader: TeamMemberCard | null }) {
                   <Linkedin size={17} aria-hidden /> LinkedIn
                 </a>
               )}
-              <Link href="/team" className="link-underline ml-1">
-                Our team
-              </Link>
+              <ButtonLink href="/team" size="lg" variant="secondary">
+                <Users size={17} aria-hidden /> Our team
+              </ButtonLink>
             </div>
           </div>
         </div>

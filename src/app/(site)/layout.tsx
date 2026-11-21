@@ -20,7 +20,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         Skip to content
       </a>
       {/* public website uses the dark theme (obsidian / charcoal / white / violet / silver) */}
-      <div className="theme-dark min-h-screen bg-paper text-ink">
+      <div className="theme-light min-h-screen bg-paper text-ink">
         <Header />
         <main id="main">{children}</main>
         <Footer />
