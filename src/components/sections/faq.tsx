@@ -12,12 +12,13 @@ export function Faq({ limit, heading = true }: { limit?: number; heading?: boole
           <SectionHeading eyebrow="FAQ" title="Questions, answered" description="Can't find what you're looking for? Get in touch." />
         ) : (
           <aside className="lg:sticky lg:top-28 lg:self-start">
-            <div className="relative overflow-hidden rounded-3xl bg-charcoal p-8 text-white">
+            <div className="card relative overflow-hidden !rounded-3xl p-8">
+              <span aria-hidden className="absolute inset-x-0 top-0 h-[3px] bg-brand" />
               <p className="relative font-display text-2xl font-semibold tracking-tight">Still have a question?</p>
-              <p className="relative mt-3 text-[15px] leading-relaxed text-white/60">Talk to the team directly. We&apos;ll answer honestly, even if we&apos;re not the right fit.</p>
+              <p className="relative mt-3 text-[15px] leading-relaxed text-muted">Talk to the team directly. We&apos;ll answer honestly, even if we&apos;re not the right fit.</p>
               <div className="relative mt-7 flex flex-wrap gap-3">
-                <ButtonLink href="/contact" variant="light">Contact us</ButtonLink>
-                <ButtonLink href="/book-consultation" variant="outline-light">Book a call</ButtonLink>
+                <ButtonLink href="/contact">Contact us</ButtonLink>
+                <ButtonLink href="/book-consultation" variant="secondary">Book a call</ButtonLink>
               </div>
             </div>
           </aside>

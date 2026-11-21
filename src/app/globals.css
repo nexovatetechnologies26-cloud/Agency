@@ -30,14 +30,14 @@
   --c-brand-soft: 34 26 56;
   --c-brand-tint: 46 34 78;
 }
-/* premium light — public website: warm ivory, white cards, warm hairlines, deep ink, violet */
+/* premium light — public website: cool light grey page, white cards, grey hairlines, deep ink, violet */
 .theme-light {
   color-scheme: light;
-  --c-ink: 21 19 28; /* deep ink */
-  --c-paper: 248 246 241; /* warm ivory */
+  --c-ink: 18 18 24; /* deep ink */
+  --c-paper: 242 243 245; /* light grey #F2F3F5 */
   --c-surface: 255 255 255; /* white cards */
-  --c-line: 230 226 218; /* warm hairline */
-  --c-muted: 98 94 108;
+  --c-line: 225 227 232; /* grey hairline */
+  --c-muted: 102 106 118; /* slate grey */
   --c-brand: 117 69 217; /* #7545D9 */
   --c-brand-deep: 90 50 176;
   --c-brand-soft: 242 237 252;

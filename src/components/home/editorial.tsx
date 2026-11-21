@@ -216,7 +216,7 @@ export function HomeNumbers({ stats }: { stats: HomeStat[] }) {
 /* Capabilities — services grouped into four outcome pillars (bento) ------------ */
 
 const PILLARS = [
-  { n: "01", t: "Build", d: "Websites, stores and apps engineered to load fast, rank well and last.", slugs: ["web-development", "wordpress-development", "ecommerce-development", "mobile-app-development"], span: "lg:col-span-2", dark: true },
+  { n: "01", t: "Build", d: "Websites, stores and apps engineered to load fast, rank well and last.", slugs: ["web-development", "wordpress-development", "ecommerce-development", "mobile-app-development"], span: "lg:col-span-2", dark: false },
   { n: "02", t: "Automate", d: "Software and AI that remove busywork from your day.", slugs: ["custom-software", "ai-automation"], span: "", dark: false },
   { n: "03", t: "Market", d: "Get found — and chosen — by the people who matter.", slugs: ["digital-marketing-seo", "social-media-management"], span: "", dark: false },
   { n: "04", t: "Grow", d: "A brand and content that earn trust on sight.", slugs: ["graphic-design-branding", "video-content-production"], span: "lg:col-span-2", dark: false },
@@ -302,7 +302,7 @@ const reasons = [
 
 export function HomeWhy() {
   return (
-    <section className="border-t border-line bg-surface py-20 lg:py-28" aria-labelledby="why-title">
+    <section className="border-t border-line py-20 lg:py-28" aria-labelledby="why-title">
       <div className="container">
         <SectionTitle
           label="Why Nexovate"
@@ -313,9 +313,9 @@ export function HomeWhy() {
           }
           intro="What you can expect from day one — and long after launch."
         />
-        <ul className="mt-14 grid gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {reasons.map(({ icon: Icon, t, d }, i) => (
-            <li key={t} data-card className="group bg-paper p-8 transition-colors duration-300 hover:bg-surface lg:p-10">
+            <li key={t} data-card className="card group p-8 transition duration-300 ease-out-cubic hover:-translate-y-1 hover:border-brand/40 hover:shadow-lift lg:p-10">
               <div className="flex items-center justify-between">
                 <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-line text-brand transition-colors duration-300 group-hover:border-brand group-hover:bg-brand group-hover:text-white">
                   <Icon size={20} strokeWidth={1.75} aria-hidden />
@@ -467,18 +467,19 @@ export function HomeTestimonials({ items }: { items: QuoteItem[] }) {
   if (!items.length) return null;
   const [first, ...rest] = items;
   return (
-    <section className="border-t border-line bg-surface py-20 lg:py-28" aria-label="Testimonials">
+    <section className="border-t border-line py-20 lg:py-28" aria-label="Testimonials">
       <div className="container">
         <SectionTitle label="Client stories" title={<>What clients <em>say</em></>} />
         <div className="mt-14 grid gap-5 lg:grid-cols-5">
-          <figure data-card className="relative overflow-hidden rounded-3xl bg-charcoal p-8 text-white md:p-12 lg:col-span-3">
-            <Quote size={36} className="relative text-[#B79BFF]" aria-hidden />
-            <blockquote className="relative mt-6 font-display text-2xl font-medium leading-snug tracking-tight md:text-[1.9rem]">{first.quote}</blockquote>
+          <figure data-card className="card relative overflow-hidden !rounded-3xl p-8 md:p-12 lg:col-span-3">
+            <span aria-hidden className="absolute inset-x-0 top-0 h-[3px] bg-brand" />
+            <Quote size={36} className="relative text-brand" aria-hidden />
+            <blockquote className="relative mt-6 font-display text-2xl font-medium leading-snug tracking-tight text-ink md:text-[1.9rem]">{first.quote}</blockquote>
             <figcaption className="relative mt-8 flex items-center gap-3">
-              <span aria-hidden className="flex h-11 w-11 items-center justify-center rounded-full bg-brand font-semibold">{first.name.charAt(0)}</span>
+              <span aria-hidden className="flex h-11 w-11 items-center justify-center rounded-full bg-brand font-semibold text-white">{first.name.charAt(0)}</span>
               <span>
-                <span className="block font-semibold">{first.name}</span>
-                {(first.role || first.company) && <span className="block text-sm text-white/55">{[first.role, first.company].filter(Boolean).join(", ")}</span>}
+                <span className="block font-semibold text-ink">{first.name}</span>
+                {(first.role || first.company) && <span className="block text-sm text-muted">{[first.role, first.company].filter(Boolean).join(", ")}</span>}
               </span>
             </figcaption>
           </figure>
@@ -544,7 +545,7 @@ export function HomeInsights({ posts }: { posts: PostItem[] }) {
 
 export function HomeFaq() {
   return (
-    <section className="border-t border-line bg-surface py-20 lg:py-28" aria-label="Frequently asked questions">
+    <section className="border-t border-line py-20 lg:py-28" aria-label="Frequently asked questions">
       <div className="container grid gap-12 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <SectionTitle label="FAQ" title={<>Good to <em>know</em></>} intro="Quick answers to what clients ask most." />
@@ -554,7 +555,7 @@ export function HomeFaq() {
         </div>
         <div className="space-y-3 lg:col-span-7 lg:col-start-6">
           {faqs.slice(0, 6).map((f) => (
-            <details key={f.q} className="group rounded-2xl border border-line bg-paper/50 px-6 transition-colors open:border-brand/30 open:bg-surface [&_summary::-webkit-details-marker]:hidden">
+            <details key={f.q} className="group rounded-2xl border border-line bg-surface px-6 transition-colors open:border-brand/30 open:bg-surface [&_summary::-webkit-details-marker]:hidden">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-[16px] font-semibold text-ink">
                 {f.q}
                 <span aria-hidden className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface text-brand ring-1 ring-line transition-transform duration-300 group-open:rotate-45 group-open:bg-brand group-open:text-white group-open:ring-brand">
@@ -612,7 +613,7 @@ export function HomePricing({ packages }: { packages: PackageCard[] }) {
   const featured = packages.filter((p) => p.featured);
   const pick = [...featured, ...packages.filter((p) => !p.featured)].slice(0, 3);
   return (
-    <section className="border-t border-line bg-surface py-20 lg:py-28" aria-labelledby="pricing-title">
+    <section className="border-t border-line py-20 lg:py-28" aria-labelledby="pricing-title">
       <div className="container">
         <SectionTitle
           label="Pricing"

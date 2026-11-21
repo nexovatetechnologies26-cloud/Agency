@@ -85,14 +85,14 @@ function ContactRow({ href, icon, label, value, external }: { href: string; icon
         href={href}
         target={external ? "_blank" : undefined}
         rel={external ? "noopener noreferrer" : undefined}
-        className="group/row flex items-center gap-4 border-b border-bone/10 py-4 last:border-0"
+        className="group/row flex items-center gap-4 border-b border-line py-4 last:border-0"
       >
         {icon}
         <span className="min-w-0 flex-1">
-          <span className="block text-xs text-bone/50">{label}</span>
-          <span className="block truncate text-[15px] font-medium text-bone transition-colors group-hover/row:text-white">{value}</span>
+          <span className="block text-xs text-muted">{label}</span>
+          <span className="block truncate text-[15px] font-medium text-ink transition-colors group-hover/row:text-brand">{value}</span>
         </span>
-        <span aria-hidden className="text-bone/40 transition-transform duration-300 group-hover/row:translate-x-1 group-hover/row:text-white">→</span>
+        <span aria-hidden className="text-muted/60 transition-transform duration-300 group-hover/row:translate-x-1 group-hover/row:text-brand">→</span>
       </a>
     </li>
   );
@@ -261,7 +261,7 @@ export default async function TeamMemberPage({ params }: Props) {
                         {responsibilities.map((r, i) => (
                           <li
                             key={r.title}
-                            className="group/card relative overflow-hidden rounded-tile border border-line border-l-[3px] border-l-brand bg-paper p-6 transition-colors duration-300 hover:bg-brand-soft"
+                            className="group/card relative overflow-hidden rounded-tile border border-line border-l-[3px] border-l-brand bg-surface p-6 transition-colors duration-300 hover:bg-brand-soft"
                           >
                             <span className="font-serif text-4xl italic leading-none text-brand">{String(i + 1).padStart(2, "0")}</span>
                             <h3 className="mt-4 text-lg font-semibold tracking-tight text-ink">{r.title}</h3>
@@ -295,7 +295,7 @@ export default async function TeamMemberPage({ params }: Props) {
                 <div className="space-y-6 lg:sticky lg:top-28">
                   {hasContact && (
                     <Reveal>
-                      <Card label="Direct line" title={`Talk to ${first}`} tone="dark">
+                      <Card label="Direct line" title={`Talk to ${first}`}>
                         <ul className="-my-4">
                           {m.email && (
                             <ContactRow
