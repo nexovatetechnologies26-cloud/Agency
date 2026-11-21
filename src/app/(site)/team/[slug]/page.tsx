@@ -49,7 +49,7 @@ function Card({
   const dark = tone === "dark";
   return (
     <div
-      className={`relative overflow-hidden rounded-tile p-7 md:p-9 ${dark ? "bg-ink text-bone" : "border border-line bg-white"} ${className}`}
+      className={`relative overflow-hidden rounded-tile p-7 md:p-9 ${dark ? "bg-charcoal text-bone" : "border border-line bg-surface"} ${className}`}
     >
       <span aria-hidden className="absolute inset-x-0 top-0 h-[3px] bg-brand" />
       <p className={`flex items-center gap-2.5 text-label font-medium uppercase ${dark ? "text-bone/55" : "text-muted"}`}>
@@ -201,7 +201,7 @@ export default async function TeamMemberPage({ params }: Props) {
                 <Reveal index={2} className="mt-auto pt-12">
                   <dl className={`grid gap-3 ${facts.length >= 4 ? "grid-cols-2 xl:grid-cols-4" : facts.length === 3 ? "grid-cols-3" : "grid-cols-2"}`}>
                     {facts.map((f) => (
-                      <div key={f.k} className="relative overflow-hidden rounded-tile border border-line bg-white px-5 pb-5 pt-6">
+                      <div key={f.k} className="relative overflow-hidden rounded-tile border border-line bg-surface px-5 pb-5 pt-6">
                         <span aria-hidden className="absolute inset-x-0 top-0 h-[3px] bg-brand" />
                         <dt className="label-plain">{f.k}</dt>
                         <dd className="mt-3 font-serif text-[1.9rem] leading-none text-brand">
@@ -366,7 +366,7 @@ export default async function TeamMemberPage({ params }: Props) {
 
       {/* 3 · in their words — the page's single dark section */}
       {m.quote && (
-        <section className="bg-ink py-24 text-bone lg:py-35" aria-label={`In ${first}'s words`}>
+        <section className="bg-charcoal py-24 text-bone lg:py-35" aria-label={`In ${first}'s words`}>
           <div className="container grid gap-10 lg:grid-cols-12">
             <p className="label !text-bone/50 lg:col-span-3">In {first}&apos;s words</p>
             <Reveal as="figure" className="lg:col-span-9">

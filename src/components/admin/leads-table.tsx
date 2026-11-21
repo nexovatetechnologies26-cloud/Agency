@@ -184,7 +184,7 @@ function LeadDetails({
               </Link>
             )}
             {canAi && (
-              <button type="button" onClick={summarize} disabled={aiState === "loading"} className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-4 py-2 text-xs font-semibold disabled:opacity-60">
+              <button type="button" onClick={summarize} disabled={aiState === "loading"} className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-4 py-2 text-xs font-semibold disabled:opacity-60">
                 <Sparkles size={14} className="text-brand" /> {aiState === "loading" ? "Analysing…" : "AI qualify"}
               </button>
             )}
@@ -211,7 +211,7 @@ function LeadDetails({
         <ul className="mt-2 space-y-2">
           {lead.notes.length === 0 && <li className="text-sm text-muted">No notes yet.</li>}
           {lead.notes.map((n, i) => (
-            <li key={i} className="rounded-xl border border-line bg-white p-3 text-sm">
+            <li key={i} className="rounded-xl border border-line bg-surface p-3 text-sm">
               <p className="whitespace-pre-wrap">{n.body}</p>
               <p className="mt-1 text-xs text-muted">{n.author} · {fmt(n.createdAt)}</p>
             </li>

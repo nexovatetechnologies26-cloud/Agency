@@ -2,12 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ==========================================================================
+   Theme tokens (RGB channels, used by tailwind.config.ts)
+   :root        → light theme: client dashboard & admin
+   .theme-dark  → public website: obsidian / charcoal / white / violet / silver
+   ========================================================================== */
+:root {
+  --c-ink: 23 21 31;
+  --c-paper: 247 246 250;
+  --c-surface: 255 255 255;
+  --c-line: 232 230 237;
+  --c-muted: 94 90 107;
+  --c-brand: 117 69 217;
+  --c-brand-deep: 79 43 155;
+  --c-brand-soft: 239 233 252;
+  --c-brand-tint: 227 215 250;
+}
+.theme-dark {
+  color-scheme: dark;
+  --c-ink: 244 243 247; /* white text */
+  --c-paper: 16 16 20; /* obsidian #101014 */
+  --c-surface: 23 23 29; /* charcoal #17171D */
+  --c-line: 42 41 51; /* hairline on dark */
+  --c-muted: 165 161 174; /* silver #A5A1AE */
+  --c-brand: 140 100 236; /* violet, lifted slightly for contrast on black */
+  --c-brand-deep: 117 69 217; /* #7545D9 */
+  --c-brand-soft: 34 26 56;
+  --c-brand-tint: 46 34 78;
+}
+
 @layer base {
   html {
     @apply scroll-smooth;
   }
   body {
-    @apply bg-white text-ink antialiased;
+    @apply bg-paper text-ink antialiased;
     font-feature-settings: "ss01", "cv11";
   }
   h1,
@@ -65,14 +94,13 @@
   }
   /* one card design across the site: white surface, hairline border, 20px radius */
   .card {
-    @apply rounded-tile border border-line bg-white;
+    @apply rounded-tile border border-line bg-surface;
   }
   /* soft violet wash used behind page heroes */
   .hero-wash {
     background:
-      radial-gradient(60% 80% at 85% 0%, rgba(117, 69, 217, 0.14), transparent 60%),
-      radial-gradient(40% 60% at 0% 100%, rgba(117, 69, 217, 0.08), transparent 60%),
-      #f7f6fa;
+      radial-gradient(55% 70% at 85% 0%, rgb(var(--c-brand) / 0.16), transparent 60%),
+      rgb(var(--c-paper));
   }
   /* faint grid pattern for dark sections */
   .grid-lines {
@@ -83,8 +111,8 @@
   }
   .grid-lines-light {
     background-image:
-      linear-gradient(to right, rgba(23, 21, 31, 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(23, 21, 31, 0.05) 1px, transparent 1px);
+      linear-gradient(to right, rgb(var(--c-ink) / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(var(--c-ink) / 0.05) 1px, transparent 1px);
     background-size: 56px 56px;
   }
   .text-gradient {
@@ -94,7 +122,7 @@
     @apply mb-1.5 block text-sm font-medium text-ink;
   }
   .field {
-    @apply w-full rounded-xl border border-line bg-white px-4 py-3 text-sm text-ink placeholder:text-muted/70
+    @apply w-full rounded-xl border border-line bg-surface px-4 py-3 text-sm text-ink placeholder:text-muted/70
       transition focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/10;
   }
   .field-error {
@@ -128,6 +156,30 @@
   .link-underline:focus-visible::after {
     @apply scale-x-100;
   }
+  /* hero entrance: each line rises in turn (stagger via animation-delay) */
+  .hero-rise {
+    animation: hero-rise 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  @keyframes hero-rise {
+    from {
+      opacity: 0;
+      transform: translateY(22px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  /* a single dot slowly orbiting the hero mark */
+  .hero-orbit {
+    animation: hero-orbit 24s linear infinite;
+  }
+  @keyframes hero-orbit {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
   /* page enter (app/(site)/template.tsx) */
   .animate-page-in {
     animation: page-in 450ms cubic-bezier(0.33, 1, 0.68, 1) both;
@@ -169,8 +221,8 @@
   }
   a.card:hover {
     transform: translateY(-4px);
-    border-color: rgba(117, 69, 217, 0.35);
-    box-shadow: 0 1px 2px rgba(23, 21, 31, 0.04), 0 24px 48px -20px rgba(79, 43, 155, 0.28);
+    border-color: rgb(var(--c-brand) / 0.4);
+    box-shadow: 0 24px 48px -24px rgb(var(--c-brand) / 0.35);
   }
   a[class*="rounded-btn"]:active,
   button[class*="rounded-btn"]:active {

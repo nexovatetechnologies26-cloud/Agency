@@ -44,7 +44,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
           title="Leads"
           description="Inquiries from the website, quote form and consultation bookings."
           actions={
-            <a download href="/api/admin/export/leads" className="inline-flex h-11 items-center rounded-full border border-line bg-white px-5 text-sm font-semibold hover:border-brand hover:text-brand">Export CSV</a>}
+            <a download href="/api/admin/export/leads" className="inline-flex h-11 items-center rounded-full border border-line bg-surface px-5 text-sm font-semibold hover:border-brand hover:text-brand">Export CSV</a>}
         />
 
         {dbError || !data || !stats ? (
@@ -73,7 +73,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                   href={qs({ status: undefined, page: undefined })}
                   className={clsx(
                     "rounded-full border px-3.5 py-1.5 text-xs font-medium",
-                    !sp.status ? "border-brand bg-brand text-white" : "border-line bg-white",
+                    !sp.status ? "border-brand bg-brand text-white" : "border-line bg-surface",
                   )}
                 >
                   All
@@ -84,7 +84,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                     href={qs({ status: s, page: undefined })}
                     className={clsx(
                       "rounded-full border px-3.5 py-1.5 text-xs font-medium",
-                      sp.status === s ? "border-brand bg-brand text-white" : "border-line bg-white",
+                      sp.status === s ? "border-brand bg-brand text-white" : "border-line bg-surface",
                     )}
                   >
                     {LEAD_STATUS_LABELS[s]} ({stats.byStatus[s]})
@@ -103,8 +103,8 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
               <nav className="mt-6 flex items-center justify-between text-sm" aria-label="Pagination">
                 <span className="text-muted">Page {data.page} of {data.pages}</span>
                 <div className="flex gap-2">
-                  {data.page > 1 && <Link className="rounded-full border border-line bg-white px-4 py-2" href={qs({ page: String(data.page - 1) })}>Previous</Link>}
-                  {data.page < data.pages && <Link className="rounded-full border border-line bg-white px-4 py-2" href={qs({ page: String(data.page + 1) })}>Next</Link>}
+                  {data.page > 1 && <Link className="rounded-full border border-line bg-surface px-4 py-2" href={qs({ page: String(data.page - 1) })}>Previous</Link>}
+                  {data.page < data.pages && <Link className="rounded-full border border-line bg-surface px-4 py-2" href={qs({ page: String(data.page + 1) })}>Next</Link>}
                 </div>
               </nav>
             )}

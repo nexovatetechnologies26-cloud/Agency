@@ -19,10 +19,13 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       >
         Skip to content
       </a>
-      <Header />
-      <main id="main">{children}</main>
-      <Footer />
-      {config.ai.enabled && <ChatWidget />}
+      {/* public website uses the dark theme (obsidian / charcoal / white / violet / silver) */}
+      <div className="theme-dark min-h-screen bg-paper text-ink">
+        <Header />
+        <main id="main">{children}</main>
+        <Footer />
+        {config.ai.enabled && <ChatWidget />}
+      </div>
       <SiteMotion />
     </CurrencyProvider>
   );

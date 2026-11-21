@@ -30,7 +30,7 @@ export function AppShell({
   }
 
   return (
-    <div className="min-h-screen bg-paper print:bg-white">
+    <div className="min-h-screen bg-paper print:bg-surface">
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-brand focus:px-4 focus:py-2 focus:text-white"
@@ -75,7 +75,7 @@ export function AppShell({
         </nav>
       </header>
       <div className="flex">
-        <aside className="sticky top-16 hidden h-[calc(100vh-4rem)] w-64 shrink-0 flex-col overflow-y-auto border-r border-line bg-white px-4 py-5 lg:flex print:hidden">
+        <aside className="sticky top-16 hidden h-[calc(100vh-4rem)] w-64 shrink-0 flex-col overflow-y-auto border-r border-line bg-surface px-4 py-5 lg:flex print:hidden">
           <nav aria-label="Section" className="flex-1 space-y-6">
             {groups.map((g, gi) => (
               <div key={g.label ?? `g${gi}`}>
@@ -90,7 +90,7 @@ export function AppShell({
           </nav>
           {badge === "Client" && <Link
             href="/book-consultation"
-            className="mt-6 block rounded-2xl bg-ink p-4 text-white transition-colors hover:bg-brand-deep"
+            className="mt-6 block rounded-2xl bg-charcoal p-4 text-white transition-colors hover:bg-brand-deep"
           >
             <p className="text-sm font-semibold">Need a hand?</p>
             <p className="mt-1 text-xs leading-relaxed text-white/60">Book a call with the Nexovate team.</p>
@@ -128,7 +128,7 @@ export function Stat({ label, value, href, tone = "default" }: { label: string; 
       <p className={clsx("mt-3 font-display text-[1.9rem] font-semibold leading-none tracking-[-0.03em]", dark ? "text-white" : tone === "brand" ? "text-brand" : "text-ink")}>{value}</p>
     </>
   );
-  const cls = clsx("group block p-5", dark ? "rounded-tile border border-ink bg-ink" : "card");
+  const cls = clsx("group block p-5", dark ? "rounded-tile border border-ink bg-charcoal" : "card");
   return href ? (
     <Link href={href} className={cls}>{inner}</Link>
   ) : (

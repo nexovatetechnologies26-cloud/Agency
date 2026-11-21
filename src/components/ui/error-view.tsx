@@ -40,7 +40,7 @@ export function ErrorView({
         </button>
         <Link
           href={homeHref}
-          className="inline-flex h-11 items-center justify-center rounded-full border border-line bg-white px-5 text-sm font-semibold text-ink transition-colors hover:border-brand hover:text-brand"
+          className="inline-flex h-11 items-center justify-center rounded-full border border-line bg-surface px-5 text-sm font-semibold text-ink transition-colors hover:border-brand hover:text-brand"
         >
           {homeLabel}
         </Link>

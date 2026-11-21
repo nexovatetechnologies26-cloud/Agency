@@ -27,7 +27,7 @@ export function PendingButton({
         "inline-flex h-9 items-center justify-center rounded-full px-4 text-xs font-semibold transition disabled:opacity-50",
         tone === "primary" && "bg-brand text-white hover:bg-brand-deep",
         tone === "danger" && "border border-red-200 text-red-700 hover:bg-red-50",
-        tone === "default" && "border border-line bg-white text-ink hover:border-brand hover:text-brand",
+        tone === "default" && "border border-line bg-surface text-ink hover:border-brand hover:text-brand",
         className,
       )}
     >

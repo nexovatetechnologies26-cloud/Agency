@@ -9,12 +9,13 @@ const base =
 
 const variants: Record<Variant, string> = {
   // solid violet — the one primary action per view
-  primary: "bg-brand text-white shadow-glow hover:bg-brand-deep hover:shadow-none",
-  dark: "bg-ink text-white hover:bg-brand",
-  secondary: "border border-ink/15 bg-white text-ink hover:border-ink",
+  primary: "bg-brand text-white hover:bg-brand-deep",
+  // inverted: charcoal on the light theme, white on the dark website
+  dark: "bg-ink text-paper hover:bg-brand hover:text-white",
+  secondary: "border border-ink/15 bg-surface text-ink hover:border-ink",
   ghost: "text-ink hover:text-brand",
   "outline-light": "border border-white/20 bg-white/5 text-white backdrop-blur hover:border-white/60 hover:bg-white/10", // for dark backgrounds
-  light: "bg-white text-ink hover:bg-brand-soft hover:text-brand-deep", // primary action on dark backgrounds
+  light: "bg-white text-obsidian hover:bg-bone", // primary action on charcoal panels (both themes)
   // one button shape across the site: pill, 52px tall at "lg"
 };
 

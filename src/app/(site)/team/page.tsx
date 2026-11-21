@@ -77,7 +77,7 @@ export default async function TeamPage() {
       </section>
 
       {/* closing — the page's single dark section */}
-      <section className="bg-ink py-24 text-bone lg:py-35" aria-labelledby="team-cta">
+      <section className="bg-charcoal py-24 text-bone lg:py-35" aria-labelledby="team-cta">
         <div className="container grid gap-14 lg:grid-cols-12">
           <div className="lg:col-span-6">
             <h2 id="team-cta" className="font-serif text-section text-bone">

@@ -34,13 +34,13 @@ export function PricingCard({ p }: { p: PackageCard }) {
     <article
       data-card
       className={clsx(
-        "group relative flex h-full flex-col overflow-hidden rounded-tile bg-white transition duration-300 ease-out-cubic hover:-translate-y-1",
+        "group relative flex h-full flex-col overflow-hidden rounded-tile bg-surface transition duration-300 ease-out-cubic hover:-translate-y-1",
         featured ? "border-2 border-brand lg:-my-3" : "border border-line hover:border-brand/40 hover:shadow-lift",
       )}
     >
       {featured && (
         <p className="flex items-center justify-center gap-2 bg-brand py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-white">
-          <span aria-hidden className="h-1.5 w-1.5 rotate-45 bg-white" />
+          <span aria-hidden className="h-1.5 w-1.5 rotate-45 bg-surface" />
           Most popular
         </p>
       )}

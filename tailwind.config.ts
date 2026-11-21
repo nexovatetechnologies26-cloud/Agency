@@ -9,18 +9,26 @@ const config: Config = {
   theme: {
     container: { center: true, padding: { DEFAULT: "1.25rem", md: "2rem" }, screens: { "2xl": "1240px" } },
     extend: {
+      // Theme-aware colours read CSS variables (see globals.css):
+      //   light theme → client dashboard & admin; dark theme (.theme-dark) → public website.
       colors: {
         brand: {
-          DEFAULT: "#7545D9", // Primary Violet
-          deep: "#4F2B9B", // Deep Purple — hover / pressed only
-          soft: "#EFE9FC", // light brand fill (buttons)
-          tint: "#E3D7FA", // light brand fill — hover
+          DEFAULT: "rgb(var(--c-brand) / <alpha-value>)", // Nexovate violet
+          deep: "rgb(var(--c-brand-deep) / <alpha-value>)", // hover / pressed
+          soft: "rgb(var(--c-brand-soft) / <alpha-value>)", // quiet violet fill
+          tint: "rgb(var(--c-brand-tint) / <alpha-value>)", // quiet fill — hover
         },
-        ink: "#17151F", // Charcoal
-        paper: "#F7F6FA", // Off-white background
-        line: "#E8E6ED", // Borders
-        muted: "#5E5A6B", // Secondary text (AA on #F7F6FA)
-        bone: "#F2F0F5", // Off-white text on the dark section
+        ink: "rgb(var(--c-ink) / <alpha-value>)", // primary text
+        paper: "rgb(var(--c-paper) / <alpha-value>)", // page background
+        surface: "rgb(var(--c-surface) / <alpha-value>)", // cards, inputs
+        line: "rgb(var(--c-line) / <alpha-value>)", // hairlines, borders
+        muted: "rgb(var(--c-muted) / <alpha-value>)", // secondary text
+        bone: "#F2F0F5", // off-white text on dark panels
+        // fixed brand palette (never changes with the theme)
+        obsidian: "#101014",
+        charcoal: "#17171D",
+        silver: "#A5A1AE",
+        violet: "#7545D9",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],

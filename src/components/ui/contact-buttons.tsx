@@ -34,7 +34,7 @@ export function whatsappHref(number: string, firstName: string, siteName: string
 }
 
 const btn =
-  "group/contact inline-flex h-[52px] items-center gap-3 rounded-btn border border-line bg-white pl-3 pr-5 text-[15px] font-medium text-ink transition-colors duration-200 ease-out-cubic hover:border-ink";
+  "group/contact inline-flex h-[52px] items-center gap-3 rounded-btn border border-line bg-surface pl-3 pr-5 text-[15px] font-medium text-ink transition-colors duration-200 ease-out-cubic hover:border-ink";
 
 export function ContactButtons({
   email,
@@ -54,7 +54,7 @@ export function ContactButtons({
     <div className={clsx("flex flex-wrap gap-3", className)}>
       {email && (
         <a href={mailHref(email, siteName)} className={btn} aria-label={`Email ${firstName}`}>
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-ink text-white transition-colors group-hover/contact:bg-brand">
+          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-charcoal text-white transition-colors group-hover/contact:bg-brand">
             <MailIcon className="h-[17px] w-[17px]" />
           </span>
           Email

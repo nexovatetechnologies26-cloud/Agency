@@ -11,7 +11,7 @@ export function Thread({ messages, staffView = false }: { messages: Msg[]; staff
         const mine = staffView ? m.fromStaff : !m.fromStaff;
         return (
           <li key={m._id ?? i} className={clsx("flex", mine && "justify-end")}>
-            <div className={clsx("max-w-[85%] rounded-2xl px-4 py-3 text-sm", mine ? "bg-brand text-white" : "border border-line bg-white")}>
+            <div className={clsx("max-w-[85%] rounded-2xl px-4 py-3 text-sm", mine ? "bg-brand text-white" : "border border-line bg-surface")}>
               <p className="whitespace-pre-wrap">{m.body}</p>
               <p className={clsx("mt-1.5 text-[11px]", mine ? "text-white/70" : "text-muted")}>
                 {m.authorName} · {fmtDateTime(m.createdAt)}

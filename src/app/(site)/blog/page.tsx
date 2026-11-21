@@ -20,7 +20,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
   const active = category && categories.includes(category) ? category : undefined;
   const posts = active ? all.filter((p) => p.category === active) : all;
   const pill = (on: boolean) =>
-    clsx("rounded-full border px-3.5 py-1.5 text-xs font-medium transition", on ? "border-brand bg-brand text-white" : "border-line bg-white hover:border-brand hover:text-brand");
+    clsx("rounded-full border px-3.5 py-1.5 text-xs font-medium transition", on ? "border-brand bg-brand text-white" : "border-line bg-surface hover:border-brand hover:text-brand");
 
   return (
     <>

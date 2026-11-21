@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, Facebook, Instagram, Linkedin, Mail, MessageCircle, Twitter } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Mail, MessageCircle, Twitter } from "lucide-react";
 import { site } from "@/content/site";
 import { publishedServices } from "@/content/services";
 import { Logo } from "@/components/layout/logo";
@@ -47,8 +47,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="relative overflow-hidden bg-ink text-white">
-      <div aria-hidden className="absolute -top-40 right-0 h-96 w-96 rounded-full bg-brand/25 blur-3xl" />
+    <footer className="relative overflow-hidden bg-charcoal text-white">
       <div className="container relative pt-20 lg:pt-24">
         <div className="grid gap-14 lg:grid-cols-12">
           <div className="lg:col-span-5">
@@ -80,7 +79,7 @@ export function Footer() {
               </ul>
             )}
 
-            <div className="mt-10 max-w-sm rounded-2xl bg-white p-5 text-ink">
+            <div className="mt-10 max-w-sm rounded-2xl bg-surface p-5 text-ink">
               <p className="font-display text-base font-semibold tracking-tight">Get practical notes on building and growing online.</p>
               <div className="mt-3">
                 <NewsletterForm />
@@ -106,20 +105,7 @@ export function Footer() {
           </div>
         </div>
 
-        <Link
-          href="/get-a-quote"
-          className="group mt-20 flex items-end justify-between gap-6 border-t border-white/10 pt-10"
-          aria-label="Start a project with Nexovate"
-        >
-          <span aria-hidden className="font-display text-[18vw] font-bold leading-[0.8] tracking-[-0.06em] text-white/[0.92] transition-colors group-hover:text-white lg:text-[14rem]">
-            Ne<span className="text-brand">x</span>ovate
-          </span>
-          <span className="mb-3 hidden h-16 w-16 shrink-0 items-center justify-center rounded-full bg-brand text-white transition-transform duration-300 group-hover:rotate-45 md:flex">
-            <ArrowUpRight size={28} aria-hidden />
-          </span>
-        </Link>
-
-        <div className="mt-10 flex flex-col justify-between gap-6 border-t border-white/10 py-8 text-sm text-white/50 md:flex-row md:items-center">
+        <div className="mt-16 flex flex-col justify-between gap-6 border-t border-white/10 py-8 text-sm text-white/50 md:flex-row md:items-center">
           <p>
             © {year} {site.name}. All rights reserved.
           </p>

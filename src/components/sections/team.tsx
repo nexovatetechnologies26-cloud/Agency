@@ -43,7 +43,7 @@ export function Portrait({ m, size = "md", eager = false }: { m: TeamMemberCard;
   const box = size === "lg" ? "h-56 w-56 md:h-64 md:w-64" : "h-28 w-28";
   return (
     <div
-      className={`relative mx-auto shrink-0 overflow-hidden rounded-full bg-brand-soft ring-2 ring-brand/70 ring-offset-4 ring-offset-white transition-[box-shadow] duration-300 group-hover:ring-brand ${box}`}
+      className={`relative mx-auto shrink-0 overflow-hidden rounded-full bg-brand-soft ring-2 ring-brand/70 ring-offset-4 ring-offset-paper transition-[box-shadow] duration-300 group-hover:ring-brand ${box}`}
     >
       {m.photo ? (
         // eslint-disable-next-line @next/next/no-img-element -- admin-provided portrait URL
@@ -68,7 +68,7 @@ export function TeamCard({ m, index = 0 }: { m: TeamMemberCard; index?: number }
     <Reveal as="li" index={index % 3} className="h-full">
       <Link
         href={memberHref(m)}
-        className="group relative flex h-full flex-col items-center overflow-hidden rounded-tile border border-line bg-white px-6 pb-7 pt-10 text-center transition duration-300 ease-out-cubic hover:-translate-y-1.5 hover:border-brand/50"
+        className="group relative flex h-full flex-col items-center overflow-hidden rounded-tile border border-line bg-surface px-6 pb-7 pt-10 text-center transition duration-300 ease-out-cubic hover:-translate-y-1.5 hover:border-brand/50"
         aria-label={`${m.name}, ${m.title} — view profile`}
       >
         <span aria-hidden className="absolute inset-x-0 top-0 h-[3px] bg-brand" />

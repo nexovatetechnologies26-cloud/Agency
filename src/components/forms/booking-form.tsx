@@ -63,7 +63,7 @@ export function BookingForm({ slots, durationMinutes, defaults }: { slots: strin
                 type="button"
                 onClick={() => { setDay(i); setSlot(""); }}
                 aria-pressed={i === day}
-                className={clsx("shrink-0 rounded-xl border px-3.5 py-2 text-sm font-medium transition", i === day ? "border-brand bg-brand text-white" : "border-line bg-white hover:border-brand")}
+                className={clsx("shrink-0 rounded-xl border px-3.5 py-2 text-sm font-medium transition", i === day ? "border-brand bg-brand text-white" : "border-line bg-surface hover:border-brand")}
               >
                 {label}
               </button>

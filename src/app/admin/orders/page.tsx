@@ -21,9 +21,9 @@ export default async function AdminOrders({ searchParams }: { searchParams: Prom
     <>
       <PageHeader title="Orders & Projects" />
       <div className="mb-5 flex flex-wrap gap-2">
-        <Link href="/admin/orders" className={clsx("rounded-full border px-3.5 py-1.5 text-xs font-medium", !validStatus ? "border-brand bg-brand text-white" : "border-line bg-white")}>All</Link>
+        <Link href="/admin/orders" className={clsx("rounded-full border px-3.5 py-1.5 text-xs font-medium", !validStatus ? "border-brand bg-brand text-white" : "border-line bg-surface")}>All</Link>
         {ORDER_STATUSES.map((st) => (
-          <Link key={st} href={`/admin/orders?status=${st}`} className={clsx("rounded-full border px-3.5 py-1.5 text-xs font-medium", validStatus === st ? "border-brand bg-brand text-white" : "border-line bg-white")}>
+          <Link key={st} href={`/admin/orders?status=${st}`} className={clsx("rounded-full border px-3.5 py-1.5 text-xs font-medium", validStatus === st ? "border-brand bg-brand text-white" : "border-line bg-surface")}>
             {ORDER_STATUS_LABELS[st]}
           </Link>
         ))}

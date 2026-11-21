@@ -17,9 +17,9 @@ export default async function AdminSupport({ searchParams }: { searchParams: Pro
     <>
       <PageHeader title="Support" description={valid ? undefined : "Showing open and awaiting-customer tickets."} />
       <div className="mb-5 flex flex-wrap gap-2">
-        <Link href="/admin/support" className={clsx("rounded-full border px-3.5 py-1.5 text-xs font-medium", !valid ? "border-brand bg-brand text-white" : "border-line bg-white")}>Active</Link>
+        <Link href="/admin/support" className={clsx("rounded-full border px-3.5 py-1.5 text-xs font-medium", !valid ? "border-brand bg-brand text-white" : "border-line bg-surface")}>Active</Link>
         {TICKET_STATUSES.map((st) => (
-          <Link key={st} href={`/admin/support?status=${st}`} className={clsx("rounded-full border px-3.5 py-1.5 text-xs font-medium", valid === st ? "border-brand bg-brand text-white" : "border-line bg-white")}>{humanize(st)}</Link>
+          <Link key={st} href={`/admin/support?status=${st}`} className={clsx("rounded-full border px-3.5 py-1.5 text-xs font-medium", valid === st ? "border-brand bg-brand text-white" : "border-line bg-surface")}>{humanize(st)}</Link>
         ))}
       </div>
       {rows.length ? (

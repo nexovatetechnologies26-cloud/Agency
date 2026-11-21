@@ -13,7 +13,7 @@ export default async function AdminInvoices() {
   return (
     <>
       <PageHeader title="Invoices" description="Payments are recorded on each order." actions={
-            <a download href="/api/admin/export/invoices" className="inline-flex h-11 items-center rounded-full border border-line bg-white px-5 text-sm font-semibold hover:border-brand hover:text-brand">Export CSV</a>} />
+            <a download href="/api/admin/export/invoices" className="inline-flex h-11 items-center rounded-full border border-line bg-surface px-5 text-sm font-semibold hover:border-brand hover:text-brand">Export CSV</a>} />
       {rows.length ? (
         <div className="card overflow-x-auto">
           <table className="w-full min-w-[720px] text-left text-sm">

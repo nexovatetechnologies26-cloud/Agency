@@ -130,7 +130,7 @@ function QuickActions({ role }: { role: Role }) {
           <li key={href}>
             <Link
               href={href}
-              className="inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:border-brand/40 hover:bg-brand-soft hover:text-brand"
+              className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:border-brand/40 hover:bg-brand-soft hover:text-brand"
             >
               <Icon size={15} aria-hidden className="text-brand" /> {label}
             </Link>

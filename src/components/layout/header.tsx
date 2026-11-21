@@ -29,7 +29,7 @@ function ServicesMenu({ open, onClose }: { open: boolean; onClose: () => void })
         open ? "visible translate-y-0 opacity-100" : "invisible -translate-y-1 opacity-0",
       )}
     >
-      <div className="grid overflow-hidden rounded-3xl border border-line bg-white shadow-lift lg:grid-cols-[1fr_260px]">
+      <div className="grid overflow-hidden rounded-3xl border border-line bg-surface shadow-lift lg:grid-cols-[1fr_260px]">
         <ul className="grid gap-1 p-4 sm:grid-cols-2">
           {publishedServices.map((s) => (
             <li key={s.slug}>
@@ -45,14 +45,13 @@ function ServicesMenu({ open, onClose }: { open: boolean; onClose: () => void })
             </li>
           ))}
         </ul>
-        <div className="relative hidden flex-col justify-between overflow-hidden bg-ink p-6 text-white lg:flex">
-          <div aria-hidden className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-brand/50 blur-3xl" />
+        <div className="relative hidden flex-col justify-between overflow-hidden bg-charcoal p-6 text-white lg:flex">
           <div className="relative">
             <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-white/50">Not sure where to start?</p>
             <p className="mt-3 font-display text-xl font-semibold leading-snug tracking-tight">Tell us the goal. We&apos;ll recommend the right mix.</p>
           </div>
           <div className="relative space-y-3">
-            <Link href="/book-consultation" onClick={onClose} className="flex items-center justify-between rounded-xl bg-white px-4 py-3 text-sm font-semibold text-ink transition-colors hover:bg-brand-soft">
+            <Link href="/book-consultation" onClick={onClose} className="flex items-center justify-between rounded-xl bg-surface px-4 py-3 text-sm font-semibold text-ink transition-colors hover:bg-brand-soft">
               Book a free call <ArrowRight size={16} aria-hidden />
             </Link>
             <Link href="/services" onClick={onClose} className="flex items-center justify-between rounded-xl border border-white/15 px-4 py-3 text-sm font-medium text-white/90 transition-colors hover:border-white/40">
@@ -117,7 +116,7 @@ export function Header() {
     <header
       className={clsx(
         "sticky top-0 z-50 border-b transition-[background-color,border-color,box-shadow] duration-300 ease-out-cubic",
-        scrolled || open ? "border-line bg-white/80 shadow-[0_1px_0_rgba(23,21,31,0.02)] backdrop-blur-xl" : "border-transparent bg-transparent",
+        scrolled || open ? "border-line bg-paper/85 backdrop-blur-xl" : "border-transparent bg-transparent",
       )}
     >
       <div className="container flex h-16 items-center justify-between gap-6 md:h-[72px]">
@@ -167,7 +166,7 @@ export function Header() {
             title={account ? "My account" : "Log in"}
             className={clsx(
               "relative flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-200",
-              account ? "border-brand/30 bg-brand-soft text-brand hover:border-brand" : "border-line bg-white text-ink/70 hover:border-ink hover:text-ink",
+              account ? "border-brand/30 bg-brand-soft text-brand hover:border-brand" : "border-line bg-surface text-ink/70 hover:border-ink hover:text-ink",
             )}
           >
             <UserRound size={17} strokeWidth={1.75} aria-hidden />
@@ -180,7 +179,7 @@ export function Header() {
 
         <button
           type="button"
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-white text-ink lg:hidden"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-surface text-ink lg:hidden"
           aria-expanded={open}
           aria-controls="mobile-nav"
           aria-label={open ? "Close menu" : "Open menu"}
@@ -191,7 +190,7 @@ export function Header() {
       </div>
 
       {open && (
-        <nav id="mobile-nav" aria-label="Mobile" className="h-[calc(100dvh-4rem)] overflow-y-auto border-t border-line bg-white lg:hidden">
+        <nav id="mobile-nav" aria-label="Mobile" className="h-[calc(100dvh-4rem)] overflow-y-auto border-t border-line bg-surface lg:hidden">
           <ul className="container py-4">
             {mainNav.map((item) => (
               <li key={item.href} className="border-b border-line">

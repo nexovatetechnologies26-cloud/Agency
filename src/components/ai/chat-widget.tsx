@@ -52,7 +52,7 @@ export function ChatWidget() {
           aria-label="Nexovate assistant"
           className="card mb-3 flex h-[480px] w-[min(380px,calc(100vw-2.5rem))] flex-col overflow-hidden"
         >
-          <div className="flex items-center justify-between border-b border-line bg-ink px-4 py-3 text-white">
+          <div className="flex items-center justify-between border-b border-line bg-charcoal px-4 py-3 text-white">
             <p className="text-sm font-semibold">Nexovate Assistant</p>
             <button type="button" onClick={() => setOpen(false)} aria-label="Close chat" className="text-white/70 hover:text-white">
               <X size={18} />
