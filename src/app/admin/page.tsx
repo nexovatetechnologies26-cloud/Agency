@@ -92,7 +92,7 @@ function Bars({ rows }: { rows: { label: string; value: number }[] }) {
         <li key={r.label} className="grid grid-cols-[120px_1fr_32px] items-center gap-3 text-sm">
           <span className="truncate text-muted">{r.label}</span>
           <span className="h-2.5 rounded-full bg-paper">
-            <span className="block h-2.5 rounded-full bg-gradient-to-r from-brand to-[#9A72F0]" style={{ width: `${(r.value / max) * 100}%` }} />
+            <span className="block h-2.5 rounded-full bg-brand" style={{ width: `${(r.value / max) * 100}%` }} />
           </span>
           <span className="text-right font-medium">{r.value}</span>
         </li>

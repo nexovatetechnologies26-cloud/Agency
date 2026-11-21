@@ -76,30 +76,33 @@ export default async function TeamPage() {
         </div>
       </section>
 
-      {/* closing — the page's single dark section */}
-      <section className="bg-charcoal py-24 text-bone lg:py-35" aria-labelledby="team-cta">
-        <div className="container grid gap-14 lg:grid-cols-12">
-          <div className="lg:col-span-6">
-            <h2 id="team-cta" className="font-serif text-section text-bone">
-              Work with <em className="italic text-bone/60">this team.</em>
-            </h2>
-            <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5">
-              <ButtonLink href="/book-consultation" size="lg" variant="light">
-                Book a free consultation
-              </ButtonLink>
-              <Link href="/get-a-quote" className="link-underline !text-bone hover:!text-white">
-                Start a project <span aria-hidden>→</span>
-              </Link>
+      {/* closing — one floating white card */}
+      <section className="border-t border-line py-20 lg:py-28" aria-labelledby="team-cta">
+        <div className="container">
+          <div className="card card-float relative grid gap-12 overflow-hidden !rounded-[32px] px-7 py-12 md:px-14 md:py-16 lg:grid-cols-12">
+            <span aria-hidden className="absolute left-0 top-0 h-[3px] w-24 bg-brand" />
+            <div className="lg:col-span-6">
+              <h2 id="team-cta" className="serif-heading text-section">
+                Work with <em>this team.</em>
+              </h2>
+              <div className="mt-10 flex flex-wrap items-center gap-3">
+                <ButtonLink href="/book-consultation" size="lg">
+                  Book a free consultation
+                </ButtonLink>
+                <ButtonLink href="/get-a-quote" size="lg" variant="secondary">
+                  Start a project
+                </ButtonLink>
+              </div>
             </div>
+            <ul className="grid gap-x-10 sm:grid-cols-2 lg:col-span-5 lg:col-start-8">
+              {assurances.map((a) => (
+                <li key={a.t} className="border-t border-brand/20 pb-6 pt-5">
+                  <p className="font-semibold text-ink">{a.t}</p>
+                  <p className="mt-1.5 text-[15px] leading-relaxed text-muted">{a.d}</p>
+                </li>
+              ))}
+            </ul>
           </div>
-          <ul className="grid gap-x-10 sm:grid-cols-2 lg:col-span-5 lg:col-start-8">
-            {assurances.map((a) => (
-              <li key={a.t} className="border-t border-bone/15 pb-6 pt-5">
-                <p className="font-medium text-bone">{a.t}</p>
-                <p className="mt-1.5 text-[15px] leading-relaxed text-bone/60">{a.d}</p>
-              </li>
-            ))}
-          </ul>
         </div>
       </section>
     </div>

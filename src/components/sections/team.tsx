@@ -68,7 +68,7 @@ export function TeamCard({ m, index = 0 }: { m: TeamMemberCard; index?: number }
     <Reveal as="li" index={index % 3} className="h-full">
       <Link
         href={memberHref(m)}
-        className="group relative flex h-full flex-col items-center overflow-hidden rounded-tile border border-line bg-surface px-6 pb-7 pt-10 text-center transition duration-300 ease-out-cubic hover:-translate-y-1.5 hover:border-brand/50"
+        className="group relative flex h-full flex-col items-center overflow-hidden rounded-tile border border-brand/30 bg-surface px-6 pb-7 pt-10 text-center transition duration-300 ease-out-cubic hover:-translate-y-1.5 hover:border-brand/50"
         aria-label={`${m.name}, ${m.title} — view profile`}
       >
         <span aria-hidden className="absolute inset-x-0 top-0 h-[3px] bg-brand" />

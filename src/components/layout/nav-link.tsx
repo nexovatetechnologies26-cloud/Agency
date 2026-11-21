@@ -65,11 +65,11 @@ export function NavLink({ href, exact, variant = "side", children }: { href: str
         "group relative flex items-center gap-3 text-sm font-medium transition-colors",
         variant === "side" && "rounded-xl px-3 py-2",
         variant === "pill" && "shrink-0 gap-2 rounded-full px-3 py-1.5",
-        active ? "bg-brand-soft text-brand" : "text-ink/70 hover:bg-paper hover:text-ink",
+        active ? "bg-brand-soft text-brand" : "text-ink/70 hover:bg-brand-soft/60 hover:text-brand",
       )}
     >
       {variant === "side" && active && <span aria-hidden className="absolute -left-4 top-1/2 h-5 w-1 -translate-y-1/2 rounded-r-full bg-brand" />}
-      <Icon size={variant === "side" ? 17 : 15} strokeWidth={1.9} aria-hidden className={clsx("shrink-0", active ? "text-brand" : "text-ink/45 group-hover:text-ink/70")} />
+      <Icon size={variant === "side" ? 17 : 15} strokeWidth={1.9} aria-hidden className={clsx("shrink-0", active ? "text-brand" : "text-ink/45 group-hover:text-brand")} />
       <span className="truncate">{children}</span>
     </Link>
   );

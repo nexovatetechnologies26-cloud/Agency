@@ -35,7 +35,7 @@ export function PricingCard({ p }: { p: PackageCard }) {
       data-card
       className={clsx(
         "group relative flex h-full flex-col overflow-hidden rounded-tile bg-surface transition duration-300 ease-out-cubic hover:-translate-y-1",
-        featured ? "border-2 border-brand lg:-my-3" : "border border-line hover:border-brand/40 hover:shadow-lift",
+        featured ? "border-2 border-brand lg:-my-3" : "border border-brand/30 hover:border-brand/60 hover:shadow-lift",
       )}
     >
       {featured && (

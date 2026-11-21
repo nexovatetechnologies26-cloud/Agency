@@ -37,16 +37,6 @@ export default async function PricingPage() {
               />
             )}
           </div>
-          <p className="mt-10 text-sm text-muted">
-            Prices are shown in your local currency as an approximate amount, updated daily — change it from the currency menu at the top.
-            You&apos;re invoiced in the package&apos;s own currency, shown under each price. Taxes, if applicable, are shown at checkout.
-            Custom work is always confirmed in a written proposal.
-          </p>
-          <p className="mt-2 text-xs text-muted">
-            <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener noreferrer" className="underline decoration-line underline-offset-4 hover:text-brand">
-              Rates by Exchange Rate API
-            </a>
-          </p>
         </div>
       </section>
       <Cta title="Need something" accent="tailored?" />

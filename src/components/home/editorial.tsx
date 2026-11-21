@@ -67,72 +67,42 @@ export function SectionTitle({
   );
 }
 
-/* Hero — cinematic, brand-led -------------------------------------------------- */
+/* Hero — centred, type-led: one message, two actions, three proof points ------- */
 
 const heroPoints = ["Written scope & fixed price", "Live client dashboard", "Clients worldwide, any time zone"];
 
 export function HomeHero() {
   return (
-    <section className="relative isolate overflow-hidden" aria-labelledby="hero-title">
-      {/* depth: one soft light, a faint grid, a hairline horizon */}
-      <div aria-hidden className="absolute inset-0 -z-10">
-        <div className="absolute right-[-10%] top-[-20%] h-[720px] w-[720px] rounded-full bg-[radial-gradient(closest-side,rgba(117,69,217,0.28),transparent)]" />
-        <div className="grid-lines absolute inset-0 [mask-image:radial-gradient(ellipse_at_70%_30%,black_10%,transparent_65%)]" />
-        <div className="absolute inset-x-0 bottom-0 h-px bg-line" />
-      </div>
-
-      <div className="container grid min-h-[calc(100svh-72px)] items-center gap-12 py-16 lg:grid-cols-[1.25fr_1fr] lg:py-24">
-        <div>
-          <p className="hero-rise inline-flex items-center gap-3 text-[12px] font-semibold uppercase tracking-[0.2em] text-silver">
-            <span aria-hidden className="h-px w-10 bg-brand" />
-            {site.tagline}
-          </p>
-          <h1 id="hero-title" className="hero-rise mt-8 font-display text-[2.9rem] font-semibold leading-[0.98] tracking-[-0.045em] text-ink [animation-delay:80ms] sm:text-[3.6rem] lg:text-[4.6rem] xl:text-[5.4rem]">
-            We build digital experiences that <em className="text-brand">move</em> businesses forward.
-          </h1>
-          <p className="hero-rise mt-8 max-w-xl text-body-lg text-muted [animation-delay:180ms] md:text-[1.2rem] md:leading-relaxed">
-            From ambitious ideas to powerful digital products, we help businesses innovate, scale and stand out.
-          </p>
-          <div className="hero-rise mt-10 flex flex-wrap items-center gap-3 [animation-delay:260ms]">
-            <ButtonLink href="/portfolio" size="lg">
-              Explore our work <ArrowRight size={17} aria-hidden className="transition-transform group-hover/btn:translate-x-0.5" />
-            </ButtonLink>
-            <ButtonLink href="/get-a-quote" size="lg" variant="secondary">
-              Start a project
-            </ButtonLink>
-          </div>
-          <ul className="hero-rise mt-12 flex flex-wrap gap-x-7 gap-y-3 border-t border-line pt-7 [animation-delay:340ms]">
-            {heroPoints.map((p) => (
-              <li key={p} className="inline-flex items-center gap-2 text-sm text-ink/75">
-                <CheckCircle2 size={15} className="text-brand" aria-hidden /> {p}
-              </li>
-            ))}
-          </ul>
+    <section className="relative isolate overflow-hidden border-b border-line" aria-labelledby="hero-title">
+      <div aria-hidden className="grid-lines absolute inset-0 -z-10 opacity-60 [mask-image:radial-gradient(ellipse_at_top,black,transparent_70%)]" />
+      <div className="container flex flex-col items-center py-20 text-center lg:py-28 xl:py-32">
+        <p className="hero-rise inline-flex items-center gap-2.5 rounded-full border border-brand/25 bg-surface px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.16em] text-brand">
+          <span aria-hidden className="h-1.5 w-1.5 rotate-45 bg-brand" />
+          {site.tagline}
+        </p>
+        <h1 id="hero-title" className="serif-heading hero-rise mx-auto mt-8 max-w-5xl text-[2.7rem] leading-[1.02] tracking-[-0.045em] [animation-delay:80ms] sm:text-[3.6rem] lg:text-[4.6rem] xl:text-[5.2rem]">
+          We build digital experiences that <em>move</em> businesses forward.
+        </h1>
+        <p className="hero-rise mx-auto mt-7 max-w-2xl text-body-lg text-muted [animation-delay:180ms]">
+          From ambitious ideas to powerful digital products, we help businesses innovate, scale and stand out.
+        </p>
+        <div className="hero-rise mt-10 flex flex-wrap items-center justify-center gap-3 [animation-delay:260ms]">
+          <ButtonLink href="/portfolio" size="lg">
+            Explore our work <ArrowRight size={17} aria-hidden className="transition-transform group-hover/btn:translate-x-0.5" />
+          </ButtonLink>
+          <ButtonLink href="/get-a-quote" size="lg" variant="secondary">
+            Start a project
+          </ButtonLink>
         </div>
-
-
-        <HeroMark />
+        <ul className="hero-rise mt-12 flex flex-wrap justify-center gap-x-7 gap-y-3 [animation-delay:340ms]">
+          {heroPoints.map((p) => (
+            <li key={p} className="inline-flex items-center gap-2 text-sm text-ink/75">
+              <CheckCircle2 size={15} className="text-brand" aria-hidden /> {p}
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
-  );
-}
-
-/** The official ribbon mark, large and lit — the brand as the hero object. */
-function HeroMark() {
-  return (
-    <div aria-hidden className="hero-rise relative mx-auto hidden aspect-square w-full max-w-[520px] select-none [animation-delay:200ms] lg:block">
-      {/* concentric hairlines give depth without effects */}
-      <div className="absolute inset-0 rounded-full border border-line" />
-      <div className="absolute inset-[12%] rounded-full border border-line" />
-      <div className="absolute inset-[24%] rounded-full border border-brand/25" />
-      <div className="hero-orbit absolute inset-0">
-        <span className="absolute left-1/2 top-0 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand" />
-      </div>
-      <div className="absolute inset-0 flex items-center justify-center">
-        {/* eslint-disable-next-line @next/next/no-img-element -- static brand asset, sized by CSS */}
-        <img src="/logo-mark.png" alt="" className="animate-float w-[62%] drop-shadow-[0_30px_60px_rgba(117,69,217,0.35)]" />
-      </div>
-    </div>
   );
 }
 
@@ -142,12 +112,12 @@ export function HomeMarquee() {
   const words = publishedServices.map((s) => s.title);
   const row = [...words, ...words];
   return (
-    <section aria-label="Services overview" className="relative overflow-hidden border-y border-ink bg-charcoal py-6">
+    <section aria-label="Services overview" className="relative overflow-hidden border-y border-brand/25 bg-surface py-5 [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
       <div className="flex w-max animate-marquee gap-10 hover:[animation-play-state:paused] motion-reduce:animate-none">
         {row.map((w, i) => (
-          <span key={i} aria-hidden={i >= words.length} className="flex items-center gap-10 whitespace-nowrap font-display text-2xl font-semibold tracking-tight text-white/90 md:text-3xl">
+          <span key={i} aria-hidden={i >= words.length} className="flex items-center gap-10 whitespace-nowrap font-display text-xl font-semibold tracking-tight text-ink/80 transition-colors hover:text-brand md:text-2xl">
             {w}
-            <span aria-hidden className="text-[#B79BFF]">✦</span>
+            <span aria-hidden className="h-2 w-2 rotate-45 bg-brand" />
           </span>
         ))}
       </div>
@@ -197,7 +167,7 @@ export function HomeNumbers({ stats }: { stats: HomeStat[] }) {
   return (
     <section className="py-14 lg:py-20" aria-label="Nexovate in numbers">
       <div className="container">
-        <ul className={`grid grid-cols-2 overflow-hidden rounded-3xl border border-line bg-surface ${cols}`}>
+        <ul className={`grid grid-cols-2 overflow-hidden rounded-3xl border border-brand/30 bg-surface ${cols}`}>
           {stats.map((st, i) => (
             <li key={st._id} className={clsx("px-6 py-8 md:px-8 md:py-10", i > 0 && "border-l border-line", i >= 2 && "max-lg:border-t")}>
               <p className="font-display text-[2.75rem] font-semibold leading-none tracking-[-0.04em] text-ink md:text-[3.5rem]">
@@ -250,7 +220,7 @@ export function HomeServices() {
               className={clsx(
                 "group relative flex flex-col overflow-hidden rounded-3xl border p-7 md:p-9",
                 g.span,
-                g.dark ? "border-ink bg-charcoal text-white" : "border-line bg-surface",
+                g.dark ? "border-ink bg-charcoal text-white" : "border-brand/30 bg-surface",
               )}
             >
               <div className="relative flex items-start justify-between gap-4">
@@ -382,11 +352,9 @@ const steps = [
 
 export function HomeProcess() {
   return (
-    <section className="relative overflow-hidden bg-charcoal py-20 text-white lg:py-28" aria-labelledby="process-title">
-      <div aria-hidden className="grid-lines absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent)]" />
-      <div className="container relative">
+    <section className="border-t border-line py-20 lg:py-28" aria-labelledby="process-title">
+      <div className="container">
         <SectionTitle
-          dark
           label="How we work"
           title={
             <span id="process-title">
@@ -397,13 +365,18 @@ export function HomeProcess() {
           href="/book-consultation"
           linkText="Book the first call"
         />
-        <ol className="relative mt-16 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+        <ol className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {steps.map((s, i) => (
-            <li key={s.t} data-card className="relative border-t border-white/15 pt-8">
-              <span aria-hidden className="absolute -top-px left-0 h-px w-16 bg-brand" />
-              <span className="font-display text-[2.5rem] font-semibold leading-none tracking-[-0.04em] text-white/15">{String(i + 1).padStart(2, "0")}</span>
-              <h3 className="mt-5 font-display text-xl font-semibold tracking-tight text-white">{s.t}</h3>
-              <p className="mt-2 max-w-sm text-[15px] leading-relaxed text-white/60">{s.d}</p>
+            <li key={s.t} data-card className="card group relative overflow-hidden p-8 transition duration-300 ease-out-cubic hover:-translate-y-1 hover:shadow-lift lg:p-9">
+              <span aria-hidden className="absolute left-0 top-0 h-[3px] w-16 bg-brand transition-all duration-500 group-hover:w-full" />
+              <div className="flex items-center justify-between">
+                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-soft font-display text-sm font-semibold text-brand transition-colors duration-300 group-hover:bg-brand group-hover:text-white">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted/70">Step {i + 1} of {steps.length}</span>
+              </div>
+              <h3 className="mt-7 font-display text-xl font-semibold tracking-tight">{s.t}</h3>
+              <p className="mt-2 text-[15px] leading-relaxed text-muted">{s.d}</p>
             </li>
           ))}
         </ol>
@@ -555,7 +528,7 @@ export function HomeFaq() {
         </div>
         <div className="space-y-3 lg:col-span-7 lg:col-start-6">
           {faqs.slice(0, 6).map((f) => (
-            <details key={f.q} className="group rounded-2xl border border-line bg-surface px-6 transition-colors open:border-brand/30 open:bg-surface [&_summary::-webkit-details-marker]:hidden">
+            <details key={f.q} className="group rounded-2xl border border-brand/30 bg-surface px-6 transition-colors open:border-brand/30 open:bg-surface [&_summary::-webkit-details-marker]:hidden">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-[16px] font-semibold text-ink">
                 {f.q}
                 <span aria-hidden className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface text-brand ring-1 ring-line transition-transform duration-300 group-open:rotate-45 group-open:bg-brand group-open:text-white group-open:ring-brand">
@@ -577,26 +550,26 @@ export function HomeCta() {
   return (
     <section className="py-16 lg:py-24" aria-labelledby="cta-title">
       <div className="container">
-        <div className="relative overflow-hidden rounded-[32px] border border-line bg-charcoal px-6 py-20 text-center text-white sm:px-12 lg:py-28">
-          <div aria-hidden className="grid-lines absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />
-          <div aria-hidden className="absolute left-1/2 top-0 h-[420px] w-[820px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(117,69,217,0.35),transparent)]" />
+        <div className="card card-float relative overflow-hidden !rounded-[32px] px-6 py-20 text-center sm:px-12 lg:py-24">
+          <span aria-hidden className="absolute left-1/2 top-0 h-[3px] w-28 -translate-x-1/2 bg-brand" />
+          <div aria-hidden className="grid-lines absolute inset-0 opacity-60 [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />
           <div className="relative mx-auto max-w-4xl">
-            <p className="label !text-[#B79BFF] before:!bg-[#B79BFF]">Start a project</p>
-            <h2 id="cta-title" className="mt-6 font-display text-[2.6rem] font-semibold leading-[1] tracking-[-0.045em] text-white md:text-[4.5rem]">
-              Let&apos;s build something <em className="text-[#B79BFF]">extraordinary.</em>
+            <p className="label">Start a project</p>
+            <h2 id="cta-title" className="serif-heading mt-6 text-[2.6rem] leading-[1] tracking-[-0.045em] md:text-[4.5rem]">
+              Let&apos;s build something <em>extraordinary.</em>
             </h2>
-            <p className="mx-auto mt-7 max-w-xl text-body-lg text-white/65">
+            <p className="mx-auto mt-7 max-w-xl text-body-lg text-muted">
               Tell us what you&apos;re building. You&apos;ll get a clear plan, a timeline and a fixed price — free, with no obligation.
             </p>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-              <ButtonLink href="/get-a-quote" size="lg" variant="light">
+              <ButtonLink href="/get-a-quote" size="lg">
                 Start a project <ArrowRight size={17} aria-hidden className="transition-transform group-hover/btn:translate-x-0.5" />
               </ButtonLink>
-              <ButtonLink href="/book-consultation" size="lg" variant="outline-light">
+              <ButtonLink href="/book-consultation" size="lg" variant="secondary">
                 Book a free call
               </ButtonLink>
             </div>
-            <p className="mt-8 inline-flex items-center gap-2 text-sm text-white/50">
+            <p className="mt-8 inline-flex items-center gap-2 rounded-full border border-brand/25 bg-brand-soft/60 px-4 py-1.5 text-sm font-medium text-brand">
               <Globe2 size={15} aria-hidden /> Working with clients worldwide
             </p>
           </div>

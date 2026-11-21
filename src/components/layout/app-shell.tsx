@@ -37,7 +37,7 @@ export function AppShell({
       >
         Skip to content
       </a>
-      <header className="sticky top-0 z-40 border-b border-line bg-white/85 backdrop-blur-xl print:hidden">
+      <header className="sticky top-0 z-40 border-b border-brand/20 bg-surface/90 backdrop-blur-xl print:hidden">
         <div className="flex h-16 items-center justify-between gap-4 px-5 lg:px-8">
           <div className="flex min-w-0 items-center gap-3">
             <Logo />
@@ -49,7 +49,7 @@ export function AppShell({
             </Link>
             <span className="hidden h-6 w-px bg-line md:block" aria-hidden />
             <div className="hidden items-center gap-2.5 md:flex">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-brand to-brand-deep text-xs font-bold text-white" aria-hidden>
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand text-xs font-bold text-white ring-2 ring-brand-soft" aria-hidden>
                 {initial}
               </span>
               <span className="leading-tight">
@@ -75,11 +75,11 @@ export function AppShell({
         </nav>
       </header>
       <div className="flex">
-        <aside className="sticky top-16 hidden h-[calc(100vh-4rem)] w-64 shrink-0 flex-col overflow-y-auto border-r border-line bg-surface px-4 py-5 lg:flex print:hidden">
+        <aside className="sticky top-16 hidden h-[calc(100vh-4rem)] w-64 shrink-0 flex-col overflow-y-auto border-r border-brand/20 bg-surface px-4 py-5 lg:flex print:hidden">
           <nav aria-label="Section" className="flex-1 space-y-6">
             {groups.map((g, gi) => (
               <div key={g.label ?? `g${gi}`}>
-                {g.label && <p className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted/80">{g.label}</p>}
+                {g.label && <p className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-brand/80">{g.label}</p>}
                 <div className="flex flex-col gap-0.5">
                   {g.items.map((n) => (
                     <NavLink key={n.href} href={n.href} exact={n.exact}>{n.label}</NavLink>
@@ -90,10 +90,12 @@ export function AppShell({
           </nav>
           {badge === "Client" && <Link
             href="/book-consultation"
-            className="mt-6 block rounded-2xl bg-charcoal p-4 text-white transition-colors hover:bg-brand-deep"
+            className="group relative mt-6 block overflow-hidden rounded-2xl border border-brand/25 bg-brand-soft/70 p-4 transition-colors hover:border-brand"
           >
-            <p className="text-sm font-semibold">Need a hand?</p>
-            <p className="mt-1 text-xs leading-relaxed text-white/60">Book a call with the Nexovate team.</p>
+            <span aria-hidden className="absolute left-0 top-0 h-[3px] w-12 bg-brand" />
+            <p className="text-sm font-semibold text-ink">Need a hand?</p>
+            <p className="mt-1 text-xs leading-relaxed text-muted">Book a call with the Nexovate team.</p>
+            <p className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-brand">Book a call <ArrowUpRight size={13} aria-hidden className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></p>
           </Link>}
         </aside>
         <SiteMotion />
@@ -118,17 +120,19 @@ export function PageHeader({ title, description, actions }: { title: string; des
 }
 
 export function Stat({ label, value, href, tone = "default" }: { label: string; value: React.ReactNode; href?: string; tone?: "default" | "brand" | "dark" }) {
-  const dark = tone === "dark";
+  // "brand" and "dark" both mark the highlighted stat: violet top bar, violet border, violet value
+  const highlight = tone !== "default";
   const inner = (
     <>
+      {highlight && <span aria-hidden className="absolute left-0 top-0 h-[3px] w-14 bg-brand" />}
       <div className="flex items-start justify-between gap-3">
-        <p className={clsx("text-[13px] font-medium", dark ? "text-white/60" : "text-muted")}>{label}</p>
-        {href && <ArrowUpRight size={15} aria-hidden className={clsx("shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5", dark ? "text-white/40" : "text-ink/30 group-hover:text-brand")} />}
+        <p className="text-[13px] font-medium text-muted">{label}</p>
+        {href && <ArrowUpRight size={15} aria-hidden className="shrink-0 text-ink/30 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-brand" />}
       </div>
-      <p className={clsx("mt-3 font-display text-[1.9rem] font-semibold leading-none tracking-[-0.03em]", dark ? "text-white" : tone === "brand" ? "text-brand" : "text-ink")}>{value}</p>
+      <p className={clsx("mt-3 font-display text-[1.9rem] font-semibold leading-none tracking-[-0.03em]", highlight ? "text-brand" : "text-ink")}>{value}</p>
     </>
   );
-  const cls = clsx("group block p-5", dark ? "rounded-tile border border-ink bg-charcoal" : "card");
+  const cls = clsx("card group relative block overflow-hidden p-5", highlight && "!border-brand/50");
   return href ? (
     <Link href={href} className={cls}>{inner}</Link>
   ) : (

@@ -4,19 +4,20 @@
 
 /* ==========================================================================
    Theme tokens (RGB channels, used by tailwind.config.ts)
-   :root        → light theme: client dashboard & admin
-   .theme-dark  → public website: obsidian / charcoal / white / violet / silver
+   :root        → client dashboard & admin — same grey / white / violet identity as the site
+   .theme-light → public website
+   .theme-dark  → kept for rollback (obsidian / charcoal / white / violet / silver)
    ========================================================================== */
 :root {
-  --c-ink: 23 21 31;
-  --c-paper: 247 246 250;
+  --c-ink: 18 18 24;
+  --c-paper: 242 243 245;
   --c-surface: 255 255 255;
-  --c-line: 232 230 237;
-  --c-muted: 94 90 107;
+  --c-line: 225 227 232;
+  --c-muted: 102 106 118;
   --c-brand: 117 69 217;
-  --c-brand-deep: 79 43 155;
-  --c-brand-soft: 239 233 252;
-  --c-brand-tint: 227 215 250;
+  --c-brand-deep: 90 50 176;
+  --c-brand-soft: 242 237 252;
+  --c-brand-tint: 228 218 250;
 }
 .theme-dark {
   color-scheme: dark;
@@ -42,6 +43,14 @@
   --c-brand-deep: 90 50 176;
   --c-brand-soft: 242 237 252;
   --c-brand-tint: 228 218 250;
+}
+/* every card (site, dashboard, admin): a soft brand-violet border on all four sides */
+:root .card {
+  border-color: rgb(var(--c-brand) / 0.3);
+}
+:root a.card:hover,
+.theme-light .card:hover {
+  border-color: rgb(var(--c-brand) / 0.6);
 }
 .theme-light .card-float {
   box-shadow:

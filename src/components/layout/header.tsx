@@ -20,6 +20,19 @@ function readAccountHint(): { href: string } | null {
   return { href: m[1] === "staff" ? "/admin" : "/dashboard" };
 }
 
+const navItem =
+  "group/nav relative inline-flex items-center gap-1 rounded-full px-3.5 py-2 text-[14px] font-medium text-ink/80 transition-colors duration-200 hover:bg-brand-soft hover:text-brand";
+
+/** Thin violet line that grows under a nav item on hover and stays under the current page. */
+function NavUnderline() {
+  return (
+    <span
+      aria-hidden
+      className="pointer-events-none absolute inset-x-3.5 bottom-[3px] h-[2px] origin-left scale-x-0 rounded-full bg-brand transition-transform duration-300 ease-out-cubic group-hover/nav:scale-x-100 group-[.is-active]/nav:scale-x-100"
+    />
+  );
+}
+
 /** Services mega-menu: every published service with its icon and one-line summary. */
 function ServicesMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
   return (
@@ -29,32 +42,33 @@ function ServicesMenu({ open, onClose }: { open: boolean; onClose: () => void })
         open ? "visible translate-y-0 opacity-100" : "invisible -translate-y-1 opacity-0",
       )}
     >
-      <div className="grid overflow-hidden rounded-3xl border border-line bg-surface shadow-lift lg:grid-cols-[1fr_260px]">
+      <div className="grid overflow-hidden rounded-3xl border border-brand/25 bg-surface shadow-lift lg:grid-cols-[1fr_260px]">
         <ul className="grid gap-1 p-4 sm:grid-cols-2">
           {publishedServices.map((s) => (
             <li key={s.slug}>
-              <Link href={`/services/${s.slug}`} onClick={onClose} className="group flex gap-3.5 rounded-2xl p-3 transition-colors hover:bg-paper">
+              <Link href={`/services/${s.slug}`} onClick={onClose} className="group flex gap-3.5 rounded-2xl border border-transparent p-3 transition-colors hover:border-brand/25 hover:bg-brand-soft/60">
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-soft text-brand transition-colors group-hover:bg-brand group-hover:text-white">
                   <ServiceIcon name={s.icon} className="h-[18px] w-[18px]" />
                 </span>
                 <span className="min-w-0">
-                  <span className="block text-[14px] font-semibold text-ink">{s.title}</span>
+                  <span className="block text-[14px] font-semibold text-ink transition-colors group-hover:text-brand">{s.title}</span>
                   <span className="mt-0.5 line-clamp-1 block text-[13px] text-muted">{s.summary}</span>
                 </span>
               </Link>
             </li>
           ))}
         </ul>
-        <div className="relative hidden flex-col justify-between overflow-hidden bg-charcoal p-6 text-white lg:flex">
+        <div className="relative hidden flex-col justify-between overflow-hidden border-l border-brand/20 bg-brand-soft/70 p-6 lg:flex">
+          <span aria-hidden className="absolute left-0 top-0 h-[3px] w-16 bg-brand" />
           <div className="relative">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-white/50">Not sure where to start?</p>
-            <p className="mt-3 font-display text-xl font-semibold leading-snug tracking-tight">Tell us the goal. We&apos;ll recommend the right mix.</p>
+            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-brand">Not sure where to start?</p>
+            <p className="mt-3 font-display text-xl font-semibold leading-snug tracking-tight text-ink">Tell us the goal. We&apos;ll recommend the right mix.</p>
           </div>
           <div className="relative space-y-3">
-            <Link href="/book-consultation" onClick={onClose} className="flex items-center justify-between rounded-xl bg-surface px-4 py-3 text-sm font-semibold text-ink transition-colors hover:bg-brand-soft">
+            <Link href="/book-consultation" onClick={onClose} className="flex items-center justify-between rounded-xl bg-brand px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-deep">
               Book a free call <ArrowRight size={16} aria-hidden />
             </Link>
-            <Link href="/services" onClick={onClose} className="flex items-center justify-between rounded-xl border border-white/15 px-4 py-3 text-sm font-medium text-white/90 transition-colors hover:border-white/40">
+            <Link href="/services" onClick={onClose} className="flex items-center justify-between rounded-xl border border-brand/30 bg-surface px-4 py-3 text-sm font-medium text-ink transition-colors hover:border-brand hover:text-brand">
               All services <ArrowRight size={16} aria-hidden />
             </Link>
           </div>
@@ -132,11 +146,9 @@ export function Header() {
                   aria-haspopup="true"
                   onClick={() => setMenu((v) => !v)}
                   onFocus={openMenu}
-                  className={clsx(
-                    "inline-flex items-center gap-1 rounded-full px-3.5 py-2 text-[14px] font-medium transition-colors hover:bg-ink/[0.04]",
-                    isActive(item.href) ? "text-brand" : "text-ink/80 hover:text-ink",
-                  )}
+                  className={clsx(navItem, (isActive(item.href) || menu) && "!bg-brand-soft !text-brand", isActive(item.href) && "is-active")}
                 >
+                  <NavUnderline />
                   {item.label}
                   <ChevronDown size={14} aria-hidden className={clsx("transition-transform duration-200", menu && "rotate-180")} />
                 </button>
@@ -147,11 +159,9 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 aria-current={isActive(item.href) ? "page" : undefined}
-                className={clsx(
-                  "rounded-full px-3.5 py-2 text-[14px] font-medium transition-colors hover:bg-ink/[0.04]",
-                  isActive(item.href) ? "text-brand" : "text-ink/80 hover:text-ink",
-                )}
+                className={clsx(navItem, isActive(item.href) && "is-active !text-brand")}
               >
+                <NavUnderline />
                 {item.label}
               </Link>
             ),
@@ -166,13 +176,13 @@ export function Header() {
             title={account ? "My account" : "Log in"}
             className={clsx(
               "relative flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-200",
-              account ? "border-brand/30 bg-brand-soft text-brand hover:border-brand" : "border-line bg-surface text-ink/70 hover:border-ink hover:text-ink",
+              account ? "border-brand/30 bg-brand-soft text-brand hover:border-brand" : "border-line bg-surface text-ink/70 hover:border-brand hover:bg-brand-soft hover:text-brand",
             )}
           >
             <UserRound size={17} strokeWidth={1.75} aria-hidden />
             {account && <span aria-hidden className="absolute right-0 top-0 h-2.5 w-2.5 rounded-full border-2 border-white bg-brand" />}
           </Link>
-          <ButtonLink href="/get-a-quote" variant="dark" className="h-10 px-5 !text-[13px]">
+          <ButtonLink href="/get-a-quote" className="h-10 px-5 !text-[13px]">
             Start a project <ArrowRight size={15} aria-hidden className="transition-transform group-hover/btn:translate-x-0.5" />
           </ButtonLink>
         </div>
@@ -197,10 +207,10 @@ export function Header() {
                 <Link
                   href={item.href}
                   aria-current={isActive(item.href) ? "page" : undefined}
-                  className={clsx("flex items-center justify-between py-4 font-display text-2xl font-semibold tracking-tight", isActive(item.href) ? "text-brand" : "text-ink")}
+                  className={clsx("group flex items-center justify-between py-4 font-display text-2xl font-semibold tracking-tight", isActive(item.href) ? "text-brand" : "text-ink hover:text-brand")}
                 >
                   {item.label}
-                  <ArrowRight size={18} aria-hidden className="text-muted" />
+                  <ArrowRight size={18} aria-hidden className={clsx("transition-transform group-hover:translate-x-1", isActive(item.href) ? "text-brand" : "text-muted")} />
                 </Link>
               </li>
             ))}

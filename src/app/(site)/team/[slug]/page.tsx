@@ -49,7 +49,7 @@ function Card({
   const dark = tone === "dark";
   return (
     <div
-      className={`relative overflow-hidden rounded-tile p-7 md:p-9 ${dark ? "bg-charcoal text-bone" : "border border-line bg-surface"} ${className}`}
+      className={`relative overflow-hidden rounded-tile p-7 md:p-9 ${dark ? "bg-charcoal text-bone" : "border border-brand/30 bg-surface"} ${className}`}
     >
       <span aria-hidden className="absolute inset-x-0 top-0 h-[3px] bg-brand" />
       <p className={`flex items-center gap-2.5 text-label font-medium uppercase ${dark ? "text-bone/55" : "text-muted"}`}>
@@ -201,7 +201,7 @@ export default async function TeamMemberPage({ params }: Props) {
                 <Reveal index={2} className="mt-auto pt-12">
                   <dl className={`grid gap-3 ${facts.length >= 4 ? "grid-cols-2 xl:grid-cols-4" : facts.length === 3 ? "grid-cols-3" : "grid-cols-2"}`}>
                     {facts.map((f) => (
-                      <div key={f.k} className="relative overflow-hidden rounded-tile border border-line bg-surface px-5 pb-5 pt-6">
+                      <div key={f.k} className="relative overflow-hidden rounded-tile border border-brand/30 bg-surface px-5 pb-5 pt-6">
                         <span aria-hidden className="absolute inset-x-0 top-0 h-[3px] bg-brand" />
                         <dt className="label-plain">{f.k}</dt>
                         <dd className={`mt-3 break-words font-serif leading-tight text-brand ${f.v.length > 14 ? "text-[1.15rem]" : f.v.length > 9 ? "text-[1.45rem]" : "text-[1.9rem] leading-none"}`}>
@@ -261,7 +261,7 @@ export default async function TeamMemberPage({ params }: Props) {
                         {responsibilities.map((r, i) => (
                           <li
                             key={r.title}
-                            className="group/card relative overflow-hidden rounded-tile border border-line border-l-[3px] border-l-brand bg-surface p-6 transition-colors duration-300 hover:bg-brand-soft"
+                            className="group/card relative overflow-hidden rounded-tile border border-brand/30 border-l-[3px] border-l-brand bg-surface p-6 transition-colors duration-300 hover:bg-brand-soft"
                           >
                             <span className="font-serif text-4xl italic leading-none text-brand">{String(i + 1).padStart(2, "0")}</span>
                             <h3 className="mt-4 text-lg font-semibold tracking-tight text-ink">{r.title}</h3>
@@ -351,16 +351,28 @@ export default async function TeamMemberPage({ params }: Props) {
         </section>
       )}
 
-      {/* 3 · in their words — the page's single dark section */}
+      {/* 3 · in their words — one floating white card */}
       {m.quote && (
-        <section className="bg-charcoal py-24 text-bone lg:py-35" aria-label={`In ${first}'s words`}>
-          <div className="container grid gap-10 lg:grid-cols-12">
-            <p className="label !text-bone/50 lg:col-span-3">In {first}&apos;s words</p>
-            <Reveal as="figure" className="lg:col-span-9">
-              <blockquote className="font-serif text-statement text-bone">&ldquo;{m.quote}&rdquo;</blockquote>
-              <figcaption className="mt-10 text-sm text-bone/60">
-                {m.name} — {m.title}
-              </figcaption>
+        <section className="border-t border-line py-20 lg:py-28" aria-label={`In ${first}'s words`}>
+          <div className="container">
+            <Reveal as="figure" className="card card-float relative mx-auto max-w-5xl overflow-hidden !rounded-[32px] px-7 py-12 md:px-14 md:py-16">
+              <span aria-hidden className="absolute left-0 top-0 h-[3px] w-24 bg-brand" />
+              <div className="grid gap-8 lg:grid-cols-12">
+                <div className="lg:col-span-3">
+                  <p className="label">In {first}&apos;s words</p>
+                  <span aria-hidden className="mt-6 block font-accent text-[6rem] leading-[0.6] text-brand">&ldquo;</span>
+                </div>
+                <div className="lg:col-span-9">
+                  <blockquote className="font-accent text-[1.9rem] leading-[1.25] text-ink md:text-[2.5rem]">{m.quote}</blockquote>
+                  <figcaption className="mt-10 flex items-center gap-4 border-t border-brand/20 pt-6">
+                    <span aria-hidden className="h-2 w-2 rotate-45 bg-brand" />
+                    <span>
+                      <span className="block font-display text-lg font-semibold tracking-tight text-ink">{m.name}</span>
+                      {m.title && <span className="block text-sm text-muted">{m.title}</span>}
+                    </span>
+                  </figcaption>
+                </div>
+              </div>
             </Reveal>
           </div>
         </section>
