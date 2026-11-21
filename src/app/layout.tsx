@@ -1,11 +1,30 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Inter_Tight, Instrument_Serif } from "next/font/google";
+import localFont from "next/font/local";
 import { site } from "@/content/site";
 import "./globals.css";
 
-const sans = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
-const display = Inter_Tight({ subsets: ["latin"], weight: ["500", "600", "700"], variable: "--font-display", display: "swap" });
-const serif = Instrument_Serif({ subsets: ["latin"], weight: "400", style: ["normal", "italic"], variable: "--font-serif", display: "swap" });
+// Fonts are self-hosted (src/app/fonts, latin subset, SIL Open Font License) so builds
+// never depend on downloading from Google Fonts — that download failed on Railway.
+const sans = localFont({
+  src: "./fonts/inter-latin-var.woff2",
+  weight: "100 900",
+  variable: "--font-sans",
+  display: "swap",
+});
+const display = localFont({
+  src: "./fonts/inter-tight-latin-var.woff2",
+  weight: "500 700",
+  variable: "--font-display",
+  display: "swap",
+});
+const serif = localFont({
+  src: [
+    { path: "./fonts/instrument-serif-latin-400.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/instrument-serif-latin-400-italic.woff2", weight: "400", style: "italic" },
+  ],
+  variable: "--font-serif",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
