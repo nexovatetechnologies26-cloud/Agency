@@ -1,5 +1,6 @@
 import "server-only";
 import { Schema, model, models, type InferSchemaType, type Model } from "mongoose";
+import { SENIORITY_LEVELS } from "@/lib/constants";
 
 // ---------- Blog post ----------
 const postSchema = new Schema(
@@ -64,6 +65,27 @@ const testimonialSchema = new Schema(
 export type TestimonialDoc = InferSchemaType<typeof testimonialSchema>;
 export const Testimonial: Model<TestimonialDoc> =
   (models.Testimonial as Model<TestimonialDoc>) || model("Testimonial", testimonialSchema);
+
+// ---------- Public team profile (shown on the website, separate from login accounts) ----------
+const teamMemberSchema = new Schema(
+  {
+    name: { type: String, required: true, maxlength: 100 },
+    title: { type: String, required: true, maxlength: 120 }, // e.g. "Lead Full-Stack Engineer"
+    seniority: { type: String, enum: SENIORITY_LEVELS, default: "senior" },
+    yearsExperience: { type: Number, min: 0, max: 60 },
+    bio: { type: String, maxlength: 600 },
+    expertise: { type: [String], default: [] },
+    photo: String, // full image URL
+    linkedin: String,
+    location: { type: String, maxlength: 80 },
+    published: { type: Boolean, default: false, index: true },
+    sort: { type: Number, default: 0 },
+  },
+  { timestamps: true },
+);
+export type TeamMemberDoc = InferSchemaType<typeof teamMemberSchema>;
+export const TeamMember: Model<TeamMemberDoc> =
+  (models.TeamMember as Model<TeamMemberDoc>) || model("TeamMember", teamMemberSchema);
 
 // ---------- Newsletter subscriber ----------
 const subscriberSchema = new Schema(

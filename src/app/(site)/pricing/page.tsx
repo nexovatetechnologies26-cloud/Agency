@@ -43,7 +43,7 @@ export default async function PricingPage() {
           </p>
         </div>
       </section>
-      <Cta title="Need something tailored?" />
+      <Cta title="Need something" accent="tailored?" />
     </>
   );
 }

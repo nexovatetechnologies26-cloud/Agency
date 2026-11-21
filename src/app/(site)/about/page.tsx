@@ -3,6 +3,12 @@ import { Compass, Eye, HeartHandshake } from "lucide-react";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { WhyUs } from "@/components/sections/why-us";
 import { Cta } from "@/components/sections/cta";
+import { TeamSection } from "@/components/sections/team";
+import { listTeamMembers } from "@/server/queries/other";
+import { safe } from "@/server/lib/safe";
+
+// Team profiles come from the admin panel; refreshed every 5 minutes and on every edit.
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "About",
@@ -16,7 +22,8 @@ const values = [
   { icon: HeartHandshake, title: "Our promise", text: "Clear communication, honest timelines and work we are proud to put our name on." },
 ];
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const team = await safe(listTeamMembers, [], "about-team");
   return (
     <>
       <section className="section">
@@ -38,6 +45,7 @@ export default function AboutPage() {
           </ul>
         </div>
       </section>
+      <TeamSection members={team} />
       <WhyUs />
       <Cta />
     </>

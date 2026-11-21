@@ -119,7 +119,7 @@ export default async function ServicePage({ params }: Props) {
         </div>
       </section>
 
-      <Cta title={`Let's talk about your ${service.title.toLowerCase()} project`} />
+      <Cta title={`Let's talk about your ${service.title.toLowerCase()}`} accent="project." />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     </>
   );

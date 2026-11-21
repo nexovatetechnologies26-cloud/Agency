@@ -13,7 +13,8 @@ const config: Config = {
         brand: {
           DEFAULT: "#7545D9", // Primary Violet
           deep: "#4F2B9B", // Deep Purple — hover / pressed only
-          soft: "#EFE9FC",
+          soft: "#EFE9FC", // light brand fill (buttons)
+          tint: "#E3D7FA", // light brand fill — hover
         },
         ink: "#17151F", // Charcoal
         paper: "#F7F6FA", // Off-white background

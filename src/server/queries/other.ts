@@ -3,7 +3,7 @@ import { isValidObjectId } from "mongoose";
 import { connectDB } from "@/server/db/mongodb";
 import { User } from "@/server/models/user.model";
 import { Ticket } from "@/server/models/support.model";
-import { PortfolioProject, Post, Testimonial } from "@/server/models/content.model";
+import { PortfolioProject, Post, TeamMember, Testimonial } from "@/server/models/content.model";
 import { hashToken } from "@/server/auth/tokens";
 import { plain } from "@/server/lib/plain";
 
@@ -124,4 +124,21 @@ export async function getProjectAdmin(id: string) {
 export async function listTestimonials() {
   await connectDB();
   return plain(await Testimonial.find({ published: true, verified: true }).sort({ createdAt: -1 }).limit(6).lean());
+}
+
+// ---------- Team profiles ----------
+export async function listTeamMembers() {
+  await connectDB();
+  return plain(await TeamMember.find({ published: true }).sort({ sort: 1, createdAt: 1 }).lean());
+}
+
+export async function listTeamMembersAdmin() {
+  await connectDB();
+  return plain(await TeamMember.find().sort({ sort: 1, createdAt: 1 }).lean());
+}
+
+export async function getTeamMemberAdmin(id: string) {
+  if (!isValidObjectId(id)) return null;
+  await connectDB();
+  return plain(await TeamMember.findById(id).lean());
 }

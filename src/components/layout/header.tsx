@@ -54,7 +54,7 @@ export function Header() {
       <div className="container flex h-[72px] items-center justify-between md:h-20">
         <Logo />
 
-        <nav aria-label="Main" className="hidden items-center gap-10 lg:flex">
+        <nav aria-label="Main" className="hidden items-center gap-8 lg:flex">
           {mainNav.map((item) => (
             <Link
               key={item.href}
@@ -67,7 +67,10 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="hidden lg:block">
+        <div className="hidden items-center gap-8 lg:flex">
+          <Link href={account ? account.href : "/login"} className="link-underline !text-[15px]">
+            {account ? "My Account" : "Log in"}
+          </Link>
           <ButtonLink href="/get-a-quote" size="lg">
             Start a Project
           </ButtonLink>
@@ -100,7 +103,7 @@ export function Header() {
             ))}
             <li className="border-b border-line">
               <Link href={account ? account.href : "/login"} className="block py-4 font-serif text-3xl text-ink">
-                {account ? "My account" : "Client login"}
+                {account ? "My Account" : "Log in"}
               </Link>
             </li>
             <li className="pt-8">

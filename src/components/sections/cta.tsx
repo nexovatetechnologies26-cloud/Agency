@@ -1,32 +1,35 @@
-import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 import { ButtonLink } from "@/components/ui/button";
 
+/**
+ * Closing call to action used on inner pages. Same editorial treatment as the
+ * homepage CTA: light background, serif heading, split layout, no gradients.
+ * Pass a title ending in a word to italicise via `accent` (optional).
+ */
 export function Cta({
-  title = "Have a project in mind?",
-  text = "Tell us what you want to build. We'll review it and get back to you with next steps.",
+  title = "Have a project in",
+  accent = "mind?",
+  text = "Tell us what you're building. We'll reply with a few questions, then a written proposal with scope, timeline and price.",
 }: {
   title?: string;
+  accent?: string;
   text?: string;
 }) {
   return (
-    <section className="section">
-      <div className="container">
-        <div className="relative overflow-hidden rounded-[28px] bg-ink px-8 py-14 text-center md:px-16 md:py-20">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_80%_at_50%_0%,rgba(117,69,217,0.45),transparent_70%)]"
-          />
-          <div className="relative">
-            <h2 className="mx-auto max-w-2xl text-3xl text-white md:text-4xl">{title}</h2>
-            <p className="mx-auto mt-4 max-w-xl text-white/70">{text}</p>
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <ButtonLink href="/get-a-quote" size="lg">
-                Get a Custom Quote <ArrowRight size={18} />
-              </ButtonLink>
-              <ButtonLink href="/contact" size="lg" variant="outline-light">
-                Contact Us
-              </ButtonLink>
-            </div>
+    <section className="border-t border-line bg-paper py-24 lg:py-35" aria-labelledby="cta-title">
+      <div className="container grid gap-12 lg:grid-cols-12">
+        <h2 id="cta-title" className="serif-heading text-section lg:col-span-7">
+          {title} {accent && <em>{accent}</em>}
+        </h2>
+        <div className="lg:col-span-4 lg:col-start-9 lg:self-end">
+          <p className="max-w-measure text-body text-muted">{text}</p>
+          <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5">
+            <ButtonLink href="/get-a-quote" size="lg">
+              Start a project
+            </ButtonLink>
+            <Link href="/book-consultation" className="link-underline">
+              Book a call <span aria-hidden>→</span>
+            </Link>
           </div>
         </div>
       </div>

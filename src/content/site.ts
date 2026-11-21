@@ -22,10 +22,11 @@ export const site = {
   },
 } as const;
 
-// Primary navigation: four links only (Contact, Blog and Log in live in the footer).
 export const mainNav = [
   { label: "Services", href: "/services" },
-  { label: "Work", href: "/portfolio" },
   { label: "Pricing", href: "/pricing" },
+  { label: "Portfolio", href: "/portfolio" },
+  { label: "Blog", href: "/blog" },
   { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
 ] as const;

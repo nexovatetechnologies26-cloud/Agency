@@ -14,10 +14,10 @@ export function Process() {
         <SectionHeading eyebrow="How we work" title="A simple, proven process" align="center" />
         <ol className="relative mt-14 grid gap-5 md:grid-cols-4">
           {/* connecting line behind the step numbers (desktop) */}
-          <span aria-hidden className="absolute left-[12.5%] right-[12.5%] top-[46px] hidden h-px bg-gradient-to-r from-brand/10 via-brand/40 to-brand/10 md:block" />
+          <span aria-hidden className="absolute left-[12.5%] right-[12.5%] top-[46px] hidden h-px bg-line md:block" />
           {steps.map((s, i) => (
             <li key={s.title} className="card relative p-7 text-center md:text-left">
-              <span className="relative mx-auto flex h-9 w-9 items-center justify-center rounded-full bg-brand text-sm font-semibold text-white shadow-md shadow-brand/30 md:mx-0">
+              <span className="relative mx-auto flex h-9 w-9 items-center justify-center rounded-full bg-brand text-sm font-semibold text-white md:mx-0">
                 {i + 1}
               </span>
               <h3 className="mt-5 text-lg">{s.title}</h3>

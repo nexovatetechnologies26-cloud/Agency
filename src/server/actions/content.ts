@@ -5,7 +5,8 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { isValidObjectId } from "mongoose";
 import { connectDB } from "@/server/db/mongodb";
-import { PortfolioProject, Post, Subscriber, Testimonial } from "@/server/models/content.model";
+import { PortfolioProject, Post, Subscriber, TeamMember, Testimonial } from "@/server/models/content.model";
+import { SENIORITY_LEVELS } from "@/lib/constants";
 import { assertPermission } from "@/server/auth/session";
 import { fieldErrors, formObject, limitAction } from "@/server/lib/forms";
 import { audit } from "@/server/lib/audit";
@@ -201,4 +202,73 @@ export async function subscribeAction(_: FormState, fd: FormData): Promise<FormS
     { upsert: true },
   );
   return { ok: true, message: "Thanks for subscribing!" };
+}
+
+// ======================= Public team profiles =======================
+
+const teamMemberSchema = z.object({
+  id: optionalId,
+  name: z.string().trim().min(2, "Enter a name").max(100),
+  title: z.string().trim().min(2, "Enter a job title").max(120),
+  seniority: z.enum(SENIORITY_LEVELS),
+  yearsExperience: z
+    .string()
+    .optional()
+    .refine((v) => !v || (/^\d{1,2}$/.test(v) && Number(v) <= 60), "Enter years as a whole number"),
+  bio: z.string().trim().max(600).optional(),
+  expertise: z.string().max(500).optional(),
+  photo: url.optional().or(z.literal("")),
+  linkedin: url.optional().or(z.literal("")),
+  location: z.string().trim().max(80).optional(),
+  published: z.string().optional(),
+  sort: z.string().optional(),
+});
+
+function revalidateTeam() {
+  revalidatePath("/");
+  revalidatePath("/about");
+  revalidatePath("/admin/people");
+}
+
+export async function saveTeamMemberAction(_: FormState, fd: FormData): Promise<FormState> {
+  const s = await assertPermission("content");
+  const parsed = teamMemberSchema.safeParse(formObject(fd));
+  if (!parsed.success) return fieldErrors(parsed.error);
+  const d = parsed.data;
+
+  const doc = {
+    name: d.name,
+    title: d.title,
+    seniority: d.seniority,
+    yearsExperience: d.yearsExperience ? Number(d.yearsExperience) : undefined,
+    bio: d.bio || undefined,
+    expertise: (d.expertise ?? "").split(",").map((t) => t.trim()).filter(Boolean).slice(0, 8),
+    photo: d.photo || undefined,
+    linkedin: d.linkedin || undefined,
+    location: d.location || undefined,
+    published: d.published === "on",
+    sort: Number(d.sort) || 0,
+  };
+
+  await connectDB();
+  if (d.id) {
+    const res = await TeamMember.updateOne({ _id: d.id }, { $set: doc, ...(doc.yearsExperience === undefined ? { $unset: { yearsExperience: 1 } } : {}) });
+    if (!res.matchedCount) return { error: "This profile no longer exists." };
+  } else {
+    await TeamMember.create(doc);
+  }
+  await audit(s.email, "team_profile_saved", "team_member", d.id, d.name);
+  revalidateTeam();
+  redirect("/admin/people");
+}
+
+export async function deleteTeamMemberAction(fd: FormData) {
+  const s = await assertPermission("content");
+  const id = String(fd.get("id") ?? "");
+  if (!isValidObjectId(id)) redirect("/admin/people");
+  await connectDB();
+  await TeamMember.deleteOne({ _id: id });
+  await audit(s.email, "team_profile_deleted", "team_member", id);
+  revalidateTeam();
+  redirect("/admin/people");
 }

@@ -102,3 +102,15 @@ export const TICKET_CATEGORIES = ["General", "Billing", "Technical", "Project", 
 
 export const BILLING_TYPES = ["one_time", "monthly"] as const;
 export type BillingType = (typeof BILLING_TYPES)[number];
+
+// ---- Public team profiles ----
+export const SENIORITY_LEVELS = ["founder", "director", "lead", "senior", "mid", "associate"] as const;
+export type Seniority = (typeof SENIORITY_LEVELS)[number];
+export const SENIORITY_LABELS: Record<Seniority, string> = {
+  founder: "Founder",
+  director: "Director",
+  lead: "Lead",
+  senior: "Senior",
+  mid: "Mid-level",
+  associate: "Associate",
+};
