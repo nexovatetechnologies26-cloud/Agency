@@ -181,7 +181,7 @@ export function Header() {
               <UserRound size={15} strokeWidth={1.9} aria-hidden />
               {account && <span aria-hidden className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-plum bg-lilac" />}
             </span>
-            {account ? "My account" : "Client login"}
+            {account ? "My account" : "Login"}
           </Link>
           <ButtonLink href="/get-a-quote" variant="lilac" className="h-10 px-5 !text-[13px]">
             Start a project <ArrowRight size={15} aria-hidden className="transition-transform group-hover/btn:translate-x-0.5" />
@@ -217,7 +217,7 @@ export function Header() {
             ))}
             <li className="border-b border-line">
               <Link href={account ? account.href : "/login"} className="flex items-center justify-between py-4 font-display text-2xl font-semibold tracking-tight text-ink">
-                {account ? "My account" : "Client login"}
+                {account ? "My account" : "Login"}
                 <UserRound size={18} aria-hidden className="text-muted" />
               </Link>
             </li>

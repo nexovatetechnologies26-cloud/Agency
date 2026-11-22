@@ -40,7 +40,7 @@ export function Footer() {
         { label: "Pricing", href: "/pricing" },
         { label: "Contact", href: "/contact" },
         { label: "FAQ", href: "/faq" },
-        { label: "Client login", href: "/login" },
+        { label: "Login", href: "/login" },
       ],
     },
   ];
