@@ -172,15 +172,16 @@ export function Header() {
           <CurrencySwitcher className="!text-[13px] !text-white/80 hover:!text-white [&_svg]:!text-white/60" />
           <Link
             href={account ? account.href : "/login"}
-            aria-label={account ? "My account" : "Log in"}
-            title={account ? "My account" : "Log in"}
             className={clsx(
-              "relative flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-200",
-              account ? "border-lilac/50 bg-white/10 text-lilac hover:border-lilac" : "border-white/20 bg-white/5 text-white/85 hover:border-lilac hover:bg-lilac hover:text-plum",
+              "group/acc relative inline-flex h-10 items-center gap-2 rounded-full border pl-1.5 pr-4 text-[13px] font-semibold transition-colors duration-200",
+              account ? "border-lilac/50 bg-white/10 text-lilac hover:border-lilac" : "border-white/20 bg-white/5 text-white/90 hover:border-lilac hover:bg-lilac hover:text-plum",
             )}
           >
-            <UserRound size={17} strokeWidth={1.75} aria-hidden />
-            {account && <span aria-hidden className="absolute right-0 top-0 h-2.5 w-2.5 rounded-full border-2 border-plum bg-lilac" />}
+            <span className="relative flex h-7 w-7 items-center justify-center rounded-full bg-white/10 transition-colors group-hover/acc:bg-plum/10">
+              <UserRound size={15} strokeWidth={1.9} aria-hidden />
+              {account && <span aria-hidden className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-plum bg-lilac" />}
+            </span>
+            {account ? "My account" : "Client login"}
           </Link>
           <ButtonLink href="/get-a-quote" variant="lilac" className="h-10 px-5 !text-[13px]">
             Start a project <ArrowRight size={15} aria-hidden className="transition-transform group-hover/btn:translate-x-0.5" />
