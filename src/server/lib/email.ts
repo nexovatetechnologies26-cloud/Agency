@@ -22,7 +22,7 @@ export function layout(title: string, paragraphs: string[], cta?: { label: strin
   </div></body></html>`;
 }
 
-export async function sendEmail(to: string, subject: string, html: string) {
+export async function sendEmail(to: string, subject: string, html: string, opts: { replyTo?: string } = {}) {
   if (!config.email.enabled) {
     console.info(`[email:dev] to=${to} subject="${subject}"\n${html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").slice(0, 600)}`);
     return { sent: false };
@@ -31,7 +31,7 @@ export async function sendEmail(to: string, subject: string, html: string) {
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { Authorization: `Bearer ${config.email.resendKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ from: config.email.from, to: [to], subject, html }),
+      body: JSON.stringify({ from: config.email.from, to: [to], subject, html, ...(opts.replyTo ? { reply_to: opts.replyTo } : {}) }),
     });
     if (!res.ok) console.error("[email] send failed", res.status, await res.text().catch(() => ""));
     return { sent: res.ok };

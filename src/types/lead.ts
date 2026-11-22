@@ -21,5 +21,6 @@ export interface LeadListItem {
   aiSummary?: string;
   assignedTo?: string;
   notes: { body: string; author: string; createdAt: string }[];
+  replies: { subject: string; body: string; author: string; delivered: boolean; createdAt: string }[];
   createdAt: string;
 }

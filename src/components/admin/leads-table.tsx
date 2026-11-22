@@ -3,8 +3,8 @@
 import { Fragment, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChevronDown, Sparkles } from "lucide-react";
-import { summarizeLeadAction } from "@/server/actions/leads";
+import { ChevronDown, Mail, MessageCircle, Send, Sparkles } from "lucide-react";
+import { replyToLeadAction, summarizeLeadAction } from "@/server/actions/leads";
 import clsx from "clsx";
 import { LEAD_STATUSES, LEAD_STATUS_LABELS, type LeadStatus } from "@/lib/constants";
 import { COUNTRIES } from "@/content/countries";
@@ -27,7 +27,7 @@ const statusColor: Record<LeadStatus, string> = {
   lost: "bg-gray-100 text-gray-600",
 };
 
-export function LeadsTable({ leads, canAi = false, canPropose = false }: { leads: LeadListItem[]; canAi?: boolean; canPropose?: boolean }) {
+export function LeadsTable({ leads, canAi = false, canPropose = false, emailReady = false }: { leads: LeadListItem[]; canAi?: boolean; canPropose?: boolean; emailReady?: boolean }) {
   const router = useRouter();
   const [openId, setOpenId] = useState<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
@@ -57,8 +57,8 @@ export function LeadsTable({ leads, canAi = false, canPropose = false }: { leads
   if (leads.length === 0) {
     return (
       <div className="card mt-6 p-12 text-center">
-        <p className="font-semibold">No leads yet</p>
-        <p className="mt-1 text-sm text-muted">New inquiries from the website will appear here.</p>
+        <p className="font-semibold">Nothing here yet</p>
+        <p className="mt-1 text-sm text-muted">Contact messages, quote requests and consultation bookings from the website appear here.</p>
       </div>
     );
   }
@@ -84,14 +84,21 @@ export function LeadsTable({ leads, canAi = false, canPropose = false }: { leads
               return (
                 <Fragment key={l.id}>
                   <tr className="border-b border-line last:border-0">
-                    <td className="px-5 py-4">
-                      <p className="font-semibold">{l.name}</p>
+                    <td className="max-w-[340px] px-5 py-4">
+                      <p className="flex items-center gap-2 font-semibold">
+                        {l.status === "new" && <span aria-label="New" className="h-2 w-2 shrink-0 rounded-full bg-brand" />}
+                        {l.name}
+                        {l.replies.length > 0 && <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">Replied</span>}
+                      </p>
                       <a href={`mailto:${l.email}`} className="text-muted hover:text-brand">{l.email}</a>
+                      <button type="button" onClick={() => setOpenId(open ? null : l.id)} className="mt-1 block w-full truncate text-left text-[13px] text-ink/70 hover:text-brand">
+                        {l.message}
+                      </button>
                     </td>
                     <td className="px-5 py-4">{countryName(l.country)}</td>
                     <td className="px-5 py-4">
                       {serviceName(l.service)}
-                      <span className="ml-2 rounded bg-paper px-1.5 py-0.5 text-[11px] uppercase text-muted">{l.type}</span>
+                      <span className="ml-2 rounded bg-paper px-1.5 py-0.5 text-[11px] uppercase text-muted">{l.type === "contact" ? "message" : l.type}</span>
                     </td>
                     <td className="px-5 py-4 text-muted">{fmt(l.createdAt)}</td>
                     <td className="px-5 py-4">
@@ -114,14 +121,14 @@ export function LeadsTable({ leads, canAi = false, canPropose = false }: { leads
                         aria-expanded={open}
                         className="inline-flex items-center gap-1 text-xs font-medium text-brand"
                       >
-                        Details <ChevronDown size={14} className={clsx("transition", open && "rotate-180")} />
+                        {open ? "Close" : "Open & reply"} <ChevronDown size={14} className={clsx("transition", open && "rotate-180")} />
                       </button>
                     </td>
                   </tr>
                   {open && (
                     <tr className="border-b border-line bg-paper/60">
                       <td colSpan={6} className="px-5 py-6">
-                        <LeadDetails lead={l} busy={busy === l.id} canAi={canAi} canPropose={canPropose} onNote={(note) => patch(l.id, { note })} />
+                        <LeadDetails lead={l} busy={busy === l.id} canAi={canAi} canPropose={canPropose} emailReady={emailReady} onNote={(note) => patch(l.id, { note })} />
                       </td>
                     </tr>
                   )}
@@ -140,12 +147,14 @@ function LeadDetails({
   busy,
   canAi,
   canPropose,
+  emailReady,
   onNote,
 }: {
   lead: LeadListItem;
   busy: boolean;
   canAi: boolean;
   canPropose: boolean;
+  emailReady: boolean;
   onNote: (n: string) => Promise<boolean>;
 }) {
   const [note, setNote] = useState("");
@@ -172,10 +181,10 @@ function LeadDetails({
   ];
 
   return (
+    <div className="space-y-8">
+      <Conversation lead={lead} emailReady={emailReady} />
     <div className="grid gap-8 md:grid-cols-2">
       <div>
-        <p className="text-xs font-semibold uppercase tracking-wide text-muted">Message</p>
-        <p className="mt-2 whitespace-pre-wrap leading-relaxed">{lead.message}</p>
         {(canAi || canPropose) && (
           <div className="mt-5 flex flex-wrap gap-2">
             {canPropose && (
@@ -230,7 +239,129 @@ function LeadDetails({
             Add
           </button>
         </form>
+        <p className="mt-2 text-xs text-muted">Notes are internal — the client never sees them.</p>
       </div>
     </div>
+    </div>
+  );
+}
+
+/** The client's message, every reply the team sent, and a box to send a new reply by email. */
+function Conversation({ lead, emailReady }: { lead: LeadListItem; emailReady: boolean }) {
+  const router = useRouter();
+  const first = lead.name.split(/\s+/)[0] || lead.name;
+  const defaultSubject = lead.type === "quote" ? "Your project request — Nexovate" : "Re: your message to Nexovate";
+  const [subject, setSubject] = useState(defaultSubject);
+  const [body, setBody] = useState("");
+  const [state, setState] = useState<{ kind: "idle" | "sending" | "sent" | "saved" | "error"; text?: string }>({ kind: "idle" });
+
+  const mailto = `mailto:${lead.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body ? `Hi ${first},\n\n${body}` : `Hi ${first},\n\n`)}`;
+  const phone = (lead.phone ?? "").replace(/[^0-9]/g, "");
+  const whatsapp = phone ? `https://wa.me/${phone}?text=${encodeURIComponent(`Hi ${first}, this is Nexovate replying to your message on our website.`)}` : "";
+
+  async function send(e: React.FormEvent) {
+    e.preventDefault();
+    if (!body.trim()) {
+      setState({ kind: "error", text: "Please write your reply." });
+      return;
+    }
+    setState({ kind: "sending" });
+    const r = await replyToLeadAction(lead.id, { subject, body });
+    if (!r.ok) {
+      setState({ kind: "error", text: r.error ?? "Could not send the reply." });
+      return;
+    }
+    if (r.sent) {
+      setState({ kind: "sent", text: `Reply emailed to ${lead.email}.` });
+      setBody("");
+    } else {
+      setState({
+        kind: "saved",
+        text: r.emailConfigured
+          ? "The email provider did not accept the message. The reply is saved — send it with “Open in email app”."
+          : "Email sending is not set up yet (RESEND_API_KEY on the server), so this reply was saved but not delivered. Send it with “Open in email app”.",
+      });
+    }
+    router.refresh();
+  }
+
+  return (
+    <section aria-label={`Conversation with ${lead.name}`} className="rounded-2xl border border-line bg-surface p-5 md:p-6">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <p className="text-xs font-semibold uppercase tracking-wide text-brand">Conversation</p>
+        <div className="flex flex-wrap gap-2">
+          <a href={mailto} className="inline-flex items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-xs font-semibold hover:border-brand hover:text-brand">
+            <Mail size={13} aria-hidden /> Open in email app
+          </a>
+          {whatsapp && (
+            <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-xs font-semibold hover:border-[#25D366] hover:text-[#128C7E]">
+              <MessageCircle size={13} aria-hidden /> WhatsApp
+            </a>
+          )}
+        </div>
+      </div>
+
+      <ol className="mt-4 space-y-3">
+        <li className="max-w-[85%] rounded-2xl rounded-tl-md bg-paper p-4">
+          <p className="text-xs font-semibold text-muted">
+            {lead.name} · {fmt(lead.createdAt)}
+          </p>
+          <p className="mt-1.5 whitespace-pre-wrap text-sm leading-relaxed">{lead.message}</p>
+        </li>
+        {lead.replies.map((r, i) => (
+          <li key={i} className="ml-auto max-w-[85%] rounded-2xl rounded-tr-md bg-brand-soft p-4">
+            <p className="flex flex-wrap items-center gap-2 text-xs font-semibold text-brand">
+              {r.author} · {fmt(r.createdAt)}
+              <span className={clsx("rounded-full px-2 py-0.5 text-[10px]", r.delivered ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700")}>
+                {r.delivered ? "Emailed" : "Saved — not emailed"}
+              </span>
+            </p>
+            <p className="mt-1 text-xs font-medium text-ink/70">{r.subject}</p>
+            <p className="mt-1.5 whitespace-pre-wrap text-sm leading-relaxed">{r.body}</p>
+          </li>
+        ))}
+      </ol>
+
+      <form onSubmit={send} className="mt-5 space-y-3 border-t border-line pt-5">
+        <div className="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
+          <div>
+            <label htmlFor={`subject-${lead.id}`} className="field-label">Subject</label>
+            <input id={`subject-${lead.id}`} value={subject} onChange={(e) => setSubject(e.target.value)} className="field h-10 py-2" maxLength={200} />
+          </div>
+          <p className="text-xs text-muted sm:pb-2.5">To: {lead.email}</p>
+        </div>
+        <div>
+          <label htmlFor={`reply-${lead.id}`} className="field-label">Your reply</label>
+          <textarea
+            id={`reply-${lead.id}`}
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+            rows={5}
+            placeholder={`Hi ${first}, thanks for reaching out…`}
+            className="field resize-y"
+          />
+          <p className="mt-1 text-xs text-muted">“Hi {first},” is added automatically, and their original message is quoted under your reply.</p>
+        </div>
+        {!emailReady && (
+          <p className="rounded-xl bg-amber-50 px-4 py-3 text-xs text-amber-800">
+            Email sending is not set up on the server yet (RESEND_API_KEY). Replies will be saved here; use “Open in email app” to send them.
+          </p>
+        )}
+        {state.text && (
+          <p
+            role={state.kind === "error" ? "alert" : "status"}
+            className={clsx(
+              "rounded-xl px-4 py-3 text-sm",
+              state.kind === "sent" ? "bg-emerald-50 text-emerald-700" : state.kind === "error" ? "bg-red-50 text-red-700" : "bg-amber-50 text-amber-800",
+            )}
+          >
+            {state.text}
+          </p>
+        )}
+        <button type="submit" disabled={state.kind === "sending"} className="inline-flex h-11 items-center gap-2 rounded-full bg-brand px-6 text-sm font-semibold text-white transition-colors hover:bg-brand-deep disabled:opacity-60">
+          <Send size={15} aria-hidden /> {state.kind === "sending" ? "Sending…" : "Send reply"}
+        </button>
+      </form>
+    </section>
   );
 }

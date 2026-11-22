@@ -1,5 +1,6 @@
 import "server-only";
-import { Schema, model, models, type InferSchemaType, type Model } from "mongoose";
+import { Schema, type InferSchemaType, type Model } from "mongoose";
+import { defineModel } from "@/server/db/model";
 import { CONTACT_METHODS, LEAD_STATUSES, LEAD_TYPES } from "@/lib/constants";
 
 const noteSchema = new Schema(
@@ -15,6 +16,18 @@ const activitySchema = new Schema(
     action: { type: String, required: true },
     actor: { type: String, required: true },
     detail: { type: String },
+  },
+  { timestamps: { createdAt: true, updatedAt: false } },
+);
+
+// a reply the team sent to the person (by email from the admin panel)
+const replySchema = new Schema(
+  {
+    subject: { type: String, required: true, maxlength: 200 },
+    body: { type: String, required: true, maxlength: 10000 },
+    author: { type: String, required: true }, // staff email
+    channel: { type: String, enum: ["email"], default: "email" },
+    delivered: { type: Boolean, default: false }, // false when email sending is not configured
   },
   { timestamps: { createdAt: true, updatedAt: false } },
 );
@@ -58,6 +71,7 @@ const leadSchema = new Schema(
     aiSummary: { type: String, maxlength: 4000 },
     followUpAt: { type: Date },
     notes: { type: [noteSchema], default: [] },
+    replies: { type: [replySchema], default: [] },
     activity: { type: [activitySchema], default: [] },
   },
   { timestamps: true },
@@ -68,5 +82,4 @@ leadSchema.index({ status: 1, createdAt: -1 });
 
 export type LeadDoc = InferSchemaType<typeof leadSchema> & { _id: string };
 
-export const Lead: Model<InferSchemaType<typeof leadSchema>> =
-  (models.Lead as Model<InferSchemaType<typeof leadSchema>>) || model("Lead", leadSchema);
+export const Lead: Model<InferSchemaType<typeof leadSchema>> = defineModel<InferSchemaType<typeof leadSchema>>("Lead", leadSchema);

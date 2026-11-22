@@ -10,7 +10,7 @@ import { can } from "@/lib/permissions";
 
 export const dynamic = "force-dynamic";
 
-type Search = { status?: string; q?: string; page?: string };
+type Search = { status?: string; type?: string; q?: string; page?: string };
 
 export default async function AdminPage({ searchParams }: { searchParams: Promise<Search> }) {
   const session = await requireStaffPage("leads");
@@ -22,7 +22,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   let stats: Awaited<ReturnType<typeof getLeadStats>> | null = null;
   let dbError = false;
   try {
-    [data, stats] = await Promise.all([listLeads({ status: sp.status, q: sp.q, page }), getLeadStats()]);
+    [data, stats] = await Promise.all([listLeads({ status: sp.status, type: sp.type, q: sp.q, page }), getLeadStats()]);
   } catch (err) {
     console.error("[admin] database error", err);
     dbError = true;
@@ -30,7 +30,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
 
   const qs = (patch: Partial<Search>) => {
     const p = new URLSearchParams();
-    const merged = { status: sp.status, q: sp.q, ...patch };
+    const merged = { status: sp.status, type: sp.type, q: sp.q, ...patch };
     for (const [k, v] of Object.entries(merged)) if (v) p.set(k, String(v));
     const s = p.toString();
     return s ? `/admin/leads?${s}` : "/admin/leads";
@@ -41,8 +41,8 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
 
       <div>
         <PageHeader
-          title="Leads"
-          description="Inquiries from the website, quote form and consultation bookings."
+          title="Messages & Leads"
+          description="Every contact message, quote request and consultation booking from the website. Open one to read it and reply to the client."
           actions={
             <a download href="/api/admin/export/leads" className="inline-flex h-11 items-center rounded-full border border-line bg-surface px-5 text-sm font-semibold hover:border-brand hover:text-brand">Export CSV</a>}
         />
@@ -67,7 +67,36 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
               ))}
             </div>
 
-            <div className="mt-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            {/* what kind of inquiry */}
+            <nav aria-label="Inquiry type" className="mt-8 flex flex-wrap gap-1 rounded-2xl border border-line bg-surface p-1.5">
+              {(
+                [
+                  [undefined, "All", stats.total, stats.byStatus.new],
+                  ["contact", "Messages", stats.byType.contact?.count ?? 0, stats.byType.contact?.unread ?? 0],
+                  ["quote", "Quote requests", stats.byType.quote?.count ?? 0, stats.byType.quote?.unread ?? 0],
+                  ["consultation", "Consultations", stats.byType.consultation?.count ?? 0, stats.byType.consultation?.unread ?? 0],
+                ] as const
+              ).map(([t, label, count, unread]) => {
+                const active = (sp.type ?? undefined) === t;
+                return (
+                  <Link
+                    key={label}
+                    href={qs({ type: t, page: undefined })}
+                    aria-current={active ? "page" : undefined}
+                    className={clsx(
+                      "inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition-colors",
+                      active ? "bg-brand text-white" : "text-ink/70 hover:bg-brand-soft hover:text-brand",
+                    )}
+                  >
+                    {label}
+                    <span className={clsx("rounded-full px-2 py-0.5 text-[11px]", active ? "bg-white/20" : "bg-paper text-muted")}>{count}</span>
+                    {unread > 0 && <span className={clsx("rounded-full px-2 py-0.5 text-[11px]", active ? "bg-white text-brand" : "bg-brand text-white")}>{unread} new</span>}
+                  </Link>
+                );
+              })}
+            </nav>
+
+            <div className="mt-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div className="flex flex-wrap gap-2">
                 <Link
                   href={qs({ status: undefined, page: undefined })}
@@ -93,11 +122,12 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
               </div>
               <form action="/admin/leads" className="flex gap-2">
                 {sp.status && <input type="hidden" name="status" value={sp.status} />}
-                <input name="q" defaultValue={sp.q} placeholder="Search name, email, company…" className="field h-10 py-2 md:w-72" />
+                {sp.type && <input type="hidden" name="type" value={sp.type} />}
+                <input name="q" defaultValue={sp.q} placeholder="Search name, email, company, message…" className="field h-10 py-2 md:w-72" />
               </form>
             </div>
 
-            <LeadsTable leads={data.items} canAi={config.ai.enabled && can(session.role, "ai")} canPropose={can(session.role, "proposals")} />
+            <LeadsTable leads={data.items} emailReady={config.email.enabled} canAi={config.ai.enabled && can(session.role, "ai")} canPropose={can(session.role, "proposals")} />
 
             {data.pages > 1 && (
               <nav className="mt-6 flex items-center justify-between text-sm" aria-label="Pagination">

@@ -38,7 +38,7 @@ export default async function AdminHome({ searchParams }: { searchParams: Promis
           <QuickActions role={s.role} />
 
           <Group title="Sales pipeline">
-            <Stat label="New leads" value={o.newLeads} href="/admin/leads?status=new" tone="dark" />
+            <Stat label="New messages & leads" value={o.newLeads} href="/admin/leads?status=new" tone="dark" />
             <Stat label="Leads (30 days)" value={o.leads30} href="/admin/leads" />
             <Stat label="Qualified leads" value={o.qualified} href="/admin/leads?status=qualified" />
             <Stat label="Proposals awaiting reply" value={o.pendingProposals} href="/admin/proposals" />

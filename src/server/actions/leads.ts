@@ -6,6 +6,7 @@ import { Lead } from "@/server/models/lead.model";
 import { assertPermission } from "@/server/auth/session";
 import { AiUnavailableError, complete } from "@/server/lib/ai";
 import { services } from "@/content/services";
+import { replyToLead } from "@/server/services/lead.service";
 
 /**
  * AI-assisted qualification: summarises the request, lists missing information and
@@ -41,5 +42,26 @@ export async function summarizeLeadAction(id: string): Promise<{ ok: boolean; su
     if (err instanceof AiUnavailableError) return { ok: false, error: "AI is not configured or unavailable right now." };
     console.error("[ai] summarize failed", err);
     return { ok: false, error: "AI request failed. Please try again." };
+  }
+}
+
+/** Email a reply to the person who sent the inquiry; it is stored on the lead as a conversation. */
+export async function replyToLeadAction(
+  id: string,
+  input: { subject: string; body: string },
+): Promise<{ ok: boolean; sent?: boolean; emailConfigured?: boolean; error?: string }> {
+  const session = await assertPermission("leads");
+  const subject = (input.subject ?? "").trim().slice(0, 200);
+  const body = (input.body ?? "").trim().slice(0, 10000);
+  if (subject.length < 2) return { ok: false, error: "Please add a subject." };
+  if (body.length < 2) return { ok: false, error: "Please write your reply." };
+  try {
+    const result = await replyToLead(id, session.email, { subject, body });
+    if (!result) return { ok: false, error: "Message not found." };
+    revalidatePath("/admin/leads");
+    return { ok: true, ...result };
+  } catch (err) {
+    console.error("[leads] reply failed", err);
+    return { ok: false, error: "Could not send the reply. Please try again." };
   }
 }

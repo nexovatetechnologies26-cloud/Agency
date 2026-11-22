@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "Admin", robots: { index: false, foll
 
 const NAV: { label: string; href: string; perm: Permission; exact?: boolean; group?: string }[] = [
   { label: "Overview", href: "/admin", perm: "dashboard", exact: true },
-  { label: "Leads", href: "/admin/leads", perm: "leads", group: "Sales" },
+  { label: "Messages & Leads", href: "/admin/leads", perm: "leads", group: "Sales" },
   { label: "Proposals", href: "/admin/proposals", perm: "proposals", group: "Sales" },
   { label: "Customers", href: "/admin/customers", perm: "customers", group: "Sales" },
   { label: "Consultations", href: "/admin/bookings", perm: "bookings", group: "Sales" },
