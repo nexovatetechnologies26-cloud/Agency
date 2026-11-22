@@ -38,21 +38,21 @@ export function PricingCard({ p, showService = false }: { p: PackageCard; showSe
     <article
       data-card
       className={clsx(
-        "group relative flex h-full flex-col overflow-hidden rounded-[28px] transition duration-300 ease-out-cubic hover:-translate-y-1.5",
+        "group relative flex h-full flex-col rounded-[28px] transition duration-300 ease-out-cubic hover:-translate-y-1.5",
         featured
           ? "bg-plum text-white shadow-[0_30px_60px_-24px_rgba(23,23,29,0.6)] ring-2 ring-lilac/40"
-          : "border border-brand/25 bg-surface shadow-[0_1px_2px_rgba(18,18,24,0.04)] hover:border-brand/50 hover:shadow-[0_28px_56px_-28px_rgba(117,69,217,0.4)]",
+          : "overflow-hidden border border-brand/25 bg-surface shadow-[0_1px_2px_rgba(18,18,24,0.04)] hover:border-brand/50 hover:shadow-[0_28px_56px_-28px_rgba(117,69,217,0.4)]",
       )}
     >
       {/* header panel: service, badge, name, description, price */}
-      <div className={clsx("relative px-7 pb-7 pt-8 md:px-8", featured ? "" : "bg-brand-soft/60")}>
+      {featured && (
+        <span className="absolute left-1/2 top-0 z-10 inline-flex -translate-x-1/2 -translate-y-1/2 items-center gap-2 whitespace-nowrap rounded-full bg-lilac px-5 py-2 text-[12px] font-bold uppercase tracking-[0.16em] text-plum shadow-[0_10px_28px_-8px_rgba(117,69,217,0.65)] ring-4 ring-paper">
+          <Sparkles size={14} aria-hidden /> Most popular
+        </span>
+      )}
+      <div className={clsx("relative px-7 pb-7 md:px-8", featured ? "overflow-hidden rounded-t-[28px] pt-11" : "bg-brand-soft/60 pt-8")}>
         {featured && <div aria-hidden className="grid-lines absolute inset-0 opacity-[0.07] invert" />}
-        {featured && (
-          <span className="absolute right-6 top-6 inline-flex items-center gap-1.5 rounded-full bg-lilac px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-plum">
-            <Sparkles size={12} aria-hidden /> Most popular
-          </span>
-        )}
-        <h3 className={clsx("relative font-display text-[1.75rem] font-semibold leading-tight tracking-[-0.02em]", featured ? "pr-36 text-white" : "text-ink")}>{p.name}</h3>
+        <h3 className={clsx("relative font-display text-[1.75rem] font-semibold leading-tight tracking-[-0.02em]", featured ? "text-white" : "text-ink")}>{p.name}</h3>
         {p.description && <p className={clsx("relative mt-2 text-[15px] leading-relaxed", featured ? "text-white/70" : "text-muted")}>{p.description}</p>}
 
         <div className="relative mt-6">
