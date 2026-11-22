@@ -18,9 +18,14 @@ export async function POST(req: NextRequest) {
     return fail("BAD_REQUEST", "Invalid request body.", 400);
   }
 
-  // Honeypot filled → pretend success so bots learn nothing.
-  if (body && typeof body === "object" && (body as Record<string, unknown>).companyFax) {
-    return ok({ received: true }, 201);
+  // Bot checks → pretend success so bots learn nothing:
+  // the hidden honeypot was filled, or the form was sent less than 1.5s after it appeared.
+  if (body && typeof body === "object") {
+    const b = body as Record<string, unknown>;
+    const elapsed = typeof b.elapsedMs === "number" ? b.elapsedMs : undefined;
+    if (b.companyFax || (elapsed !== undefined && elapsed < 1500)) {
+      return ok({ received: true }, 201);
+    }
   }
 
   const parsed = leadInputSchema.safeParse(body);

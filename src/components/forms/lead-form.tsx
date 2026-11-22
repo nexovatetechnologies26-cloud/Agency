@@ -17,9 +17,11 @@ export function LeadForm({ type, defaultService }: { type: LeadType; defaultServ
   const [formError, setFormError] = useState("");
   const attribution = useRef<{ utm: Record<string, string>; referrer?: string; landingPage?: string }>({ utm: {} });
   const isQuote = type === "quote";
+  const startedAt = useRef(0);
 
   // capture campaign source once, on the client
   useEffect(() => {
+    startedAt.current = Date.now();
     const sp = new URLSearchParams(window.location.search);
     const utm: Record<string, string> = {};
     for (const k of ["source", "medium", "campaign", "term", "content"]) {
@@ -56,19 +58,31 @@ export function LeadForm({ type, defaultService }: { type: LeadType; defaultServ
       message: str("message") ?? "",
       marketingConsent: fd.get("marketingConsent") === "on",
       privacyAccepted: fd.get("privacyAccepted") === "on",
-      companyFax: str("companyFax"),
+      // spam checks — decided on the server only, never block a real visitor here
+      companyFax: str("nx_hp"),
+      elapsedMs: startedAt.current ? Date.now() - startedAt.current : undefined,
       ...attribution.current,
     };
 
-    const parsed = leadInputSchema.safeParse(payload);
+    const form = e.currentTarget;
+    const { companyFax: _hp, ...visible } = payload;
+    void _hp;
+    const parsed = leadInputSchema.safeParse(visible);
     setFormError("");
     if (!parsed.success) {
       const next: Errors = {};
       for (const i of parsed.error.issues) next[i.path.join(".")] ??= i.message;
       setErrors(next);
-      // move focus to the first invalid field so the error is noticed
-      const first = Object.keys(next)[0];
-      if (first) (e.currentTarget.querySelector(`[name="${first}"]`) as HTMLElement | null)?.focus();
+      // focus the first invalid field the visitor can actually see; otherwise show the message at the bottom
+      const target = Object.keys(next)
+        .map((k) => form.querySelector<HTMLElement>(`[name="${k}"]`))
+        .find((el) => el && el.offsetParent !== null);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "center" });
+        target.focus({ preventScroll: true });
+      } else {
+        setFormError(Object.values(next)[0] ?? "Please check the form and try again.");
+      }
       return;
     }
 
@@ -115,10 +129,10 @@ export function LeadForm({ type, defaultService }: { type: LeadType; defaultServ
 
   return (
     <form onSubmit={onSubmit} noValidate className="card relative space-y-5 p-6 md:p-9">
-      {/* honeypot — hidden from people, visible to bots */}
-      <div aria-hidden className="absolute -left-[9999px] top-0 h-0 w-0 overflow-hidden">
+      {/* honeypot for bots — not rendered, so browser autofill (Chrome on laptops) never fills it */}
+      <div hidden aria-hidden>
         <label>
-          Fax <input type="text" name="companyFax" tabIndex={-1} autoComplete="off" />
+          Leave this empty <input type="text" name="nx_hp" tabIndex={-1} autoComplete="off" />
         </label>
       </div>
 
