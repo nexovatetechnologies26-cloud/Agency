@@ -26,6 +26,16 @@ const serif = localFont({
   display: "swap",
 });
 
+// big headings: Playfair Display — the elegant serif of the lavender & plum theme
+const heading = localFont({
+  src: [
+    { path: "./fonts/playfair-display-latin-wght-normal.woff2", weight: "400 900", style: "normal" },
+    { path: "./fonts/playfair-display-latin-wght-italic.woff2", weight: "400 900", style: "italic" },
+  ],
+  variable: "--font-heading",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: { default: `${site.name} — ${site.positioning}`, template: `%s | ${site.name}` },
@@ -56,7 +66,7 @@ const orgJsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${sans.variable} ${display.variable} ${serif.variable}`}>
+    <html lang="en" className={`${sans.variable} ${display.variable} ${serif.variable} ${heading.variable}`}>
       <body className="font-sans">
         {children}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }} />
