@@ -21,14 +21,14 @@ function readAccountHint(): { href: string } | null {
 }
 
 const navItem =
-  "group/nav relative inline-flex items-center gap-1 rounded-full px-3.5 py-2 text-[14px] font-medium text-ink/80 transition-colors duration-200 hover:bg-brand-soft hover:text-brand";
+  "group/nav relative inline-flex items-center gap-1 rounded-full px-3.5 py-2 text-[14px] font-medium text-white/85 transition-colors duration-200 hover:bg-white/10 hover:text-white";
 
 /** Thin violet line that grows under a nav item on hover and stays under the current page. */
 function NavUnderline() {
   return (
     <span
       aria-hidden
-      className="pointer-events-none absolute inset-x-3.5 bottom-[3px] h-[2px] origin-left scale-x-0 rounded-full bg-brand transition-transform duration-300 ease-out-cubic group-hover/nav:scale-x-100 group-[.is-active]/nav:scale-x-100"
+      className="pointer-events-none absolute inset-x-3.5 bottom-[3px] h-[2px] origin-left scale-x-0 rounded-full bg-lilac transition-transform duration-300 ease-out-cubic group-hover/nav:scale-x-100 group-[.is-active]/nav:scale-x-100"
     />
   );
 }
@@ -129,12 +129,12 @@ export function Header() {
   return (
     <header
       className={clsx(
-        "sticky top-0 z-50 border-b transition-[background-color,border-color,box-shadow] duration-300 ease-out-cubic",
-        scrolled || open ? "border-line bg-paper/85 backdrop-blur-xl" : "border-transparent bg-transparent",
+        "sticky top-0 z-50 border-b border-white/10 bg-plum transition-shadow duration-300 ease-out-cubic",
+        (scrolled || open) && "shadow-[0_10px_30px_-12px_rgba(42,27,61,0.45)]",
       )}
     >
       <div className="container flex h-16 items-center justify-between gap-6 md:h-[72px]">
-        <Logo />
+        <Logo inverted />
 
         <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
           {mainNav.map((item) =>
@@ -146,7 +146,7 @@ export function Header() {
                   aria-haspopup="true"
                   onClick={() => setMenu((v) => !v)}
                   onFocus={openMenu}
-                  className={clsx(navItem, (isActive(item.href) || menu) && "!bg-brand-soft !text-brand", isActive(item.href) && "is-active")}
+                  className={clsx(navItem, (isActive(item.href) || menu) && "!bg-white/10 !text-lilac", isActive(item.href) && "is-active")}
                 >
                   <NavUnderline />
                   {item.label}
@@ -159,7 +159,7 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 aria-current={isActive(item.href) ? "page" : undefined}
-                className={clsx(navItem, isActive(item.href) && "is-active !text-brand")}
+                className={clsx(navItem, isActive(item.href) && "is-active !text-lilac")}
               >
                 <NavUnderline />
                 {item.label}
@@ -169,27 +169,27 @@ export function Header() {
         </nav>
 
         <div className="hidden items-center gap-3 lg:flex">
-          <CurrencySwitcher className="!text-[13px]" />
+          <CurrencySwitcher className="!text-[13px] !text-white/80 hover:!text-white [&_svg]:!text-white/60" />
           <Link
             href={account ? account.href : "/login"}
             aria-label={account ? "My account" : "Log in"}
             title={account ? "My account" : "Log in"}
             className={clsx(
               "relative flex h-10 w-10 items-center justify-center rounded-full border transition-colors duration-200",
-              account ? "border-brand/30 bg-brand-soft text-brand hover:border-brand" : "border-line bg-surface text-ink/70 hover:border-brand hover:bg-brand-soft hover:text-brand",
+              account ? "border-lilac/50 bg-white/10 text-lilac hover:border-lilac" : "border-white/20 bg-white/5 text-white/85 hover:border-lilac hover:bg-lilac hover:text-plum",
             )}
           >
             <UserRound size={17} strokeWidth={1.75} aria-hidden />
-            {account && <span aria-hidden className="absolute right-0 top-0 h-2.5 w-2.5 rounded-full border-2 border-white bg-brand" />}
+            {account && <span aria-hidden className="absolute right-0 top-0 h-2.5 w-2.5 rounded-full border-2 border-plum bg-lilac" />}
           </Link>
-          <ButtonLink href="/get-a-quote" className="h-10 px-5 !text-[13px]">
+          <ButtonLink href="/get-a-quote" variant="lilac" className="h-10 px-5 !text-[13px]">
             Start a project <ArrowRight size={15} aria-hidden className="transition-transform group-hover/btn:translate-x-0.5" />
           </ButtonLink>
         </div>
 
         <button
           type="button"
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-surface text-ink lg:hidden"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white lg:hidden"
           aria-expanded={open}
           aria-controls="mobile-nav"
           aria-label={open ? "Close menu" : "Open menu"}

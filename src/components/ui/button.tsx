@@ -1,7 +1,7 @@
 import Link from "next/link";
 import clsx from "clsx";
 
-type Variant = "primary" | "dark" | "secondary" | "ghost" | "outline-light" | "light";
+type Variant = "primary" | "dark" | "secondary" | "ghost" | "outline-light" | "light" | "lilac";
 type Size = "md" | "lg";
 
 const base =
@@ -15,7 +15,9 @@ const variants: Record<Variant, string> = {
   secondary: "border border-ink/15 bg-surface text-ink hover:border-ink",
   ghost: "text-ink hover:text-brand",
   "outline-light": "border border-white/20 bg-white/5 text-white backdrop-blur hover:border-white/60 hover:bg-white/10", // for dark backgrounds
-  light: "bg-white text-obsidian hover:bg-bone", // primary action on charcoal panels (both themes)
+  light: "bg-white text-obsidian hover:bg-bone",
+  // lilac on plum — the header's call to action
+  lilac: "bg-lilac text-plum hover:bg-white", // primary action on charcoal panels (both themes)
   // one button shape across the site: pill, 52px tall at "lg"
 };
 

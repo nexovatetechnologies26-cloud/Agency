@@ -29,6 +29,8 @@ const config: Config = {
         charcoal: "#17171D",
         silver: "#A5A1AE",
         violet: "#7545D9",
+        plum: "#2A1B3D", // header & footer
+        lilac: "#D9C9F2", // light accent buttons, badges, newsletter band
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
@@ -54,8 +56,8 @@ const config: Config = {
       borderRadius: { xl: "14px", "2xl": "20px", "3xl": "28px", btn: "999px", tile: "20px" },
       boxShadow: {
         card: "0 1px 2px rgba(23,21,31,0.04), 0 8px 24px -12px rgba(23,21,31,0.12)",
-        lift: "0 1px 2px rgba(23,21,31,0.04), 0 24px 48px -20px rgba(79,43,155,0.28)",
-        glow: "0 10px 30px -10px rgba(117,69,217,0.6)",
+        lift: "0 1px 2px rgba(43,30,58,0.05), 0 24px 48px -20px rgba(74,50,104,0.28)",
+        glow: "0 10px 30px -10px rgba(74,50,104,0.5)",
       },
       keyframes: {
         marquee: { from: { transform: "translateX(0)" }, to: { transform: "translateX(-50%)" } },

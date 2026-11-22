@@ -76,7 +76,7 @@ export function HomeHero() {
     <section className="relative isolate overflow-hidden border-b border-line" aria-labelledby="hero-title">
       <div aria-hidden className="grid-lines absolute inset-0 -z-10 opacity-60 [mask-image:radial-gradient(ellipse_at_top,black,transparent_70%)]" />
       <div className="container flex flex-col items-center py-20 text-center lg:py-28 xl:py-32">
-        <p className="hero-rise inline-flex items-center gap-2.5 rounded-full border border-brand/25 bg-surface px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.16em] text-brand">
+        <p className="hero-rise inline-flex items-center gap-2.5 rounded-full bg-brand-tint px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.16em] text-brand-deep">
           <span aria-hidden className="h-1.5 w-1.5 rotate-45 bg-brand" />
           {site.tagline}
         </p>

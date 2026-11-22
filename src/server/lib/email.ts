@@ -10,11 +10,11 @@ const escape = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<":
 export function layout(title: string, paragraphs: string[], cta?: { label: string; url: string }) {
   const body = paragraphs.map((p) => `<p style="margin:0 0 14px;line-height:1.6">${escape(p)}</p>`).join("");
   const button = cta
-    ? `<p style="margin:24px 0"><a href="${escape(cta.url)}" style="background:#7545D9;color:#fff;padding:12px 22px;border-radius:999px;text-decoration:none;font-weight:600">${escape(cta.label)}</a></p>`
+    ? `<p style="margin:24px 0"><a href="${escape(cta.url)}" style="background:#4A3268;color:#fff;padding:12px 22px;border-radius:999px;text-decoration:none;font-weight:600">${escape(cta.label)}</a></p>`
     : "";
   return `<!doctype html><html><body style="margin:0;background:#F7F6FA;font-family:Arial,Helvetica,sans-serif;color:#17151F">
   <div style="max-width:560px;margin:0 auto;padding:32px 20px">
-    <p style="font-size:20px;font-weight:800;margin:0 0 24px">Ne<span style="color:#7545D9">x</span>ovate</p>
+    <p style="font-size:20px;font-weight:800;margin:0 0 24px">Ne<span style="color:#4A3268">x</span>ovate</p>
     <div style="background:#fff;border:1px solid #E8E6ED;border-radius:16px;padding:28px">
       <h1 style="font-size:20px;margin:0 0 16px">${escape(title)}</h1>${body}${button}
     </div>
