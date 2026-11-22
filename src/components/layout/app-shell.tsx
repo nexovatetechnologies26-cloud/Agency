@@ -4,6 +4,7 @@ import { ArrowUpRight, ExternalLink, LogOut } from "lucide-react";
 import { logoutAction } from "@/server/actions/auth";
 import { Logo } from "@/components/layout/logo";
 import { NavLink } from "@/components/layout/nav-link";
+import { HistoryArrows } from "@/components/layout/history-arrows";
 import { SiteMotion } from "@/components/ui/site-motion";
 
 export type ShellNavItem = { label: string; href: string; exact?: boolean; group?: string };
@@ -40,6 +41,8 @@ export function AppShell({
       <header className="sticky top-0 z-40 border-b border-brand/20 bg-surface/90 backdrop-blur-xl print:hidden">
         <div className="flex h-16 items-center justify-between gap-4 px-5 lg:px-8">
           <div className="flex min-w-0 items-center gap-3">
+            <HistoryArrows />
+            <span className="hidden h-6 w-px bg-line sm:block" aria-hidden />
             <Logo />
             <span className="truncate rounded-full border border-brand/20 bg-brand-soft px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-brand">{badge}</span>
           </div>
