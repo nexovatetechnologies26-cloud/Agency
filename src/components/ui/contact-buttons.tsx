@@ -54,7 +54,7 @@ export function ContactButtons({
     <div className={clsx("flex flex-wrap gap-3", className)}>
       {email && (
         <a href={mailHref(email, siteName)} className={btn} aria-label={`Email ${firstName}`}>
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-charcoal text-white transition-colors group-hover/contact:bg-brand">
+          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand text-white transition-colors group-hover/contact:bg-brand-deep">
             <MailIcon className="h-[17px] w-[17px]" />
           </span>
           Email

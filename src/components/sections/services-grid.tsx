@@ -20,7 +20,7 @@ export function ServicesGrid({ limit, fromPrices = {} }: { limit?: number; fromP
               className="group flex h-full flex-col rounded-tile border border-brand/30 bg-surface transition duration-300 ease-out-cubic hover:-translate-y-1 hover:border-brand/40 hover:shadow-lift"
             >
               <div className="flex flex-1 flex-col p-7 md:p-8">
-                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-soft text-brand transition-colors duration-300 group-hover:bg-brand group-hover:text-white">
+                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-white transition-colors duration-300 group-hover:bg-brand-deep">
                   <ServiceIcon name={s.icon} className="h-6 w-6" />
                 </span>
                 <h3 className="mt-7 font-serif text-[1.85rem] font-semibold leading-tight text-ink transition-colors group-hover:text-brand">{s.title}</h3>
@@ -39,7 +39,7 @@ export function ServicesGrid({ limit, fromPrices = {} }: { limit?: number; fromP
                   </div>
                   <span
                     aria-hidden
-                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-line text-ink transition-colors duration-300 group-hover:border-brand group-hover:bg-brand group-hover:text-white"
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand text-white transition-colors duration-300 group-hover:bg-brand-deep"
                   >
                     →
                   </span>

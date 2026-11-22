@@ -47,7 +47,7 @@ function ServicesMenu({ open, onClose }: { open: boolean; onClose: () => void })
           {publishedServices.map((s) => (
             <li key={s.slug}>
               <Link href={`/services/${s.slug}`} onClick={onClose} className="group flex gap-3.5 rounded-2xl border border-transparent p-3 transition-colors hover:border-brand/25 hover:bg-brand-soft/60">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand-soft text-brand transition-colors group-hover:bg-brand group-hover:text-white">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand text-white transition-colors group-hover:bg-brand-deep">
                   <ServiceIcon name={s.icon} className="h-[18px] w-[18px]" />
                 </span>
                 <span className="min-w-0">

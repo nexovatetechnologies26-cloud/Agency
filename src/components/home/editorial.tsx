@@ -242,7 +242,7 @@ export function HomeServices() {
                         g.dark ? "border-white/10 bg-white/[0.04] text-white hover:border-white/30 hover:bg-white/[0.08]" : "border-line bg-paper/60 text-ink hover:border-brand/40 hover:bg-brand-soft/60",
                       )}
                     >
-                      <span className={clsx("flex h-9 w-9 shrink-0 items-center justify-center rounded-xl", g.dark ? "bg-brand text-white" : "bg-surface text-brand shadow-sm")}>
+                      <span className={clsx("flex h-9 w-9 shrink-0 items-center justify-center rounded-xl", "bg-brand text-white")}>
                         <ServiceIcon name={it.icon} className="h-[18px] w-[18px]" />
                       </span>
                       <span className="flex-1">{it.title}</span>
@@ -287,7 +287,7 @@ export function HomeWhy() {
           {reasons.map(({ icon: Icon, t, d }, i) => (
             <li key={t} data-card className="card group p-8 transition duration-300 ease-out-cubic hover:-translate-y-1 hover:border-brand/40 hover:shadow-lift lg:p-10">
               <div className="flex items-center justify-between">
-                <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-line text-brand transition-colors duration-300 group-hover:border-brand group-hover:bg-brand group-hover:text-white">
+                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand text-white transition-colors duration-300 group-hover:bg-brand-deep">
                   <Icon size={20} strokeWidth={1.75} aria-hidden />
                 </span>
                 <span className="font-display text-sm font-semibold text-muted/60">{String(i + 1).padStart(2, "0")}</span>
@@ -327,7 +327,7 @@ export function HomeWork({ projects }: { projects: WorkItem[] }) {
                   <p className="label-plain">{category(p)}</p>
                   <p className="mt-1.5 font-display text-2xl font-semibold tracking-tight text-ink transition-colors group-hover:text-brand">{p.title}</p>
                 </div>
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-line transition-colors group-hover:border-brand group-hover:bg-brand group-hover:text-white">
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand text-white transition-colors group-hover:bg-brand-deep">
                   <ArrowUpRight size={18} aria-hidden />
                 </span>
               </div>
@@ -370,7 +370,7 @@ export function HomeProcess() {
             <li key={s.t} data-card className="card group relative overflow-hidden p-8 transition duration-300 ease-out-cubic hover:-translate-y-1 hover:shadow-lift lg:p-9">
               <span aria-hidden className="absolute left-0 top-0 h-[3px] w-16 bg-brand transition-all duration-500 group-hover:w-full" />
               <div className="flex items-center justify-between">
-                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-soft font-display text-sm font-semibold text-brand transition-colors duration-300 group-hover:bg-brand group-hover:text-white">
+                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand font-display text-sm font-semibold text-white transition-colors duration-300 group-hover:bg-brand-deep">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted/70">Step {i + 1} of {steps.length}</span>

@@ -10,15 +10,15 @@ export function PriceFigure({ minor, currency, monthly, featured }: { minor: num
   return (
     <>
       <p className="mt-2 flex items-baseline gap-1.5 whitespace-nowrap">
-        <span className="text-sm font-semibold text-muted">{p.code}</span>
-        <span className={clsx("font-serif text-[3.25rem] leading-none tracking-[-0.02em]", featured ? "text-brand" : "text-ink")}>
-          {p.converted && <span className="mr-0.5 align-top text-[1.6rem] text-muted">≈</span>}
+        <span className={clsx("text-sm font-semibold", featured ? "text-lilac" : "text-muted")}>{p.code}</span>
+        <span className={clsx("font-serif text-[3.25rem] leading-none tracking-[-0.02em]", featured ? "text-white" : "text-ink")}>
+          {p.converted && <span className={clsx("mr-0.5 align-top text-[1.6rem]", featured ? "text-white/50" : "text-muted")}>≈</span>}
           {p.amount}
         </span>
-        {monthly && <span className="text-sm font-medium text-muted">/mo</span>}
+        {monthly && <span className={clsx("text-sm font-medium", featured ? "text-white/60" : "text-muted")}>/mo</span>}
       </p>
       {p.converted && (
-        <p className="mt-2 text-xs text-muted">
+        <p className={clsx("mt-2 text-xs", featured ? "text-white/55" : "text-muted")}>
           Billed in {p.original.code} {p.original.amount}
           {monthly ? "/mo" : ""} · approx. at today&apos;s rate
         </p>
