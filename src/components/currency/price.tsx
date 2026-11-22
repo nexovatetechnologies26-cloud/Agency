@@ -7,18 +7,20 @@ import { useCurrency, useDisplayPrice } from "@/components/currency/currency-pro
 /** Large price for pricing cards, in the visitor's currency, with the billed amount underneath. */
 export function PriceFigure({ minor, currency, monthly, featured }: { minor: number; currency: string; monthly?: boolean; featured?: boolean }) {
   const p = useDisplayPrice(minor, currency);
+  // long amounts (e.g. PKR 1,250,000) step down in size so they always fit the card
+  const len = p.amount.length + (p.converted ? 1 : 0);
+  const size = len <= 6 ? "text-[3.1rem]" : len <= 8 ? "text-[2.6rem]" : len <= 10 ? "text-[2.2rem]" : "text-[1.85rem]";
   return (
     <>
-      <p className="mt-2 flex items-baseline gap-1.5 whitespace-nowrap">
-        <span className={clsx("text-sm font-semibold", featured ? "text-lilac" : "text-muted")}>{p.code}</span>
-        <span className={clsx("font-serif text-[3.25rem] leading-none tracking-[-0.02em]", featured ? "text-white" : "text-ink")}>
-          {p.converted && <span className={clsx("mr-0.5 align-top text-[1.6rem]", featured ? "text-white/50" : "text-muted")}>≈</span>}
+      <p className="mt-3 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+        <span className={clsx("rounded-md px-1.5 py-0.5 text-[12px] font-bold tracking-wide", featured ? "bg-white/10 text-lilac" : "bg-brand-soft text-brand")}>{p.code}</span>
+        <span className={clsx("whitespace-nowrap font-display font-semibold leading-none tracking-[-0.03em] tabular-nums", size, featured ? "text-white" : "text-ink")}>
+          {p.converted && <span className={clsx("mr-1 align-[0.15em] text-[0.55em] font-medium", featured ? "text-white/50" : "text-muted")}>≈</span>}
           {p.amount}
         </span>
-        {monthly && <span className={clsx("text-sm font-medium", featured ? "text-white/60" : "text-muted")}>/mo</span>}
       </p>
       {p.converted && (
-        <p className={clsx("mt-2 text-xs", featured ? "text-white/55" : "text-muted")}>
+        <p className={clsx("mt-2.5 text-xs", featured ? "text-white/55" : "text-muted")}>
           Billed in {p.original.code} {p.original.amount}
           {monthly ? "/mo" : ""} · approx. at today&apos;s rate
         </p>
