@@ -9,6 +9,7 @@ import { mainNav } from "@/content/site";
 import { publishedServices } from "@/content/services";
 import { ACCOUNT_HINT_COOKIE } from "@/lib/constants";
 import { Logo } from "@/components/layout/logo";
+import { HistoryArrows } from "@/components/layout/history-arrows";
 import { ButtonLink } from "@/components/ui/button";
 import { ServiceIcon } from "@/components/ui/service-icon";
 import { CurrencySwitcher } from "@/components/currency/price";
@@ -21,14 +22,14 @@ function readAccountHint(): { href: string } | null {
 }
 
 const navItem =
-  "group/nav relative inline-flex items-center gap-1 rounded-full px-3.5 py-2 text-[14px] font-medium text-white/85 transition-colors duration-200 hover:bg-white/10 hover:text-white";
+  "group/nav relative inline-flex items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-2 xl:px-3.5 text-[14px] font-medium text-white/85 transition-colors duration-200 hover:bg-white/10 hover:text-white";
 
 /** Thin violet line that grows under a nav item on hover and stays under the current page. */
 function NavUnderline() {
   return (
     <span
       aria-hidden
-      className="pointer-events-none absolute inset-x-3.5 bottom-[3px] h-[2px] origin-left scale-x-0 rounded-full bg-lilac transition-transform duration-300 ease-out-cubic group-hover/nav:scale-x-100 group-[.is-active]/nav:scale-x-100"
+      className="pointer-events-none absolute inset-x-2.5 bottom-[3px] xl:inset-x-3.5 h-[2px] origin-left scale-x-0 rounded-full bg-lilac transition-transform duration-300 ease-out-cubic group-hover/nav:scale-x-100 group-[.is-active]/nav:scale-x-100"
     />
   );
 }
@@ -133,8 +134,12 @@ export function Header() {
         (scrolled || open) && "shadow-[0_10px_30px_-12px_rgba(18,18,24,0.45)]",
       )}
     >
-      <div className="container flex h-16 items-center justify-between gap-6 md:h-[72px]">
-        <Logo inverted />
+      <div className="container flex h-16 items-center justify-between gap-4 md:h-[72px] xl:gap-6">
+        <div className="flex items-center gap-3">
+          <HistoryArrows tone="dark" className="lg:hidden xl:flex" />
+          <span aria-hidden className="h-6 w-px bg-white/15 lg:hidden xl:block" />
+          <Logo inverted />
+        </div>
 
         <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
           {mainNav.map((item) =>
@@ -183,7 +188,7 @@ export function Header() {
             </span>
             {account ? "My account" : "Login"}
           </Link>
-          <ButtonLink href="/get-a-quote" variant="lilac" className="h-10 px-5 !text-[13px]">
+          <ButtonLink href="/get-a-quote" variant="lilac" className="h-10 whitespace-nowrap px-4 !text-[13px] xl:px-5">
             Start a project <ArrowRight size={15} aria-hidden className="transition-transform group-hover/btn:translate-x-0.5" />
           </ButtonLink>
         </div>
