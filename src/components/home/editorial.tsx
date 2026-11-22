@@ -601,7 +601,7 @@ export function HomePricing({ packages }: { packages: PackageCard[] }) {
         <ul className="mt-14 grid items-stretch gap-6 md:grid-cols-2 xl:grid-cols-3">
           {pick.map((p) => (
             <li key={p._id}>
-              <PricingCard p={p} />
+              <PricingCard p={p} showService />
             </li>
           ))}
         </ul>

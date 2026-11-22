@@ -29,10 +29,10 @@ export { priceParts };
  * One pricing card. Packages the admin marks as featured become the plum
  * "Most popular" card; the rest are white with a lavender header panel.
  */
-export function PricingCard({ p }: { p: PackageCard }) {
+export function PricingCard({ p, showService = false }: { p: PackageCard; showService?: boolean }) {
   const featured = Boolean(p.featured);
   const monthly = p.billing === "monthly";
-  const service = services.find((s) => s.slug === p.serviceSlug);
+  const service = showService ? services.find((s) => s.slug === p.serviceSlug) : undefined;
 
   return (
     <article
@@ -45,25 +45,14 @@ export function PricingCard({ p }: { p: PackageCard }) {
       )}
     >
       {/* header panel: service, badge, name, description, price */}
-      <div className={clsx("relative px-7 pb-7 pt-7 md:px-8", featured ? "" : "bg-brand-soft/60")}>
+      <div className={clsx("relative px-7 pb-7 pt-8 md:px-8", featured ? "" : "bg-brand-soft/60")}>
         {featured && <div aria-hidden className="grid-lines absolute inset-0 opacity-[0.07] invert" />}
         {featured && (
-          <span className="relative mb-5 inline-flex items-center gap-1.5 rounded-full bg-lilac px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-plum">
+          <span className="absolute right-6 top-6 inline-flex items-center gap-1.5 rounded-full bg-lilac px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-plum">
             <Sparkles size={12} aria-hidden /> Most popular
           </span>
         )}
-        <div className="relative flex items-center gap-3">
-          {service ? (
-            <span className={clsx("inline-flex min-w-0 items-center gap-2.5 text-[11.5px] font-semibold uppercase leading-snug tracking-[0.12em]", featured ? "text-lilac" : "text-brand")}>
-              <span className={clsx("flex h-9 w-9 shrink-0 items-center justify-center rounded-xl", featured ? "bg-lilac text-plum" : "bg-brand text-white")}>
-                <ServiceIcon name={service.icon} className="h-4 w-4" />
-              </span>
-              {service.title}
-            </span>
-          ) : null}
-        </div>
-
-        <h3 className={clsx("relative mt-6 font-display text-[1.7rem] font-semibold leading-tight tracking-[-0.02em]", featured ? "text-white" : "text-ink")}>{p.name}</h3>
+        <h3 className={clsx("relative font-display text-[1.75rem] font-semibold leading-tight tracking-[-0.02em]", featured ? "pr-36 text-white" : "text-ink")}>{p.name}</h3>
         {p.description && <p className={clsx("relative mt-2 text-[15px] leading-relaxed", featured ? "text-white/70" : "text-muted")}>{p.description}</p>}
 
         <div className="relative mt-6">
@@ -80,6 +69,9 @@ export function PricingCard({ p }: { p: PackageCard }) {
         >
           Get started <ArrowRight size={16} aria-hidden className="transition-transform duration-300 group-hover:translate-x-1" />
         </Link>
+        {showService && service && (
+          <p className={clsx("relative mt-3 text-center text-xs", featured ? "text-white/55" : "text-muted")}>{service.title} package</p>
+        )}
       </div>
 
       {/* body: delivery, revisions, what's included */}
