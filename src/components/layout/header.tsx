@@ -38,11 +38,11 @@ function ServicesMenu({ open, onClose }: { open: boolean; onClose: () => void })
   return (
     <div
       className={clsx(
-        "absolute left-1/2 top-full w-[min(920px,calc(100vw-2rem))] -translate-x-1/2 pt-3 transition duration-200 ease-out-cubic",
+        "absolute left-1/2 top-full w-[min(940px,calc(100vw-2rem))] -translate-x-1/2 pt-2 transition duration-200 ease-out-cubic",
         open ? "visible translate-y-0 opacity-100" : "invisible -translate-y-1 opacity-0",
       )}
     >
-      <div className="grid overflow-hidden rounded-3xl border border-brand/25 bg-surface shadow-lift lg:grid-cols-[1fr_260px]">
+      <div className="grid max-h-[calc(100vh-6rem)] overflow-hidden overflow-y-auto rounded-3xl border border-brand/25 bg-surface shadow-lift lg:grid-cols-[1fr_260px]">
         <ul className="grid gap-1 p-4 sm:grid-cols-2">
           {publishedServices.map((s) => (
             <li key={s.slug}>
@@ -139,7 +139,7 @@ export function Header() {
         <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
           {mainNav.map((item) =>
             item.href === "/services" ? (
-              <div key={item.href} className="relative" onMouseEnter={openMenu} onMouseLeave={closeMenu}>
+              <div key={item.href} onMouseEnter={openMenu} onMouseLeave={closeMenu}>
                 <button
                   type="button"
                   aria-expanded={menu}
