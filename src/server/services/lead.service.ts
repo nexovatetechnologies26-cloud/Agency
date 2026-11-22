@@ -1,5 +1,5 @@
 import "server-only";
-import { isValidObjectId } from "mongoose";
+import { isValidObjectId, type InferSchemaType } from "mongoose";
 import { connectDB } from "@/server/db/mongodb";
 import { Lead } from "@/server/models/lead.model";
 import type { LeadData } from "@/lib/validations/lead";
@@ -74,7 +74,15 @@ export async function listLeads(opts: { status?: string; type?: string; q?: stri
     Lead.countDocuments(filter),
   ]);
 
-  const items: LeadListItem[] = rows.map((l) => ({
+  const items: LeadListItem[] = rows.map((l) => toLeadItem(l as unknown as LeanLead));
+
+  return { items, total, page, pages: Math.max(Math.ceil(total / limit), 1) };
+}
+
+type LeanLead = InferSchemaType<typeof Lead.schema> & { _id: unknown; createdAt: Date };
+
+function toLeadItem(l: LeanLead): LeadListItem {
+  return {
     id: String(l._id),
     type: l.type,
     status: l.status as LeadStatus,
@@ -106,9 +114,15 @@ export async function listLeads(opts: { status?: string; type?: string; q?: stri
       createdAt: new Date((r as { createdAt?: Date }).createdAt ?? Date.now()).toISOString(),
     })),
     createdAt: new Date(l.createdAt).toISOString(),
-  }));
+  };
+}
 
-  return { items, total, page, pages: Math.max(Math.ceil(total / limit), 1) };
+/** One lead, shaped for the admin conversation page. */
+export async function getLeadItem(id: string) {
+  if (!isValidObjectId(id)) return null;
+  await connectDB();
+  const l = await Lead.findById(id).lean();
+  return l ? toLeadItem(l as unknown as LeanLead) : null;
 }
 
 export async function getLeadStats() {

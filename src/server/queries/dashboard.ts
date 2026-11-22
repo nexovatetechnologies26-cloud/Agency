@@ -83,3 +83,17 @@ export async function customerOverview(userId: string, email: string) {
   ]);
   return { activeOrders, unpaidInvoices, openTickets, openProposals, awaitingRequirements };
 }
+
+/** Sidebar badges: website inquiries not yet handled, client messages waiting for the team. */
+export async function getInboxCounts() {
+  try {
+    await connectDB();
+    const [inquiries, clientMessages] = await Promise.all([
+      Lead.countDocuments({ status: "new" }),
+      Ticket.countDocuments({ status: "open" }),
+    ]);
+    return { inquiries, clientMessages };
+  } catch {
+    return { inquiries: 0, clientMessages: 0 };
+  }
+}

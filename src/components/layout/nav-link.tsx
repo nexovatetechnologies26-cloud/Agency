@@ -12,9 +12,11 @@ import {
   FileText,
   Hash,
   History,
+  Inbox,
   LayoutDashboard,
   LifeBuoy,
   MessageSquareQuote,
+  MessagesSquare,
   Package,
   Receipt,
   ShieldCheck,
@@ -30,6 +32,9 @@ import {
 const ICONS: Record<string, LucideIcon> = {
   "/dashboard": LayoutDashboard,
   "/admin": LayoutDashboard,
+  "/admin/inbox": Inbox,
+  "/admin/leads": Sparkles,
+  "/admin/support": MessagesSquare,
   orders: ShoppingBag,
   proposals: FileSignature,
   invoices: Receipt,
@@ -53,7 +58,19 @@ function iconFor(href: string): LucideIcon {
   return ICONS[href] ?? ICONS[href.split("/").pop() ?? ""] ?? FileText;
 }
 
-export function NavLink({ href, exact, variant = "side", children }: { href: string; exact?: boolean; variant?: "side" | "pill"; children: React.ReactNode }) {
+export function NavLink({
+  href,
+  exact,
+  count,
+  variant = "side",
+  children,
+}: {
+  href: string;
+  exact?: boolean;
+  count?: number;
+  variant?: "side" | "pill";
+  children: React.ReactNode;
+}) {
   const pathname = usePathname();
   const active = exact ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
   const Icon = iconFor(href);
@@ -71,6 +88,11 @@ export function NavLink({ href, exact, variant = "side", children }: { href: str
       {variant === "side" && active && <span aria-hidden className="absolute -left-4 top-1/2 h-5 w-1 -translate-y-1/2 rounded-r-full bg-brand" />}
       <Icon size={variant === "side" ? 17 : 15} strokeWidth={1.9} aria-hidden className={clsx("shrink-0", active ? "text-brand" : "text-ink/45 group-hover:text-brand")} />
       <span className="truncate">{children}</span>
+      {count ? (
+        <span aria-label={`${count} waiting`} className="ml-auto min-w-[1.375rem] shrink-0 rounded-full bg-brand px-1.5 py-0.5 text-center text-[11px] font-bold leading-4 text-white">
+          {count > 99 ? "99+" : count}
+        </span>
+      ) : null}
     </Link>
   );
 }

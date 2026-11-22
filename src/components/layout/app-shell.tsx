@@ -7,7 +7,7 @@ import { NavLink } from "@/components/layout/nav-link";
 import { HistoryArrows } from "@/components/layout/history-arrows";
 import { SiteMotion } from "@/components/ui/site-motion";
 
-export type ShellNavItem = { label: string; href: string; exact?: boolean; group?: string };
+export type ShellNavItem = { label: string; href: string; exact?: boolean; group?: string; count?: number };
 
 /** Shared frame for the customer dashboard and the admin panel. */
 export function AppShell({
@@ -73,7 +73,7 @@ export function AppShell({
         {/* mobile nav */}
         <nav aria-label="Section" className="flex gap-1 overflow-x-auto border-t border-line px-3 py-2 lg:hidden">
           {nav.map((n) => (
-            <NavLink key={n.href} href={n.href} exact={n.exact} variant="pill">{n.label}</NavLink>
+            <NavLink key={n.href} href={n.href} exact={n.exact} count={n.count} variant="pill">{n.label}</NavLink>
           ))}
         </nav>
       </header>
@@ -85,7 +85,7 @@ export function AppShell({
                 {g.label && <p className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-brand/80">{g.label}</p>}
                 <div className="flex flex-col gap-0.5">
                   {g.items.map((n) => (
-                    <NavLink key={n.href} href={n.href} exact={n.exact}>{n.label}</NavLink>
+                    <NavLink key={n.href} href={n.href} exact={n.exact} count={n.count}>{n.label}</NavLink>
                   ))}
                 </div>
               </div>

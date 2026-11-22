@@ -15,9 +15,12 @@ export default async function AdminSupport({ searchParams }: { searchParams: Pro
   const rows = await listTickets(valid);
   return (
     <>
-      <PageHeader title="Support" description={valid ? undefined : "Showing open and awaiting-customer tickets."} />
+      <PageHeader
+        title="Client messages"
+        description="Sent by signed-in clients from their dashboard (Support & Messages). Open a conversation to reply — the client is emailed and sees your reply in their dashboard."
+      />
       <div className="mb-5 flex flex-wrap gap-2">
-        <Link href="/admin/support" className={clsx("rounded-full border px-3.5 py-1.5 text-xs font-medium", !valid ? "border-brand bg-brand text-white" : "border-line bg-surface")}>Active</Link>
+        <Link href="/admin/support" className={clsx("rounded-full border px-3.5 py-1.5 text-xs font-medium", !valid ? "border-brand bg-brand text-white" : "border-line bg-surface")}>Needs attention</Link>
         {TICKET_STATUSES.map((st) => (
           <Link key={st} href={`/admin/support?status=${st}`} className={clsx("rounded-full border px-3.5 py-1.5 text-xs font-medium", valid === st ? "border-brand bg-brand text-white" : "border-line bg-surface")}>{humanize(st)}</Link>
         ))}
@@ -37,7 +40,7 @@ export default async function AdminSupport({ searchParams }: { searchParams: Pro
           ))}
         </ul>
       ) : (
-        <EmptyState title="No tickets here" />
+        <EmptyState title="No client messages here" />
       )}
     </>
   );

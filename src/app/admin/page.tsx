@@ -38,7 +38,7 @@ export default async function AdminHome({ searchParams }: { searchParams: Promis
           <QuickActions role={s.role} />
 
           <Group title="Sales pipeline">
-            <Stat label="New messages & leads" value={o.newLeads} href="/admin/leads?status=new" tone="dark" />
+            <Stat label="New website inquiries" value={o.newLeads} href="/admin/inbox?tab=reply" tone="dark" />
             <Stat label="Leads (30 days)" value={o.leads30} href="/admin/leads" />
             <Stat label="Qualified leads" value={o.qualified} href="/admin/leads?status=qualified" />
             <Stat label="Proposals awaiting reply" value={o.pendingProposals} href="/admin/proposals" />
@@ -52,7 +52,7 @@ export default async function AdminHome({ searchParams }: { searchParams: Promis
             <Stat label="Active orders" value={o.activeOrders} href="/admin/orders" />
             <Stat label="In progress" value={o.inProgress} href="/admin/orders?status=in_progress" />
             <Stat label="Completed" value={o.completed} href="/admin/orders?status=completed" />
-            <Stat label="Open tickets" value={o.openTickets} href="/admin/support" />
+            <Stat label="Client messages to answer" value={o.openTickets} href="/admin/inbox?tab=reply" />
           </Group>
 
           {can(s.role, "finance") && (

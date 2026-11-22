@@ -142,6 +142,55 @@ export function LeadsTable({ leads, canAi = false, canPropose = false, emailRead
   );
 }
 
+/** Everything for one inquiry on its own page: stage, conversation + reply, details and notes. */
+export function LeadPanel({ lead, canAi = false, canPropose = false, emailReady = false }: { lead: LeadListItem; canAi?: boolean; canPropose?: boolean; emailReady?: boolean }) {
+  const router = useRouter();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+
+  async function patch(body: { status?: LeadStatus; note?: string }) {
+    setBusy(true);
+    setError("");
+    try {
+      const res = await fetch(`/api/admin/leads/${lead.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const json = await res.json().catch(() => null);
+      if (!res.ok || !json?.ok) throw new Error(json?.error?.message ?? "Update failed");
+      router.refresh();
+      return true;
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Update failed");
+      return false;
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-wrap items-center gap-3">
+        <label htmlFor="lead-stage" className="text-sm font-medium text-muted">Stage</label>
+        <select
+          id="lead-stage"
+          value={lead.status}
+          disabled={busy}
+          onChange={(e) => patch({ status: e.target.value as LeadStatus })}
+          className={clsx("rounded-full border-0 px-3.5 py-2 text-xs font-semibold", statusColor[lead.status])}
+        >
+          {LEAD_STATUSES.map((st) => (
+            <option key={st} value={st}>{LEAD_STATUS_LABELS[st]}</option>
+          ))}
+        </select>
+        {error && <p className="text-sm text-red-600" role="alert">{error}</p>}
+      </div>
+      <LeadDetails lead={lead} busy={busy} canAi={canAi} canPropose={canPropose} emailReady={emailReady} onNote={(note) => patch({ note })} />
+    </div>
+  );
+}
+
 function LeadDetails({
   lead,
   busy,

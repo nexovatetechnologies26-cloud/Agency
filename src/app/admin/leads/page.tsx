@@ -41,8 +41,8 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
 
       <div>
         <PageHeader
-          title="Messages & Leads"
-          description="Every contact message, quote request and consultation booking from the website. Open one to read it and reply to the client."
+          title="Leads pipeline"
+          description="Track website inquiries through your sales stages. To read and answer messages, use the Inbox."
           actions={
             <a download href="/api/admin/export/leads" className="inline-flex h-11 items-center rounded-full border border-line bg-surface px-5 text-sm font-semibold hover:border-brand hover:text-brand">Export CSV</a>}
         />
