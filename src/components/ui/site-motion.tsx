@@ -85,6 +85,11 @@ export function SiteMotion() {
       document.querySelectorAll<HTMLElement>(`${CARD}`).forEach((el) => {
         if (!el.dataset.reveal) register(el, "card");
       });
+      // anything a previous page's observer registered (possible during a client-side
+      // navigation) is re-attached here, so it can never stay hidden
+      document.querySelectorAll<HTMLElement>("main [data-motion]").forEach((el) => {
+        if (el.dataset.reveal !== "skip") io.observe(el);
+      });
       document.querySelectorAll<HTMLElement>("main section:not([data-reveal])").forEach((el) => {
         // sections holding cards stay put — their cards animate instead
         if (el.querySelector(".card, [data-card], .reveal")) {
@@ -96,13 +101,36 @@ export function SiteMotion() {
     };
 
     scan();
-    const mo = new MutationObserver(() => scan());
-    const main = document.querySelector("main");
-    if (main) mo.observe(main, { childList: true, subtree: true });
+    // batch DOM changes into at most one scan per frame (count-ups change text every frame)
+    let queued = 0;
+    const mo = new MutationObserver(() => {
+      if (queued) return;
+      queued = requestAnimationFrame(() => {
+        queued = 0;
+        scan();
+      });
+    });
+    // observe the body: the <main> element itself can be swapped during a navigation
+    mo.observe(document.body, { childList: true, subtree: true });
+
+    const revealOnScreen = () => {
+      document.querySelectorAll<HTMLElement>('main [data-reveal="below"], main [data-reveal="above"]').forEach((el) => {
+        const r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight && r.bottom > 0) show(el);
+      });
+    };
+    const safety = window.setTimeout(revealOnScreen, 900);
 
     return () => {
       io.disconnect();
       mo.disconnect();
+      window.clearTimeout(safety);
+      if (queued) cancelAnimationFrame(queued);
+      // leave nothing hidden behind for the next page's observer
+      document.querySelectorAll<HTMLElement>('main [data-reveal="below"], main [data-reveal="above"]').forEach((el) => {
+        el.style.transitionDelay = "";
+        el.dataset.reveal = "shown";
+      });
     };
   }, [pathname]);
 

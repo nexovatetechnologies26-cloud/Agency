@@ -6,9 +6,15 @@ import { getProject } from "@/server/queries/other";
 import { services } from "@/content/services";
 import { RichText } from "@/components/ui/rich-text";
 import { Cta } from "@/components/sections/cta";
+import { RemoteImage } from "@/components/ui/remote-image";
 
 // Cached and refreshed every 5 minutes (admin edits refresh it immediately).
 export const revalidate = 300;
+// cache every profile / post / project after its first visit (ISR) instead of querying the database on each request
+export const dynamicParams = true;
+export function generateStaticParams() {
+  return [];
+}
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -49,8 +55,7 @@ export default async function ProjectPage({ params }: Props) {
           </dl>
 
           {p.images[0] && (
-            // eslint-disable-next-line @next/next/no-img-element -- admin-provided external URL
-            <img src={p.images[0]} alt={p.title} className="mt-10 w-full rounded-2xl border border-line" />
+            <RemoteImage natural src={p.images[0]} alt={p.title} priority sizes="(min-width: 1024px) 960px, 100vw" className="mt-10 h-auto w-full rounded-2xl border border-line" />
           )}
 
           <div className="mt-6 space-y-12">
@@ -63,8 +68,7 @@ export default async function ProjectPage({ params }: Props) {
           </div>
 
           {p.images.slice(1).map((src) => (
-            // eslint-disable-next-line @next/next/no-img-element -- admin-provided external URL
-            <img key={src} src={src} alt="" loading="lazy" className="mt-8 w-full rounded-2xl border border-line" />
+            <RemoteImage natural key={src} src={src} alt="" sizes="(min-width: 1024px) 960px, 100vw" className="mt-8 h-auto w-full rounded-2xl border border-line" />
           ))}
 
           {p.liveUrl && (

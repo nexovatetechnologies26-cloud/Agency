@@ -1,6 +1,7 @@
 import { ArrowRight, Linkedin, Users } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
 import { initials, memberHref, seniorityLabel, type TeamMemberCard } from "@/components/sections/team";
+import { RemoteImage } from "@/components/ui/remote-image";
 
 // Homepage leadership spotlight. Shows the published team profile whose
 // seniority is CEO (or chief executive); falls back to a founder / co-founder.
@@ -38,8 +39,7 @@ export function HomeLeader({ leader }: { leader: TeamMemberCard | null }) {
             <div className="card card-float group relative aspect-[4/5] overflow-hidden !rounded-[28px] border-2 bg-surface p-2">
               <div className="relative h-full w-full overflow-hidden rounded-[22px]">
                 {leader.photo ? (
-                  // eslint-disable-next-line @next/next/no-img-element -- admin-provided portrait URL
-                  <img src={leader.photo} alt={`Portrait of ${leader.name}, ${role}`} loading="lazy" className="h-full w-full object-cover object-top" />
+                  <RemoteImage src={leader.photo} alt={`Portrait of ${leader.name}, ${role}`} sizes="(min-width: 1024px) 440px, 92vw" className="object-cover object-top" />
                 ) : (
                   <span aria-hidden className="flex h-full items-center justify-center font-display text-[8rem] font-semibold text-brand/40">
                     {initials(leader.name)}

@@ -7,9 +7,15 @@ import { site } from "@/content/site";
 import { fmtDate } from "@/lib/format";
 import { RichText } from "@/components/ui/rich-text";
 import { Cta } from "@/components/sections/cta";
+import { RemoteImage } from "@/components/ui/remote-image";
 
 // Cached and refreshed every 5 minutes (admin edits refresh it immediately).
 export const revalidate = 300;
+// cache every profile / post / project after its first visit (ISR) instead of querying the database on each request
+export const dynamicParams = true;
+export function generateStaticParams() {
+  return [];
+}
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -51,8 +57,7 @@ export default async function PostPage({ params }: Props) {
           <h1 className="mt-3 text-4xl leading-tight md:text-5xl">{p.title}</h1>
           {p.excerpt && <p className="mt-5 text-lg text-muted">{p.excerpt}</p>}
           {p.coverImage && (
-            // eslint-disable-next-line @next/next/no-img-element -- admin-provided external URL
-            <img src={p.coverImage} alt="" className="mt-10 w-full rounded-2xl border border-line" />
+            <RemoteImage natural src={p.coverImage} alt="" priority sizes="(min-width: 1024px) 960px, 100vw" className="mt-10 h-auto w-full rounded-2xl border border-line" />
           )}
           <div className="mt-10">
             <RichText content={p.content} />

@@ -6,6 +6,7 @@ import { safe } from "@/server/lib/safe";
 import { fmtDate } from "@/lib/format";
 import { PageHero } from "@/components/ui/page-hero";
 import { EmptyState } from "@/components/ui/empty-state";
+import { RemoteImage } from "@/components/ui/remote-image";
 
 export const metadata: Metadata = {
   title: "Blog & Insights",
@@ -44,8 +45,9 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
                 <li key={p.slug}>
                   <Link href={`/blog/${p.slug}`} className="card group block h-full overflow-hidden transition hover:border-brand/40">
                     {p.coverImage && (
-                      // eslint-disable-next-line @next/next/no-img-element -- admin-provided external URL
-                      <img src={p.coverImage} alt="" loading="lazy" className="aspect-[16/9] w-full object-cover" />
+                      <div className="relative aspect-[16/9]">
+                        <RemoteImage src={p.coverImage} alt="" sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw" className="object-cover" />
+                      </div>
                     )}
                     <div className="p-6">
                       <p className="text-xs text-muted">{[p.category, fmtDate(p.publishedAt)].filter(Boolean).join(" · ")}</p>

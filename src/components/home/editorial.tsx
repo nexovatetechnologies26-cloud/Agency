@@ -21,6 +21,7 @@ import { ButtonLink } from "@/components/ui/button";
 import { CountUp } from "@/components/ui/count-up";
 import { ServiceIcon } from "@/components/ui/service-icon";
 import { PricingCard, type PackageCard } from "@/components/sections/packages-list";
+import { RemoteImage } from "@/components/ui/remote-image";
 
 // Homepage sections. Every data-backed section (logos, numbers, work, testimonials,
 // insights) is managed in the admin panel and stays hidden until it has real content —
@@ -318,9 +319,8 @@ export function HomeWork({ projects }: { projects: WorkItem[] }) {
         <div className="mt-14 grid gap-6 md:grid-cols-2">
           {items.map((p, i) => (
             <Link key={p.slug} href={`/portfolio/${p.slug}`} className={clsx("group block", i % 2 === 1 && "md:mt-16")}>
-              <div className="aspect-[4/3] overflow-hidden rounded-3xl bg-line">
-                {/* eslint-disable-next-line @next/next/no-img-element -- admin-provided project image */}
-                <img src={p.images[0]} alt={p.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 ease-out-cubic group-hover:scale-[1.04]" />
+              <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-line">
+                <RemoteImage src={p.images[0]} alt={p.title} sizes="(min-width: 768px) 50vw, 100vw" className="object-cover transition-transform duration-700 ease-out-cubic group-hover:scale-[1.04]" />
               </div>
               <div className="mt-5 flex items-center justify-between gap-4">
                 <div>
@@ -492,10 +492,9 @@ export function HomeInsights({ posts }: { posts: PostItem[] }) {
           {posts.slice(0, 3).map((p) => (
             <li key={p.slug}>
               <Link href={`/blog/${p.slug}`} className="card group flex h-full flex-col overflow-hidden">
-                <div className="aspect-[16/10] overflow-hidden bg-paper">
+                <div className="relative aspect-[16/10] overflow-hidden bg-paper">
                   {p.coverImage ? (
-                    // eslint-disable-next-line @next/next/no-img-element -- admin-provided cover image
-                    <img src={p.coverImage} alt="" loading="lazy" className="h-full w-full object-cover transition-transform duration-700 ease-out-cubic group-hover:scale-[1.04]" />
+                    <RemoteImage src={p.coverImage} alt="" sizes="(min-width: 1024px) 33vw, 100vw" className="object-cover transition-transform duration-700 ease-out-cubic group-hover:scale-[1.04]" />
                   ) : (
                     <div className="flex h-full items-end p-6 font-display text-3xl font-bold tracking-tight text-brand/20">Nexovate</div>
                   )}

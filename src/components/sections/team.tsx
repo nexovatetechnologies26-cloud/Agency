@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { seniorityDisplay } from "@/lib/constants";
 import { Reveal } from "@/components/ui/reveal";
+import { RemoteImage } from "@/components/ui/remote-image";
 
 // Admin-managed public team profiles (Admin → Team Profiles).
 // Cards are ordered by seniority and each one opens the member's own page.
@@ -46,13 +47,7 @@ export function Portrait({ m, size = "md", eager = false }: { m: TeamMemberCard;
       className={`relative mx-auto shrink-0 overflow-hidden rounded-full bg-brand-soft ring-2 ring-brand/70 ring-offset-4 ring-offset-paper transition-[box-shadow] duration-300 group-hover:ring-brand ${box}`}
     >
       {m.photo ? (
-        // eslint-disable-next-line @next/next/no-img-element -- admin-provided portrait URL
-        <img
-          src={m.photo}
-          alt={`Portrait of ${m.name}`}
-          loading={eager ? "eager" : "lazy"}
-          className="absolute inset-0 h-full w-full object-cover object-top"
-        />
+        <RemoteImage src={m.photo} alt={`Portrait of ${m.name}`} sizes="224px" priority={eager} className="object-cover object-top" />
       ) : (
         <span aria-hidden className={`flex h-full w-full items-center justify-center font-serif text-brand ${size === "lg" ? "text-7xl" : "text-4xl"}`}>
           {initials(m.name)}

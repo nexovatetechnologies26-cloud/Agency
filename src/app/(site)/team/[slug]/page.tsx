@@ -9,9 +9,15 @@ import { ButtonLink } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
 import { ContactButtons, MailIcon, WhatsAppIcon, mailHref, whatsappHref } from "@/components/ui/contact-buttons";
 import { PlatformBadge, linkLabel, type ProfileLink } from "@/components/ui/social-links";
+import { RemoteImage } from "@/components/ui/remote-image";
 
 // Rendered on first visit, then cached; refreshed every 5 minutes and on every admin edit.
 export const revalidate = 300;
+// cache every profile / post / project after its first visit (ISR) instead of querying the database on each request
+export const dynamicParams = true;
+export function generateStaticParams() {
+  return [];
+}
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -66,8 +72,7 @@ function ProfilePhoto({ m }: { m: TeamMemberCard }) {
   return (
     <div className="relative aspect-[4/5] overflow-hidden rounded-tile border border-line bg-brand-soft">
       {m.photo ? (
-        // eslint-disable-next-line @next/next/no-img-element -- admin-provided portrait URL
-        <img src={m.photo} alt={`Portrait of ${m.name}`} className="absolute inset-0 h-full w-full object-cover object-top" />
+        <RemoteImage src={m.photo} alt={`Portrait of ${m.name}`} sizes="(min-width: 1024px) 420px, 92vw" priority className="object-cover object-top" />
       ) : (
         <span aria-hidden className="absolute inset-0 flex items-center justify-center font-serif text-[10rem] leading-none text-brand/40">
           {initials(m.name)}
