@@ -130,7 +130,7 @@ export function Header() {
     <header
       className={clsx(
         "sticky top-0 z-50 border-b border-white/10 bg-plum transition-shadow duration-300 ease-out-cubic",
-        (scrolled || open) && "shadow-[0_10px_30px_-12px_rgba(42,27,61,0.45)]",
+        (scrolled || open) && "shadow-[0_10px_30px_-12px_rgba(18,18,24,0.45)]",
       )}
     >
       <div className="container flex h-16 items-center justify-between gap-6 md:h-[72px]">

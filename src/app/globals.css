@@ -9,15 +9,15 @@
    .theme-dark  → kept for rollback (obsidian / charcoal / white / violet / silver)
    ========================================================================== */
 :root {
-  --c-ink: 34 22 50; /* deep plum text #221632 — strong contrast */
-  --c-paper: 243 240 250; /* lavender mist #F3F0FA */
+  --c-ink: 18 18 24; /* deep ink */
+  --c-paper: 242 243 245; /* light grey #F2F3F5 */
   --c-surface: 255 255 255; /* white cards */
-  --c-line: 230 223 243; /* lavender hairline */
-  --c-muted: 92 80 110; /* plum-grey #5C506E, readable */
-  --c-brand: 92 61 140; /* rich plum-violet #5C3D8C — buttons, accents */
-  --c-brand-deep: 42 27 61; /* aubergine #2A1B3D — header, footer, hover */
-  --c-brand-soft: 240 234 251; /* soft lilac fill #F0EAFB */
-  --c-brand-tint: 217 201 242; /* lilac #D9C9F2 */
+  --c-line: 225 227 232; /* grey hairline */
+  --c-muted: 96 100 112; /* slate grey */
+  --c-brand: 117 69 217; /* Nexovate violet #7545D9 */
+  --c-brand-deep: 90 50 176;
+  --c-brand-soft: 242 237 252;
+  --c-brand-tint: 228 218 250;
 }
 .theme-dark {
   color-scheme: dark;
@@ -31,25 +31,25 @@
   --c-brand-soft: 34 26 56;
   --c-brand-tint: 46 34 78;
 }
-/* lavender & plum — public website: lavender page, white cards, plum text and buttons, lilac accents */
+/* grey & white — public website: light grey page, white cards, deep ink, violet; charcoal header & footer */
 .theme-light {
   color-scheme: light;
-  --c-ink: 34 22 50; /* deep plum text #221632 — strong contrast */
-  --c-paper: 243 240 250; /* lavender mist #F3F0FA */
+  --c-ink: 18 18 24; /* deep ink */
+  --c-paper: 242 243 245; /* light grey #F2F3F5 */
   --c-surface: 255 255 255; /* white cards */
-  --c-line: 230 223 243; /* lavender hairline */
-  --c-muted: 92 80 110; /* plum-grey #5C506E, readable */
-  --c-brand: 92 61 140; /* rich plum-violet #5C3D8C — buttons, accents */
-  --c-brand-deep: 42 27 61; /* aubergine #2A1B3D — header, footer, hover */
-  --c-brand-soft: 240 234 251; /* soft lilac fill #F0EAFB */
-  --c-brand-tint: 217 201 242; /* lilac #D9C9F2 */
+  --c-line: 225 227 232; /* grey hairline */
+  --c-muted: 96 100 112; /* slate grey */
+  --c-brand: 117 69 217; /* Nexovate violet #7545D9 */
+  --c-brand-deep: 90 50 176;
+  --c-brand-soft: 242 237 252;
+  --c-brand-tint: 228 218 250;
 }
 /* every card (site, dashboard, admin): lilac border on all four sides, a soft plum shadow for depth */
 :root .card {
   border-color: rgb(var(--c-brand-tint));
   box-shadow:
-    0 1px 2px rgb(42 27 61 / 0.04),
-    0 14px 34px -22px rgb(42 27 61 / 0.22);
+    0 1px 2px rgb(18 18 24 / 0.04),
+    0 14px 34px -22px rgb(18 18 24 / 0.16);
 }
 :root a.card:hover,
 .theme-light .card:hover {
@@ -58,12 +58,12 @@
 :root .card-float {
   border-color: rgb(var(--c-brand) / 0.35);
   box-shadow:
-    0 1px 2px rgb(42 27 61 / 0.05),
+    0 1px 2px rgb(18 18 24 / 0.05),
     0 30px 60px -30px rgb(var(--c-brand) / 0.45);
 }
 :root a.card-float:hover {
   box-shadow:
-    0 1px 2px rgb(42 27 61 / 0.06),
+    0 1px 2px rgb(18 18 24 / 0.06),
     0 38px 70px -30px rgb(var(--c-brand) / 0.55);
 }
 
@@ -339,18 +339,19 @@
   }
 }
 
-/* big headings (h1, h2, .serif-heading): Playfair Display with comfortable spacing.
+/* big headings (h1, h2, .serif-heading): display sans with readable spacing; the accent word in the italic serif.
+   (Playfair Display is still loaded as --font-heading — swap it back in here to try it.)
    Unlayered and :root-scoped so it wins over font/tracking utilities on those headings. */
 :root :is(h1, h2, .serif-heading) {
-  font-family: var(--font-heading), Georgia, serif;
+  font-family: var(--font-display), var(--font-sans), system-ui, sans-serif;
   font-weight: 600;
-  letter-spacing: -0.012em;
-  line-height: 1.12;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
 }
 :root :is(h1, h2, .serif-heading) em {
-  font-family: var(--font-heading), Georgia, serif;
+  font-family: var(--font-serif), Georgia, serif;
   font-style: italic;
-  font-weight: 500;
-  letter-spacing: -0.005em;
+  font-weight: 400;
+  letter-spacing: -0.01em;
   color: rgb(var(--c-brand));
 }

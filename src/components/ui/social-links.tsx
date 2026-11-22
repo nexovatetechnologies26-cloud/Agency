@@ -40,7 +40,7 @@ export function detectPlatform(url: string): Platform {
     /* fall through to "Website" */
   }
   const hit = PLATFORMS.find((p) => p.match.test(host));
-  return hit?.platform ?? { name: host || "Website", icon: Globe, color: "#4A3268" };
+  return hit?.platform ?? { name: host || "Website", icon: Globe, color: "#7545D9" };
 }
 
 export type ProfileLink = { label?: string | null; url: string };

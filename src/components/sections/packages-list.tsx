@@ -40,8 +40,8 @@ export function PricingCard({ p }: { p: PackageCard }) {
       className={clsx(
         "group relative flex h-full flex-col overflow-hidden rounded-[28px] transition duration-300 ease-out-cubic hover:-translate-y-1.5",
         featured
-          ? "bg-plum text-white shadow-[0_30px_60px_-24px_rgba(42,27,61,0.65)] ring-1 ring-plum lg:-my-4"
-          : "border border-brand/25 bg-surface shadow-[0_1px_2px_rgba(43,30,58,0.04)] hover:border-brand/50 hover:shadow-[0_28px_56px_-28px_rgba(74,50,104,0.45)]",
+          ? "bg-plum text-white shadow-[0_30px_60px_-24px_rgba(23,23,29,0.6)] ring-1 ring-plum lg:-my-4"
+          : "border border-brand/25 bg-surface shadow-[0_1px_2px_rgba(18,18,24,0.04)] hover:border-brand/50 hover:shadow-[0_28px_56px_-28px_rgba(117,69,217,0.4)]",
       )}
     >
       {/* header panel: service, badge, name, description, price */}

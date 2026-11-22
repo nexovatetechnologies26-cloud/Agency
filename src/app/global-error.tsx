@@ -9,7 +9,7 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
         <main style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 24, textAlign: "center" }}>
           <div style={{ maxWidth: 420 }}>
             <p style={{ fontSize: 22, fontWeight: 800, margin: "0 0 24px" }}>
-              Ne<span style={{ color: "#4A3268" }}>x</span>ovate
+              Ne<span style={{ color: "#7545D9" }}>x</span>ovate
             </p>
             <h1 style={{ fontSize: 26, margin: "0 0 12px" }}>Something went wrong</h1>
             <p style={{ color: "#5E5A6B", lineHeight: 1.6, margin: "0 0 28px" }}>
@@ -19,7 +19,7 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
             <button
               type="button"
               onClick={reset}
-              style={{ background: "#4A3268", color: "#fff", border: 0, borderRadius: 999, padding: "12px 24px", fontWeight: 600, fontSize: 14, cursor: "pointer" }}
+              style={{ background: "#7545D9", color: "#fff", border: 0, borderRadius: 999, padding: "12px 24px", fontWeight: 600, fontSize: 14, cursor: "pointer" }}
             >
               Try again
             </button>
